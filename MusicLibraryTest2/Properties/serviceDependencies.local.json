@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "storage1": {
+      "secretStore": null,
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/musiclibrarytest2storage",
+      "type": "storage.azure",
+      "connectionId": "musicDatabase"
+    }
+  }
+}
