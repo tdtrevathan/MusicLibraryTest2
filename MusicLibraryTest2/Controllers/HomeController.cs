@@ -14,9 +14,7 @@ namespace MusicLibraryTest2.Controllers
 {
     public class HomeController : Controller
     {
-
-        //string connection = "server=127.0.0.1;uid=root;pwd=2Ratsatnats!;database=musicdatabase";
-        string connection = "server=umamusic.mysql.database.azure.com;uid=trevathantd;pwd=2Ratsatnats!;database=musicdatabase";
+        string connection = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         public ActionResult GetArtist(int? artistId)
         {
             
