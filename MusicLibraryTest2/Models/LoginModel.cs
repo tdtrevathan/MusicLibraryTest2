@@ -11,13 +11,14 @@ namespace MusicLibraryTest2.Models
 {
     public class LoginModel
     {
+        private string password;
 
         public string UserName { get; set; }
-        private string password;
         public string Password
         {
             get{return password;} set {password = GetHash(value);}
         }
+        public bool ValidCredentials { get; set; }
 
         private string GetHash(string password)
         {

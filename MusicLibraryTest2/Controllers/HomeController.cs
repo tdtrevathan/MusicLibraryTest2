@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Microsoft.Data.SqlClient;
 using System.Configuration;
 using MySqlConnector;
+using System.Drawing;
 
 namespace MusicLibraryTest2.Controllers
 {
@@ -39,29 +40,6 @@ namespace MusicLibraryTest2.Controllers
         }
         public ActionResult Index()
         {
-
-            //List<SongModel> songs = new List<SongModel>();
-            //
-            //using (MySqlConnection con = new MySqlConnection(connection))
-            //{
-            //    MySqlCommand cmd = new MySqlCommand("SELECT * FROM song", con);
-            //    cmd.CommandType = System.Data.CommandType.Text;
-            //    con.Open();
-            //
-            //    MySqlDataReader reader = cmd.ExecuteReader();
-            //    while (reader.Read())
-            //    {
-            //        var songModel = new SongModel();
-            //        songModel.Id = Convert.ToInt32(reader["Id"]);
-            //        songModel.Views = Convert.ToInt32(reader["views"]);
-            //        songModel.Likes = Convert.ToInt32(reader["likes"]);
-            //        songModel.Title = reader["Title"].ToString();
-            //        songModel.Duration = reader["duration"].ToString();
-            //        songModel.IsArchived = Convert.ToBoolean(reader["isArchived"]);
-            //        songs.Add(songModel);
-            //    }
-            //}
-
             return View();
         }
 
@@ -77,14 +55,127 @@ namespace MusicLibraryTest2.Controllers
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
-                    Console.WriteLine("valid");
+                    return View("HomePage");
                 }
                 else
                 {
-                    Console.WriteLine("Invalid");
+                    loginModel.ValidCredentials = false;
+                    return View("Index",loginModel);
                 }
-
             }
+        }
+
+        [HttpPost]
+        public ActionResult SignUp(SignUpModel signUpModel)
+        {
+            bool userNameIsValid = UsernameIsValid(signUpModel);
+            bool passwordIsValid = PasswordIsValid(signUpModel);
+
+            if (userNameIsValid && passwordIsValid)
+            {
+                using (MySqlConnection con = new MySqlConnection(connection))
+                {
+                    MySqlCommand cmd = new MySqlCommand($"INSERT INTO user (username,password) values ('{signUpModel.UserName}',SHA1('{signUpModel.Password}'))", con);
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    con.Open();
+
+                    try
+                    {
+                        if (cmd.ExecuteNonQuery() < 0)
+                        {
+                            var errorMessage = "An error occured";
+                            signUpModel.ErrorMessages.Add(errorMessage);
+                            signUpModel.ValidCredentials = false;
+                            return View("SignUpForm", signUpModel);
+                        }
+                        else
+                        {
+                            return View("HomePage");
+                        }
+                    }
+                    catch (MySqlConnector.MySqlException)
+                    {
+                        var errorMessage = "An error occured";
+                        signUpModel.ErrorMessages.Add(errorMessage);
+
+                        signUpModel.ValidCredentials = false;
+                        return View("SignUpForm", signUpModel);
+                    }
+                }
+            }
+            else
+            {
+                signUpModel.ValidCredentials = false;
+                return View("SignUpForm", signUpModel);
+            }
+        }
+
+        private bool UsernameIsValid(SignUpModel signUpModel)
+        {
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand($"SELECT * FROM user WHERE user.username = '{signUpModel.UserName}' ", con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    var errorMessage = "Username is already taken";
+                    signUpModel.ErrorMessages.Add(errorMessage);
+                }
+            }
+
+            if (signUpModel.ErrorMessages.Count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool PasswordIsValid(SignUpModel signUpModel)
+        {
+            if (signUpModel.Password.All(char.IsLetter))
+            {
+                var errorMessage = "Password must contain either a number or special character";
+                signUpModel.ErrorMessages.Add(errorMessage);
+            }
+
+            if (signUpModel.Password.All(char.IsLower))
+            {
+                var errorMessage = "Password must contain an uppercase character";
+                signUpModel.ErrorMessages.Add(errorMessage);
+            }
+
+            if (signUpModel.Password.Any(char.IsWhiteSpace))
+            {
+                var errorMessage = "Password cannot contain whitespace";
+                signUpModel.ErrorMessages.Add(errorMessage);
+            }
+
+            if (signUpModel.Password.Length < 5 || signUpModel.Password.Length > 10)
+            {
+                var errorMessage = "Password must be between 5 and 10 characters long";
+                signUpModel.ErrorMessages.Add(errorMessage);
+            }
+
+            if (signUpModel.ErrorMessages.Count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public ActionResult SignUpForm()
+        {
+            ViewBag.Message = "Create a profile";
 
             return View();
         }

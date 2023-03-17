@@ -1,7 +1,7 @@
 ﻿@model MusicLibraryTest2.Models.LoginModel
 
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Login Page";
 }
 
 @using (Html.BeginForm("SubmitCredentials", "Home", FormMethod.Post))
@@ -14,5 +14,16 @@
     <br>
     @Html.PasswordFor(model => model.Password)
     <br>
-    <input id="Submit" type="submit" value="submit" />
+    <input id="Submit" type="submit" value="Log In" />
+
+    if (Model != null && !Model.ValidCredentials)
+    {
+        <p style="color:red">Username or Password is not valid</p>
+    }
 }
+@using (Html.BeginForm("SignUpForm", "Home"))
+{
+    <input id="Submit" type="submit" value="Sign Up" />
+}
+
+

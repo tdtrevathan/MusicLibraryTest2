@@ -1,0 +1,34 @@
+﻿@model MusicLibraryTest2.Models.SignUpModel
+
+@{
+    ViewBag.Title = "Sign Up Page";
+}
+
+@using (Html.BeginForm("SignUp", "Home", FormMethod.Post))
+{
+    <span class="small">Enter your desired username</span>
+    <br />
+    @Html.LabelFor(m => m.UserName)
+    @Html.TextBoxFor(model => model.UserName)
+    <br>
+    <br>
+    <span class="small">Enter your desired password</span>
+    <br />
+
+    @Html.LabelFor(m => m.Password)
+    @Html.PasswordFor(model => model.Password)
+    <br />
+    <span class="small">(Password must contain at least one capital letter and either a number or special character and be between 5 and 10 characters long)</span>
+    <br />
+    <br />
+
+    if (Model != null && !Model.ValidCredentials)
+    {
+        foreach (var message in Model.ErrorMessages)
+        {
+            <p style="color:red">@message</p>
+        }
+    }
+
+    <input id="Submit" type="submit" value="Create" />
+}

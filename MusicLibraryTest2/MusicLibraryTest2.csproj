@@ -295,6 +295,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProfileModel.cs" />
+    <Compile Include="Models\SignUpModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ArtistModel.cs" />
     <Compile Include="Models\SongModel.cs" />
@@ -337,6 +339,8 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\GetArtist.cshtml" />
+    <Content Include="Views\Home\SignUpForm.cshtml" />
+    <Content Include="Views\Home\HomePage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
