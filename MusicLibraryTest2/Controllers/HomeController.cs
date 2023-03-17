@@ -29,7 +29,6 @@ namespace MusicLibraryTest2.Controllers
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-
                     artistModel.Id = Convert.ToInt32(reader["Id"]);
                     artistModel.AlbumId = Convert.ToInt32(reader["albumId"]);
                     artistModel.Name = reader["name"].ToString();
@@ -41,32 +40,53 @@ namespace MusicLibraryTest2.Controllers
         public ActionResult Index()
         {
 
-            List<SongModel> songs = new List<SongModel>();
-            
+            //List<SongModel> songs = new List<SongModel>();
+            //
+            //using (MySqlConnection con = new MySqlConnection(connection))
+            //{
+            //    MySqlCommand cmd = new MySqlCommand("SELECT * FROM song", con);
+            //    cmd.CommandType = System.Data.CommandType.Text;
+            //    con.Open();
+            //
+            //    MySqlDataReader reader = cmd.ExecuteReader();
+            //    while (reader.Read())
+            //    {
+            //        var songModel = new SongModel();
+            //        songModel.Id = Convert.ToInt32(reader["Id"]);
+            //        songModel.Views = Convert.ToInt32(reader["views"]);
+            //        songModel.Likes = Convert.ToInt32(reader["likes"]);
+            //        songModel.Title = reader["Title"].ToString();
+            //        songModel.Duration = reader["duration"].ToString();
+            //        songModel.IsArchived = Convert.ToBoolean(reader["isArchived"]);
+            //        songs.Add(songModel);
+            //    }
+            //}
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SubmitCredentials(LoginModel loginModel)
+        {
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                MySqlCommand cmd = new MySqlCommand("SELECT * FROM song", con);
+                MySqlCommand cmd = new MySqlCommand($"SELECT * FROM user WHERE user.username = '{loginModel.UserName}' and user.password = '{loginModel.Password}' LIMIT 1", con);
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
 
                 MySqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                if (reader.HasRows)
                 {
-                    var songModel = new SongModel();
-                    songModel.Id = Convert.ToInt32(reader["Id"]);
-                    //songModel.ArtistId = Convert.ToInt32(reader["artistId"]);
-                    //songModel.AlbumId = Convert.ToInt32(reader["albumId"]);
-                    songModel.Views = Convert.ToInt32(reader["views"]);
-                    songModel.Likes = Convert.ToInt32(reader["likes"]);
-                    songModel.Title = reader["Title"].ToString();
-                    songModel.Duration = reader["duration"].ToString();
-                    //songModel.FilePath = reader["filePath"].ToString();
-                    songModel.IsArchived = Convert.ToBoolean(reader["isArchived"]);
-                    songs.Add(songModel);
+                    Console.WriteLine("valid");
                 }
+                else
+                {
+                    Console.WriteLine("Invalid");
+                }
+
             }
 
-            return View(songs[0]);
+            return View();
         }
 
         public ActionResult About()
