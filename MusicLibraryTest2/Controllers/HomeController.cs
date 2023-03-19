@@ -10,6 +10,10 @@ using Microsoft.Data.SqlClient;
 using System.Configuration;
 using MySqlConnector;
 using System.Drawing;
+using System.Reflection.Metadata;
+using System.IO;
+using System.Reflection;
+using Cassandra;
 
 namespace MusicLibraryTest2.Controllers
 {
@@ -65,6 +69,32 @@ namespace MusicLibraryTest2.Controllers
             }
         }
 
+        public ActionResult CreateSongForm(CreateSongModel createSongModel)
+        {
+            return View(createSongModel);
+        }
+
+        [HttpPost]
+        public ActionResult CreateSong(CreateSongModel createSongModel)
+        {
+
+            MemoryStream target = new MemoryStream();
+            createSongModel.songFile.InputStream.CopyTo(target);
+            byte[] songData = target.ToArray();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand($"INSERT INTO song (title,duration,genre,songFile) values ('{createSongModel.Title}',{createSongModel.Duration},'{createSongModel.Genre}',@data)", con);
+                cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = songData;
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                if (cmd.ExecuteNonQuery() > 0) {
+                    var test2 = 10;
+                }
+            }
+                return View();
+        }
+
         [HttpPost]
         public ActionResult SignUp(SignUpModel signUpModel)
         {
@@ -108,6 +138,45 @@ namespace MusicLibraryTest2.Controllers
                 signUpModel.ValidCredentials = false;
                 return View("SignUpForm", signUpModel);
             }
+        }
+
+        [HttpGet]
+        public ActionResult GetSong()
+        {
+            SongModel songModel;
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand($"SELECT * FROM song WHERE title like '%my%' LIMIT 1", con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var name = reader["title"];
+                        var duration = reader["duration"];
+                        var genre = reader["genre"];
+                        byte[] bytes = (byte[])reader["songFile"];
+
+                        songModel = new SongModel
+                        {
+                            Title = reader["title"].ToString(),
+                            Genre = reader["genre"].ToString(),
+                        };
+
+                        Int32.Parse(reader["duration"].ToString(), (System.Globalization.NumberStyles)songModel.Duration);
+                        //OutputStream 
+                        //songModel.songFile = bytes;
+                    }
+                }
+            }
+
+
+            return View();
         }
 
         private bool UsernameIsValid(SignUpModel signUpModel)

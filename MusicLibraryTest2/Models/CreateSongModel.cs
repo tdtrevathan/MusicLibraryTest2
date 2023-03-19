@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace MusicLibraryTest2.Models 
 {
-    public class SongModel
+    public class CreateSongModel
     {
         public string Title { get; set; }
         public int Duration { get; set; }

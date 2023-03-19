@@ -1,12 +1,9 @@
 ﻿@model MusicLibraryTest2.Models.ProfileModel
 
-@if (Model != null && Model.LogedIn == true)
-{
+
     <div>
         Home Page
     </div>
-}
-else
-{
-    <p>DANGER DANGER YOU ARE NOT AUTHORIZED, I REPEAT NOT AUTHORIZED</p>
-}
+    <li>@Html.ActionLink("Create Song", "CreateSongForm", "Home")</li>
+    <li>@Html.ActionLink("Get Song", "GetSong", "Home")</li>
+
