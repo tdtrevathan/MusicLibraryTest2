@@ -14,6 +14,9 @@ using System.Reflection.Metadata;
 using System.IO;
 using System.Reflection;
 using Cassandra;
+using Microsoft.Extensions.Azure;
+using Newtonsoft.Json;
+using Microsoft.Ajax.Utilities;
 
 namespace MusicLibraryTest2.Controllers
 {
@@ -143,11 +146,11 @@ namespace MusicLibraryTest2.Controllers
         [HttpGet]
         public ActionResult GetSong()
         {
-            SongModel songModel;
+            SongModel songModel = new SongModel();
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                MySqlCommand cmd = new MySqlCommand($"SELECT * FROM song WHERE title like '%my%' LIMIT 1", con);
+                MySqlCommand cmd = new MySqlCommand($"SELECT title,genre,songFile FROM song WHERE title like '%my%' LIMIT 1", con);
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
 
@@ -157,26 +160,32 @@ namespace MusicLibraryTest2.Controllers
                 {
                     while (reader.Read())
                     {
-                        var name = reader["title"];
-                        var duration = reader["duration"];
-                        var genre = reader["genre"];
-                        byte[] bytes = (byte[])reader["songFile"];
+                        var test = reader.GetString(0);
 
                         songModel = new SongModel
                         {
-                            Title = reader["title"].ToString(),
-                            Genre = reader["genre"].ToString(),
+                            Title = reader.GetString(0),
+                            Genre = reader.GetString(1),
                         };
 
-                        Int32.Parse(reader["duration"].ToString(), (System.Globalization.NumberStyles)songModel.Duration);
+                        var bytesObject = reader.GetValue(2);
+
+                        var test3 = (byte[])bytesObject;
+                        
+
+                       //foreach(var bytes in bytesObject)
+                        //{
+                       //     Blob blob = bytes;
+                       // }
+
+                        //Int32.Parse((int)reader.GetValue(3).ToString(), (System.Globalization.NumberStyles)songModel.Duration);
                         //OutputStream 
                         //songModel.songFile = bytes;
                     }
                 }
             }
 
-
-            return View();
+            return View("PlaySong", songModel);
         }
 
         private bool UsernameIsValid(SignUpModel signUpModel)
