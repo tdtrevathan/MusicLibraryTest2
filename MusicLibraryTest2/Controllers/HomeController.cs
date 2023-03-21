@@ -20,7 +20,7 @@ using Microsoft.Ajax.Utilities;
 
 namespace MusicLibraryTest2.Controllers
 {
-    //i made a cahnge
+    //i made a change
     public class HomeController : Controller
     {
         string connection = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
