@@ -22,8 +22,11 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Security.Cryptography;
 using System.Runtime.Serialization.Formatters.Binary;
 
+//Test
+
 namespace MusicLibraryTest2.Controllers
 {
+    //i made a change
     public class HomeController : Controller
     {
         string connection = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
