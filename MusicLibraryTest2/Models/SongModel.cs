@@ -16,6 +16,7 @@ namespace MusicLibraryTest2.Models
         public int Duration { get; set; }
         public string Genre { get; set; }
         public byte[] songFile { get; set; }
+        public string path { get; set; }
     }
 }
 

@@ -1,3 +1,3 @@
 ﻿@model MusicLibraryTest2.Models.SongModel
 
-<audio controls="controls" preload="auto" src="@Model.songFile"></audio>
+<audio controls="controls" preload="auto" src="@Url.Action("PlayAudio","Home", Model.songFile,null)"></audio>

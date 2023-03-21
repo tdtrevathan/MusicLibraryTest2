@@ -17,6 +17,10 @@ using Cassandra;
 using Microsoft.Extensions.Azure;
 using Newtonsoft.Json;
 using Microsoft.Ajax.Utilities;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Security.Cryptography;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MusicLibraryTest2.Controllers
 {
@@ -95,7 +99,7 @@ namespace MusicLibraryTest2.Controllers
                     var test2 = 10;
                 }
             }
-                return View();
+                return View("HomePage");
         }
 
         [HttpPost]
@@ -170,22 +174,23 @@ namespace MusicLibraryTest2.Controllers
 
                         var bytesObject = reader.GetValue(2);
 
-                        var test3 = (byte[])bytesObject;
-                        
+                        var songBytesArray = (byte[])bytesObject;
 
-                       //foreach(var bytes in bytesObject)
-                        //{
-                       //     Blob blob = bytes;
-                       // }
-
-                        //Int32.Parse((int)reader.GetValue(3).ToString(), (System.Globalization.NumberStyles)songModel.Duration);
-                        //OutputStream 
-                        //songModel.songFile = bytes;
+                        songModel.songFile = songBytesArray;
                     }
                 }
             }
 
             return View("PlaySong", songModel);
+        }
+
+        public ActionResult PlayAudio(byte[] song)
+        {
+            MemoryStream memStream = new MemoryStream();
+            BinaryFormatter binForm = new BinaryFormatter();
+            memStream.Write(song, 0, song.Length);
+            memStream.Seek(0, SeekOrigin.Begin);
+            return File(memStream, "audio/mp3");
         }
 
         private bool UsernameIsValid(SignUpModel signUpModel)
