@@ -1,10 +1,15 @@
 ﻿@model MusicLibraryTest2.Models.ProfileModel
 
 
-    <div>
-        Home Page
-    </div>
+<div>
+    Home Page
+</div>
+
+@if (Model.Roles.Contains("artist"))
+{
     <li>@Html.ActionLink("Create Song", "CreateSongForm", "Home")</li>
-    <li>@Html.ActionLink("Get Song", "GetSong", "Home")</li>
+}
+
+<li>@Html.ActionLink("Get Song", "GetSong", new { aritstId = Model.Id })</li>
 
 

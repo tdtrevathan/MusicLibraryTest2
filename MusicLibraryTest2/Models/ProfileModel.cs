@@ -10,5 +10,8 @@ namespace MusicLibraryTest2.Models
     public class ProfileModel
     {
         public bool LogedIn { get; set; }
+        public int Id { get; set; }
+        public List<string> Roles { get; set; }
+
     }
 }

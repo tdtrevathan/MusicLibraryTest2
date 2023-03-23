@@ -1,26 +1,12 @@
 ﻿using MusicLibraryTest2.Models;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
-using System.EnterpriseServices;
-using System.Linq;
-using System.Security;
-using System.Web;
-using System.Web.Mvc;
-using Microsoft.Data.SqlClient;
 using System.Configuration;
-using MySqlConnector;
-using System.Drawing;
-using System.Reflection.Metadata;
 using System.IO;
-using System.Reflection;
-using Cassandra;
-using Microsoft.Extensions.Azure;
-using Newtonsoft.Json;
-using Microsoft.Ajax.Utilities;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Security.Cryptography;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Web.Mvc;
 
 //Test 123
 
@@ -32,7 +18,7 @@ namespace MusicLibraryTest2.Controllers
         string connection = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         public ActionResult GetArtist(int? artistId)
         {
-            
+
             using (MySqlConnection con = new MySqlConnection(connection))
             {
                 MySqlCommand cmd = new MySqlCommand($"SELECT * FROM artist WHERE artist.Id = {artistId}", con);
@@ -60,6 +46,8 @@ namespace MusicLibraryTest2.Controllers
         [HttpPost]
         public ActionResult SubmitCredentials(LoginModel loginModel)
         {
+            ProfileModel profileModel = new ProfileModel();
+
             using (MySqlConnection con = new MySqlConnection(connection))
             {
                 MySqlCommand cmd = new MySqlCommand($"SELECT * FROM user WHERE user.username = '{loginModel.UserName}' and user.password = '{loginModel.Password}' LIMIT 1", con);
@@ -69,40 +57,28 @@ namespace MusicLibraryTest2.Controllers
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
-                    return View("HomePage");
+                    while (reader.Read())
+                    {
+                        int userId = Convert.ToInt32(reader["Id"]);
+                        List<string> roles = GetUserRoles(userId);
+
+                        profileModel = new ProfileModel()
+                        {
+                            LogedIn = true,
+                            Id = userId,
+                            Roles = roles
+                        };
+                    }
+
+                    return View("HomePage", profileModel);
+
                 }
                 else
                 {
                     loginModel.ValidCredentials = false;
-                    return View("Index",loginModel);
+                    return View("Index", loginModel);
                 }
             }
-        }
-
-        public ActionResult CreateSongForm(CreateSongModel createSongModel)
-        {
-            return View(createSongModel);
-        }
-
-        [HttpPost]
-        public ActionResult CreateSong(CreateSongModel createSongModel)
-        {
-
-            MemoryStream target = new MemoryStream();
-            createSongModel.songFile.InputStream.CopyTo(target);
-            byte[] songData = target.ToArray();
-
-            using (MySqlConnection con = new MySqlConnection(connection))
-            {
-                MySqlCommand cmd = new MySqlCommand($"INSERT INTO song (title,duration,genre,songFile) values ('{createSongModel.Title}',{createSongModel.Duration},'{createSongModel.Genre}',@data)", con);
-                cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = songData;
-                cmd.CommandType = System.Data.CommandType.Text;
-                con.Open();
-                if (cmd.ExecuteNonQuery() > 0) {
-                    var test2 = 10;
-                }
-            }
-                return View("HomePage");
         }
 
         [HttpPost]
@@ -130,7 +106,13 @@ namespace MusicLibraryTest2.Controllers
                         }
                         else
                         {
-                            return View("HomePage");
+                            LoginModel loginModel = new LoginModel()
+                            {
+                                UserName = signUpModel.UserName,
+                                Password = signUpModel.Password,
+                            };
+
+                            return SubmitCredentials(loginModel);
                         }
                     }
                     catch (MySqlConnector.MySqlException)
@@ -150,41 +132,86 @@ namespace MusicLibraryTest2.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult GetSong()
+        public ActionResult CreateSongForm(CreateSongModel createSongModel)
         {
-            SongModel songModel = new SongModel();
+            return View(createSongModel);
+        }
+
+        [HttpPost]
+        public ActionResult CreateSong(CreateSongModel createSongModel)
+        {
+
+            MemoryStream target = new MemoryStream();
+            createSongModel.songFile.InputStream.CopyTo(target);
+            byte[] songData = target.ToArray();
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                MySqlCommand cmd = new MySqlCommand($"SELECT title,genre,songFile FROM song WHERE title like '%my%' LIMIT 1", con);
+                MySqlCommand cmd = new MySqlCommand($"INSERT INTO song (title,duration,genre,songFile) values ('{createSongModel.Title}',{createSongModel.Duration},'{createSongModel.Genre}',@data)", con);
+                cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = songData;
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                if (cmd.ExecuteNonQuery() > 0) {
+                    var test2 = 10;
+                }
+            }
+            return View("HomePage");
+        }
+
+      
+
+        public ActionResult GetSong(int? aritstId)
+        {
+            List<SongModel> songList = new List<SongModel>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"SELECT song.title, song.genre, song.songFile " +
+
+                    $"FROM user, user_albums, album, album_songs, song " +
+
+                    $"WHERE user.id = user_albums.userId " +
+                    $" AND user_albums.albumId = album.id" +
+                    $" AND album.id = album_songs.albumId" +
+                    $" AND album_songs.songId = song.id" +
+                    $" AND user.id = {aritstId}";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
 
                 MySqlDataReader reader = cmd.ExecuteReader();
 
-                if (reader.HasRows)
+                while (reader.HasRows)
                 {
                     while (reader.Read())
                     {
                         var test = reader.GetString(0);
 
-                        songModel = new SongModel
+                        var songModel = new SongModel
                         {
-                            Title = reader.GetString(0),
-                            Genre = reader.GetString(1),
+                            Title = reader["title"].ToString(),
+                            Genre = reader["genre"].ToString(),
                         };
 
-                        var bytesObject = reader.GetValue(2);
+                        var bytesObject = reader["songFile"];
 
                         var songBytesArray = (byte[])bytesObject;
 
                         songModel.songFile = songBytesArray;
+
+                        songList.Add(songModel);
                     }
+                    reader.NextResult();
                 }
             }
 
-            return View("PlaySong", songModel);
+            SongModels songModels = new SongModels()
+            {
+                SongList = songList
+            };
+
+            return View("PlaySong", songModels);
         }
 
         public ActionResult PlayAudio(byte[] song)
@@ -257,6 +284,29 @@ namespace MusicLibraryTest2.Controllers
             {
                 return false;
             }
+        }
+
+        List<string> GetUserRoles(int id)
+        {
+            List<string> roles = new List<string>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand($"SELECT role.type FROM user,user_roles,role WHERE user.id = user_roles.userId AND user_roles.roleId = role.id AND user.id = {id}", con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        roles.Add(reader["type"].ToString());
+                    }
+                }
+            }
+
+            return roles;
         }
 
         public ActionResult SignUpForm()
