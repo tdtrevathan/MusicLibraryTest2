@@ -12,10 +12,13 @@ namespace MusicLibraryTest2.Models
 {
     public class CreateSongModel
     {
+        public int ProfileId { get; set; }
         public string Title { get; set; }
         public int Duration { get; set; }
         public string Genre { get; set; }
         public System.Web.HttpPostedFileWrapper songFile { get; set; }
+        public Dictionary<string,int> UserAlbumDictionary { get; set; }
+        public int albumId { get; set; }
     }
 }
 

@@ -7,28 +7,34 @@
     <link rel="stylesheet" href="~/Content/Site.css" />
 </head>
 
+<body>
+    <div class="mainBox">
+        <div>
+            Home Page
+        </div>
 
-<div>
-    Home Page
-</div>
+        @if (Model.Roles.Contains("artist"))
+        {
+            <span class="get-add-music toggle-button">
+                <span class="triangle"></span>
+                Add Music
+            </span>
 
-@if (Model.Roles.Contains("artist"))
-{
-    <span class="get-add-music toggle-button">
-        <span class="triangle"></span>
-        Add Music
-    </span>
+            <div class="addMusic toggle-container" id="add-music-container"></div>
 
-    <div class="addMusic toggle-container" id="add-music-container"></div>
+            <span class="get-albums toggle-button">
+                <span class="triangle"></span>
+                Albums
+            </span>
 
-    <span class="get-albums toggle-button">
-        <span class="triangle"></span>
-        Albums
-    </span>
+            <div class="albums toggle-container" id="albums-container"></div>
 
-    <div class="albums toggle-container" id="albums-container"></div>
+        }
+    </div>
+</body>
 
-}
+
+
 
 <script>
     $(document).ready(function () {

@@ -1,19 +1,19 @@
-﻿
+﻿@model MusicLibraryTest2.Models.ProfileModel
 
 
-    <span class="get-album-form toggle-button">
-        <span class="triangle"></span>
-        Create Album
-    </span>
+<span class="get-album-form toggle-button">
+    <span class="triangle"></span>
+    Create Album
+</span>
 
-    <div class="toggle-container" id="get-album-form-container"></div>
+<div class="toggle-container" id="get-album-form-container"></div>
 
-    <span class="get-song-form toggle-button">
-        <span class="triangle"></span>
-        Create Song
-    </span>
+<span class="get-song-form toggle-button">
+    <span class="triangle"></span>
+    Create Song
+</span>
 
-    <div class="songForm toggle-container" id="song-form-container"></div>
+<div class="songForm toggle-container" id="song-form-container"></div>
 
 
 
@@ -29,9 +29,9 @@
 
             if (!songFormLoaded) {
                 $.ajax({
-                data: null,
-                url: '/Home/CreateSongForm',
-                    success: function(data) {
+                    data: { id: @Model.Id },
+                    url: '/Home/CreateSongForm',
+                    success: function (data) {
                         $songFormContainer.append(data);
                         songFormLoaded = true;
                     }
@@ -46,9 +46,9 @@
 
             if (!albumFormLoaded) {
                 $.ajax({
-                url: '/Home/CreateAlbumForm',
-                data: null,
-                    success: function(data) {
+                    url: '/Home/CreateAlbumForm',
+                    data: null,
+                    success: function (data) {
                         $albumFormContainer.append(data);
                         albumFormLoaded = true;
                     }

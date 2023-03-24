@@ -23,6 +23,12 @@
     <br>
     @Html.TextBoxFor(m => m.songFile, new { type = "file" })
     @Html.ValidationMessageFor(m => m.songFile)
+
+
+    var selectList = new SelectList(Model.UserAlbumDictionary, "Value", "Key");
+
+    <label>Add to Album</label>
+    @Html.DropDownListFor(m => m.albumId , selectList, "No Album", new { @class = "form-control" })
     <input id="Submit" type="submit" value="Create" />
 }
 

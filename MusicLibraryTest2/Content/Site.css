@@ -1,4 +1,5 @@
 ﻿body {
+    background-color:lightblue;
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -7,6 +8,12 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+}
+.mainBox {
+    background-color:lavender;
+    margin: 2% 2%;
+    padding: 1rem 1rem;
+    
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -28,6 +35,8 @@ textarea {
     background-color: #777;
     border-color: #fff
 }
+
+
 
 dl {
     margin: 0;
