@@ -7,12 +7,11 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Web.Mvc;
+using NAudio.Wave;
 
-//Test 123
 
 namespace MusicLibraryTest2.Controllers
 {
-    //i made a change
     public class HomeController : Controller
     {
         string connection = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -152,7 +151,7 @@ namespace MusicLibraryTest2.Controllers
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
                 if (cmd.ExecuteNonQuery() > 0) {
-                    var test2 = 10;
+                    
                 }
             }
             return View("HomePage");
@@ -166,7 +165,7 @@ namespace MusicLibraryTest2.Controllers
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                string command = $"SELECT song.title, song.genre, song.songFile " +
+                string command = $"SELECT song.id, song.title, song.genre, song.songFile " +
 
                     $"FROM user, user_albums, album, album_songs, song " +
 
@@ -186,19 +185,14 @@ namespace MusicLibraryTest2.Controllers
                 {
                     while (reader.Read())
                     {
-                        var test = reader.GetString(0);
+                       
 
                         var songModel = new SongModel
                         {
+                            Id = Convert.ToInt32(reader["id"]),
                             Title = reader["title"].ToString(),
                             Genre = reader["genre"].ToString(),
                         };
-
-                        var bytesObject = reader["songFile"];
-
-                        var songBytesArray = (byte[])bytesObject;
-
-                        songModel.songFile = songBytesArray;
 
                         songList.Add(songModel);
                     }
@@ -214,13 +208,44 @@ namespace MusicLibraryTest2.Controllers
             return View("PlaySong", songModels);
         }
 
-        public ActionResult PlayAudio(byte[] song)
+        public ActionResult PlayAudio(int songId)
         {
-            MemoryStream memStream = new MemoryStream();
-            BinaryFormatter binForm = new BinaryFormatter();
-            memStream.Write(song, 0, song.Length);
-            memStream.Seek(0, SeekOrigin.Begin);
-            return File(memStream, "audio/mp3");
+
+            var songData = GetByteArray(songId);
+
+            if (songData == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                return File(songData, "audio/mpeg");
+            }
+        }
+
+        byte[] GetByteArray(int songId)
+        {
+ 
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"SELECT song.songFile From song where song.id = {songId}";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        return (byte[])reader["songFile"];
+                    }
+                }
+            }
+
+            return null;
         }
 
         private bool UsernameIsValid(SignUpModel signUpModel)

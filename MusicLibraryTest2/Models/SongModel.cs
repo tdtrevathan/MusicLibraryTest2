@@ -12,11 +12,10 @@ namespace MusicLibraryTest2.Models
 {
     public class SongModel
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public int Duration { get; set; }
         public string Genre { get; set; }
-        public byte[] songFile { get; set; }
-        public string path { get; set; }
     }
 }
 

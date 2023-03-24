@@ -5,6 +5,10 @@
     <p>@song.Title</p>
     <p>@song.Genre</p>
     <p>@song.Duration</p>
-    <audio controls="controls" preload="auto" src="@Url.Action("PlayAudio","Home", song.songFile,null)"></audio>
+    <audio controls>
+        <source src="@Url.Action("PlayAudio", "Home", new { songId = song.Id })" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
 }
 
