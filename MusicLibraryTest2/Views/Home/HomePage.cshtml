@@ -1,4 +1,11 @@
 ﻿@model MusicLibraryTest2.Models.ProfileModel
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<head>
+    <link rel="stylesheet" href="~/Content/Site.css" />
+</head>
 
 
 <div>
@@ -7,9 +14,60 @@
 
 @if (Model.Roles.Contains("artist"))
 {
-    <li>@Html.ActionLink("Create Song", "CreateSongForm", "Home")</li>
+    <span class="get-add-music toggle-button">
+        <span class="triangle"></span>
+        Add Music
+    </span>
+
+    <div class="addMusic toggle-container" id="add-music-container"></div>
+
+    <span class="get-albums toggle-button">
+        <span class="triangle"></span>
+        Albums
+    </span>
+
+    <div class="albums toggle-container" id="albums-container"></div>
+
 }
 
-<li>@Html.ActionLink("Get Song", "GetSong", new { aritstId = Model.Id })</li>
+<script>
+    $(document).ready(function () {
 
+        $('.get-add-music').click(function () {
 
+            var loaded = false;
+            var $addMusicContainer = $('#add-music-container')
+
+            if (!loaded) {
+                $.ajax({
+                data: null,
+                url: '/Home/AddMusic',
+                    success: function(data) {
+                        $addMusicContainer.html(data);
+                        loaded = true;
+                    }
+                });
+            }
+            $(this).find('.triangle').toggleClass('rotate');
+            $addMusicContainer.toggle();
+        });
+        $('.get-albums').click(function () {
+
+            var loaded = false;
+            var $albumsContainer = $('#albums-container')
+
+            if (!loaded) {
+                $.ajax({
+                url: '/Home/GetUserAlbums',
+                data: { userId: '@Model.Id' },
+                    success: function(data) {
+                        $albumsContainer.html(data);
+                        loaded = true;
+                    }
+                });
+            }
+            $(this).find('.triangle').toggleClass('rotate');
+            $albumsContainer.toggle();
+        });
+    });
+</script>

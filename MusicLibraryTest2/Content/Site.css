@@ -28,3 +28,50 @@ textarea {
     background-color: #777;
     border-color: #fff
 }
+
+dl {
+    margin: 0;
+    padding: 0;
+    max-width: 200px;
+}
+
+dt {
+    display: inline-block;
+    font-weight: bold;
+    width: 100px; /* adjust as needed */
+}
+
+dd {
+    display: inline-block;
+    margin: 0;
+}
+
+.triangle {
+    display: inline-block;
+    margin-right: 5px;
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 5px solid #000;
+    transform: rotate(-90deg);
+    transition: transform 0.2s;
+}
+
+    .triangle.rotate {
+        transform: rotate(90deg);
+    }
+
+.toggle-button {
+    cursor: pointer;
+    color: #007bff;
+}
+
+    .toggle-button:hover {
+        text-decoration: underline;
+        color: #0056b3;
+    }
+
+    .toggle-container{
+        display: none
+    }

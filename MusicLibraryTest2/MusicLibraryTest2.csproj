@@ -411,6 +411,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AlbumModels.cs" />
+    <Compile Include="Models\CreateAlbumModel.cs" />
     <Compile Include="Models\SongModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\SignUpModel.cs" />
@@ -429,6 +431,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Compile Include="Models\AlbumModel.cs" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -459,8 +462,11 @@
     <Content Include="Views\Home\GetArtist.cshtml" />
     <Content Include="Views\Home\SignUpForm.cshtml" />
     <Content Include="Views\Home\HomePage.cshtml" />
-    <Content Include="Views\Home\CreateSongForm.cshtml" />
-    <Content Include="Views\Home\PlaySong.cshtml" />
+    <Content Include="Views\Shared\_CreateSongForm.cshtml" />
+    <Content Include="Views\Shared\_PlaySong.cshtml" />
+    <Content Include="Views\Shared\_Albums.cshtml" />
+    <Content Include="Views\Shared\_CreateAlbumForm.cshtml" />
+    <Content Include="Views\Shared\_AddMusic.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

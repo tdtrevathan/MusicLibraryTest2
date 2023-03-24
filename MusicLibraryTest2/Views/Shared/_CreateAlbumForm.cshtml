@@ -1,0 +1,35 @@
+﻿@model MusicLibraryTest2.Models.CreateAlbumModel
+
+@{
+    ViewBag.Title = "Create Album";
+}
+
+@using (Html.BeginForm("CreateAlbum", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.LabelFor(model => model.Title)
+    <br>
+    @Html.TextBoxFor(model => model.Title)
+    <br>
+    @Html.LabelFor(model => model.ArtistName)
+    <br>
+    @Html.TextBoxFor(model => model.ArtistName)
+    <br>
+    @Html.LabelFor(model => model.Genre)
+    <br>
+    @Html.TextBoxFor(model => model.Genre)
+    <br>
+    @Html.LabelFor(model => model.ReleaseDateTime)
+    <br>
+    @Html.TextBoxFor(model => model.ReleaseDateTime, "{0:d}", new { @class = "form-control" })
+    <br>
+    <br>
+    @Html.LabelFor(model => model.Description)
+    <br>
+    @Html.TextAreaFor(model => model.Description)
+    <br>
+    <br>
+
+    <input id="Submit" type="submit" value="Create" />
+}
+
+

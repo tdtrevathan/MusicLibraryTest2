@@ -68,6 +68,7 @@ namespace MusicLibraryTest2.Controllers
                             Roles = roles
                         };
                     }
+                    Session["ProfileInfo"] = profileModel;
 
                     return View("HomePage", profileModel);
 
@@ -130,10 +131,19 @@ namespace MusicLibraryTest2.Controllers
                 return View("SignUpForm", signUpModel);
             }
         }
+        public ActionResult AddMusic()
+        {
+            return PartialView("_AddMusic");
+        }
 
         public ActionResult CreateSongForm(CreateSongModel createSongModel)
         {
-            return View(createSongModel);
+            return PartialView("_CreateSongForm",createSongModel);
+        }
+
+        public ActionResult CreateAlbumForm(CreateAlbumModel createAlbumModel)
+        {
+            return PartialView("_CreateAlbumForm", createAlbumModel);
         }
 
         [HttpPost]
@@ -154,12 +164,81 @@ namespace MusicLibraryTest2.Controllers
                     
                 }
             }
-            return View("HomePage");
+            return View("HomePage", (ProfileModel)Session["ProfileInfo"]);
         }
 
-      
+        [HttpPost]
+        public ActionResult CreateAlbum(CreateAlbumModel createAlbumModel)
+        {
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"INSERT INTO album (title,description,genre,artist_name,releaseDate) " +
+                    $"values ('{createAlbumModel.Title}','{createAlbumModel.Description}','{createAlbumModel.Genre}','{createAlbumModel.ArtistName}','{createAlbumModel.ReleaseDate}')";
 
-        public ActionResult GetSong(int? aritstId)
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+
+                }
+            }
+            return View("HomePage", (ProfileModel)Session["ProfileInfo"]);
+        }
+
+
+
+        public ActionResult GetUserAlbums(int? userId)
+        {
+            List<AlbumModel> albums = new List<AlbumModel>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"SELECT album.id, album.title, album.genre, album.description, " +
+                                          $"album.releaseDate, album.artist_name" +
+
+                    $" FROM user, user_albums, album" +
+
+                    $" WHERE user.id = user_albums.userId" +
+                    $" AND user_albums.albumId = album.id" +
+                    $" AND user.id = {userId}" +
+                    $" AND album.isArchived = 0";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                //while (reader.HasRows)
+                //{
+                    while (reader.Read())
+                    {
+                        var albumModel = new AlbumModel
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            Title = reader["title"].ToString(),
+                            ArtistName = reader["artist_name"].ToString(),
+                            Genre = reader["genre"].ToString(),
+                            Description = reader["description"].ToString(),
+                            ReleaseDate = Convert.ToDateTime(reader["releaseDate"])
+                        };
+
+                        albums.Add(albumModel);
+                    }
+                    //reader.NextResult();
+                //}
+            }
+
+            AlbumModels albumModels = new AlbumModels()
+            {
+                Albums = albums
+            };
+
+            return PartialView("_Albums", albumModels);
+        }
+
+        public ActionResult GetAlbumSongs(int? albumId)
         {
             List<SongModel> songList = new List<SongModel>();
 
@@ -167,13 +246,11 @@ namespace MusicLibraryTest2.Controllers
             {
                 string command = $"SELECT song.id, song.title, song.genre, song.songFile " +
 
-                    $"FROM user, user_albums, album, album_songs, song " +
+                    $"FROM album, album_songs, song " +
 
-                    $"WHERE user.id = user_albums.userId " +
-                    $" AND user_albums.albumId = album.id" +
-                    $" AND album.id = album_songs.albumId" +
+                    $"WHERE album.id = album_songs.albumId" +
                     $" AND album_songs.songId = song.id" +
-                    $" AND user.id = {aritstId}";
+                    $" AND album.id = {albumId}";
 
                 MySqlCommand cmd = new MySqlCommand(command, con);
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -185,8 +262,6 @@ namespace MusicLibraryTest2.Controllers
                 {
                     while (reader.Read())
                     {
-                       
-
                         var songModel = new SongModel
                         {
                             Id = Convert.ToInt32(reader["id"]),
@@ -205,7 +280,7 @@ namespace MusicLibraryTest2.Controllers
                 SongList = songList
             };
 
-            return View("PlaySong", songModels);
+            return PartialView("_PlaySong", songModels);
         }
 
         public ActionResult PlayAudio(int songId)
