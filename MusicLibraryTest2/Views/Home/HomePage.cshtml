@@ -7,49 +7,47 @@
     <link rel="stylesheet" href="~/Content/Site.css" />
 </head>
 
+@Html.Action("ShowNavbar", "Home")
+
 <body>
     <div class="mainBox">
         <!--
 
 
-    <span class="toggle-button">
-        <span class="triangle"></span>
-        Browse All Songs
-    </span>
-
-    <div class="toggle-container" id=""></div>
-
-    <span class="toggle-button">
-        <span class="triangle"></span>
-        My Playlists
-    </span>
-
-    <div class=" toggle-container" id=""></div>
-
-    <span class=" toggle-button">
-        <span class="triangle"></span>
-        Liked Songs
-    </span>
-
-    <div class=" toggle-container" id=""></div>
-
-                -->
-        @if (Model.Roles.Contains("artist"))
-        {
-            @Html.ActionLink("Artist Page", "ArtistPage", "ArtistPages")
-        }
-
-        <!--
-    @if (Model.Roles.Contains("Admin"))
-    {
-        <span class="admin-thing toggle-button">
+        <span class="toggle-button">
             <span class="triangle"></span>
-            Admin Stuff
+            Browse All Songs
         </span>
 
-        <div class="admin toggle-container" id="admin-container"></div>
-    }
-    -->
+        <div class="toggle-container" id=""></div>
+
+        <span class="toggle-button">
+            <span class="triangle"></span>
+            My Playlists
+        </span>
+
+        <div class=" toggle-container" id=""></div>
+
+        <span class=" toggle-button">
+            <span class="triangle"></span>
+            Liked Songs
+        </span>
+
+        <div class=" toggle-container" id=""></div>
+
+                    -->
+
+        <!--
+        @if (Model.Roles.Contains("Admin"))
+        {
+            <span class="admin-thing toggle-button">
+                <span class="triangle"></span>
+                Admin Stuff
+            </span>
+
+            <div class="admin toggle-container" id="admin-container"></div>
+        }
+        -->
 
     </div>
 </body>

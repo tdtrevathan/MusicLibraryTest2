@@ -22,6 +22,12 @@ namespace MusicLibraryTest2.Controllers
             return View();
         }
 
+        public ActionResult ShowNavbar()
+        {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+            return PartialView("_NavBar", profile);
+        }
+
         [HttpPost]
         public ActionResult SubmitCredentials(LoginModel loginModel)
         {
@@ -89,13 +95,25 @@ namespace MusicLibraryTest2.Controllers
                         }
                         else
                         {
-                            LoginModel loginModel = new LoginModel()
-                            {
-                                UserName = signUpModel.UserName,
-                                Password = signUpModel.Password,
-                            };
 
-                            return SubmitCredentials(loginModel);
+                            if (AssignUserRole(signUpModel))
+                            {
+                                LoginModel loginModel = new LoginModel()
+                                {
+                                    UserName = signUpModel.UserName,
+                                    Password = signUpModel.Password,
+                                };
+
+                                return SubmitCredentials(loginModel);
+                            }
+                            else
+                            {
+                                var errorMessage = "An error occured";
+                                signUpModel.ErrorMessages.Add(errorMessage);
+
+                                signUpModel.ValidCredentials = false;
+                                return View("SignUpForm", signUpModel);
+                            }
                         }
                     }
                     catch (MySqlConnector.MySqlException)
@@ -115,6 +133,39 @@ namespace MusicLibraryTest2.Controllers
             }
         }
 
+
+        private bool AssignUserRole(SignUpModel signUpModel)
+        {
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"INSERT INTO user_roles (userId,roleId)" +
+                    $" values ((SELECT user.Id FROM user where username = '{signUpModel.UserName}')," +
+                    $"(SELECT Id FROM role WHERE role.type = 'user'))";
+
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                try
+                {
+                    if (cmd.ExecuteNonQuery() > 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+
+                        return false;
+                    }
+                }
+                catch (MySqlConnector.MySqlException)
+                {
+                    return false;
+                }
+            }
+        }
 
         private bool UsernameIsValid(SignUpModel signUpModel)
         {

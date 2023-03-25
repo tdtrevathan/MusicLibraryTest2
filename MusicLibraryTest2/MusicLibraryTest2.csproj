@@ -469,6 +469,7 @@
     <Content Include="Views\ArtistPages\_CreateAlbumForm.cshtml" />
     <Content Include="Views\ArtistPages\_AddMusic.cshtml" />
     <Content Include="Views\ArtistPages\ArtistPage.cshtml" />
+    <Content Include="Views\Shared\_NavBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

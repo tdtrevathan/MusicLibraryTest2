@@ -1,0 +1,26 @@
+﻿@model MusicLibraryTest2.Models.ProfileModel
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="more options">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @if (Model != null && Model.LogedIn)
+             {
+                @Html.ActionLink("Home Page", "HomePage", "Home", new { area = "" }, new { @class = "navbar-brand" })
+             }
+
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                @if (Model != null &&  Model.Roles.Contains("artist"))
+                {
+                    <li>@Html.ActionLink("Artist Page", "ArtistPage", "ArtistPages")</li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

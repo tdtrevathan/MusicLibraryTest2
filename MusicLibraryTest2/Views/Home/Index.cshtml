@@ -4,6 +4,8 @@
     ViewBag.Title = "Login Page";
 }
 
+@Html.Action("ShowNavbar", "Home")
+
 @using (Html.BeginForm("SubmitCredentials", "Home", FormMethod.Post))
 {
     @Html.LabelFor(m => m.UserName)
