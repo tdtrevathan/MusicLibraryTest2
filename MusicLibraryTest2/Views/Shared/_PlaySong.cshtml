@@ -4,10 +4,19 @@
 {
     <p>@song.Title</p>
     <p>@song.Genre</p>
-    <audio controls>
+    <audio id="audioPlayer_@song.Id" controls data-song-id="@song.Id">
         <source src="@Url.Action("PlayAudio", "Home", new { songId = song.Id })" type="audio/mp3">
         Your browser does not support the audio element.
     </audio>
-
 }
 
+<script>
+  var audioPlayers = document.querySelectorAll("audio[id^='audioPlayer_']");
+  audioPlayers.forEach(function(audioPlayer) {
+    audioPlayer.addEventListener("play", function() {
+      var songId = audioPlayer.dataset.songId;
+      var url = "@Url.Action("IncrementViews", "Home")?songId=" + songId;
+      fetch(url);
+    });
+  });
+</script>

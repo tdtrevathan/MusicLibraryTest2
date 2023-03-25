@@ -9,10 +9,31 @@
 
 <body>
     <div class="mainBox">
-        <div>
-            Home Page
-        </div>
+        <!--
 
+
+    <span class="toggle-button">
+        <span class="triangle"></span>
+        Browse All Songs
+    </span>
+
+    <div class="toggle-container" id=""></div>
+
+    <span class="toggle-button">
+        <span class="triangle"></span>
+        My Playlists
+    </span>
+
+    <div class=" toggle-container" id=""></div>
+
+    <span class=" toggle-button">
+        <span class="triangle"></span>
+        Liked Songs
+    </span>
+
+    <div class=" toggle-container" id=""></div>
+
+                -->
         @if (Model.Roles.Contains("artist"))
         {
             <span class="get-add-music toggle-button">
@@ -29,11 +50,28 @@
 
             <div class="albums toggle-container" id="albums-container"></div>
 
+            <span class="get-song-report toggle-button">
+                <span class="triangle"></span>
+                Songs Report
+            </span>
+
+            <div class=" toggle-container" id="song-report-container"></div>
         }
+
+        <!--
+        @if (Model.Roles.Contains("Admin"))
+        {
+            <span class="admin-thing toggle-button">
+                <span class="triangle"></span>
+                Admin Stuff
+            </span>
+
+            <div class="admin toggle-container" id="admin-container"></div>
+        }
+        -->
+
     </div>
 </body>
-
-
 
 
 <script>

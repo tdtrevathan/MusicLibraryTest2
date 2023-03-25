@@ -364,7 +364,6 @@ namespace MusicLibraryTest2.Controllers
 
         public ActionResult PlayAudio(int songId)
         {
-
             var songData = GetByteArray(songId);
 
             if (songData == null)
@@ -408,6 +407,24 @@ namespace MusicLibraryTest2.Controllers
                 }
             }
 
+            return null;
+        }
+
+        ActionResult IncrimentViews(int songId)
+        {
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"UPDATE song SET song.views = song.views + 1 WHERE song.id = {songId}";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+
+                }
+            }
             return null;
         }
 
