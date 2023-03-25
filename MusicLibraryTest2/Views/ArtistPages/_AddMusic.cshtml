@@ -30,7 +30,7 @@
             if (!songFormLoaded) {
                 $.ajax({
                     data: { id: @Model.Id },
-                    url: '/Home/CreateSongForm',
+                    url: '/ArtistPages/CreateSongForm',
                     success: function (data) {
                         $songFormContainer.append(data);
                         songFormLoaded = true;
@@ -46,7 +46,7 @@
 
             if (!albumFormLoaded) {
                 $.ajax({
-                    url: '/Home/CreateAlbumForm',
+                    url: '/ArtistPages/CreateAlbumForm',
                     data: null,
                     success: function (data) {
                         $albumFormContainer.append(data);

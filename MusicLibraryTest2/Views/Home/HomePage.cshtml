@@ -34,29 +34,10 @@
     <div class=" toggle-container" id=""></div>
 
                 -->
-        <!--if (Model.Roles.Contains("artist"))
-        { -->
-        <span class="get-add-music toggle-button">
-            <span class="triangle"></span>
-            Add Music
-        </span>
-
-        <div class="addMusic toggle-container" id="add-music-container"></div>
-
-        <span class="get-albums toggle-button">
-            <span class="triangle"></span>
-            Albums
-        </span>
-
-        <div class="albums toggle-container" id="albums-container"></div>
-
-        <span class="get-song-report toggle-button">
-            <span class="triangle"></span>
-            Songs Report
-        </span>
-
-        <div class=" toggle-container" id="song-report-container"></div>
-        <!--}
+        @if (Model.Roles.Contains("artist"))
+        {
+            @Html.ActionLink("Artist Page", "ArtistPage", "ArtistPages")
+        }
 
         <!--
     @if (Model.Roles.Contains("Admin"))
@@ -73,45 +54,3 @@
     </div>
 </body>
 
-
-<script>
-    $(document).ready(function () {
-
-        $('.get-add-music').click(function () {
-
-            var loaded = false;
-            var $addMusicContainer = $('#add-music-container')
-
-            if (!loaded) {
-                $.ajax({
-                data: null,
-                url: '/Home/AddMusic',
-                    success: function(data) {
-                        $addMusicContainer.html(data);
-                        loaded = true;
-                    }
-                });
-            }
-            $(this).find('.triangle').toggleClass('rotate');
-            $addMusicContainer.toggle();
-        });
-        $('.get-albums').click(function () {
-
-            var loaded = false;
-            var $albumsContainer = $('#albums-container')
-
-            if (!loaded) {
-                $.ajax({
-                url: '/Home/GetUserAlbums',
-                data: { userId: '@Model.Id' },
-                    success: function(data) {
-                        $albumsContainer.html(data);
-                        loaded = true;
-                    }
-                });
-            }
-            $(this).find('.triangle').toggleClass('rotate');
-            $albumsContainer.toggle();
-        });
-    });
-</script>

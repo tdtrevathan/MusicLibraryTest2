@@ -4,7 +4,7 @@
     ViewBag.Title = "Create Song";
 }
 
-@using (Html.BeginForm("CreateSong", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("CreateSong", "ArtistPages", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.LabelFor(model => model.Title)
     <br>
