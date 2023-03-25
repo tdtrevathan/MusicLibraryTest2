@@ -64,6 +64,7 @@ namespace MusicLibraryTest2.Controllers
                         profileModel = new ProfileModel()
                         {
                             LogedIn = true,
+                            Name = reader["username"].ToString(),
                             Id = userId,
                             Roles = roles
                         };
@@ -206,7 +207,7 @@ namespace MusicLibraryTest2.Controllers
             using (MySqlConnection con = new MySqlConnection(connection))
             {
                 string command = $"INSERT INTO album (title,description,genre,artist_name,releaseDate) " +
-                    $"values ('{createAlbumModel.Title}','{createAlbumModel.Description}','{createAlbumModel.Genre}','{createAlbumModel.ArtistName}','{createAlbumModel.ReleaseDate}')";
+                    $"values ('{createAlbumModel.Title}','{createAlbumModel.Description}','{createAlbumModel.Genre}','{profile.Name}','{createAlbumModel.ReleaseDate}')";
 
                 MySqlCommand cmd = new MySqlCommand(command, con);
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -218,14 +219,14 @@ namespace MusicLibraryTest2.Controllers
 
                 command = $"INSERT INTO user_albums (userId,albumId) " +
                 $"values ('{profile.Id}',(SELECT id From album " +
-                $"WHERE title = {createAlbumModel.Title} " +
-                $"AND artist_name = {createAlbumModel.ArtistName} " +
-                $"AND releaseDate = {createAlbumModel.ReleaseDate} " +
+                $"WHERE title = '{createAlbumModel.Title}' " +
+                $"AND artist_name = '{profile.Name}' " +
+                $"AND releaseDate = '{createAlbumModel.ReleaseDate}' " +
                 $"LIMIT 1))";
 
                 cmd = new MySqlCommand(command, con);
                 cmd.CommandType = System.Data.CommandType.Text;
-                con.Open();
+
                 if (cmd.ExecuteNonQuery() > 0)
                 {
 
