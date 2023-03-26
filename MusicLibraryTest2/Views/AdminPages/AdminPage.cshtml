@@ -8,7 +8,7 @@
 </head>
 
 @Html.Action("ShowNavbar", "Home")
-@Html.ActionLink("User List", "UserList")
+@Html.ActionLink("User List", "UserList", (new { sortBy = "id", isAscending = true}))
 @Html.ActionLink("Song List", "SongList")
 
 <body>
