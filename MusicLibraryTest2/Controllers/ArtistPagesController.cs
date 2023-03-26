@@ -114,7 +114,7 @@ namespace MusicLibraryTest2.Controllers
                 }
             }
 
-            return View("HomePage", (ProfileModel)Session["ProfileInfo"]);
+            return View("ArtistPage", (ProfileModel)Session["ProfileInfo"]);
         }
 
         [HttpPost]
@@ -135,20 +135,20 @@ namespace MusicLibraryTest2.Controllers
 
                 }
 
-                //command = $"INSERT INTO user_albums (userId,albumId) " +
-                //$"values ('{profile.Id}',(SELECT id From album " +
-                //$"WHERE title = '{createAlbumModel.Title}' " +
-                //$"AND artist_name = '{profile.Name}' " +
-                //$"AND releaseDate = '{createAlbumModel.ReleaseDate}' " +
-                //$"LIMIT 1))";
-                //
-                //cmd = new MySqlCommand(command, con);
-                //cmd.CommandType = System.Data.CommandType.Text;
-                //
-                //if (cmd.ExecuteNonQuery() > 0)
-                //{
-                //
-                //}
+                command = $"INSERT INTO user_albums (userId,albumId) " +
+                $"values ('{profile.Id}',(SELECT id From album " +
+                $"WHERE title = '{createAlbumModel.Title}' " +
+                $"AND artist_name = '{profile.Name}' " +
+                $"AND releaseDate = '{createAlbumModel.ReleaseDate}' " +
+                $"LIMIT 1))";
+                
+                cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                
+                }
             }
             return View("HomePage", (ProfileModel)Session["ProfileInfo"]);
         }
