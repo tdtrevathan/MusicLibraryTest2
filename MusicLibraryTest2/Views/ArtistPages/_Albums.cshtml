@@ -29,14 +29,14 @@
 
 <script>
     $(document).ready(function () {
-        var loaded = false;
+        var loaded = {};
 
         $('.load-songs').click(function () {
             var albumId = $(this).data('album-id');
             var $songsContainer = $('#album-' + albumId);
 
 
-            if (!loaded) {
+            if (!loaded[albumId]) {
 
                 $.ajax({
                     url: '/ArtistPages/GetAlbumSongs',
@@ -44,7 +44,7 @@
                     data: { albumId: albumId },
                     success: function (result) {
                         $songsContainer.html(result);
-                        loaded = true;
+                        loaded[albumId] = true;
                     }
                 });
             }

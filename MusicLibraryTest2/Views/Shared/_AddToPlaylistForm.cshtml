@@ -1,0 +1,19 @@
+﻿@model MusicLibraryTest2.Models.AddToPlaylistModel
+
+@using (Html.BeginForm("AddToPlaylist", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    var selectList = new SelectList(Model.UserPlaylistDictionary, "Value", "Key");
+
+    <label>Add to Playlist</label>
+    @Html.DropDownListFor(m => m.playlistId , selectList, "No Playlist", new { @class = "form-control" })
+    @Html.HiddenFor(m => m.songId)
+    <input class="add-submit" id="Submit" type="submit" value="Add" />
+}
+
+<script>
+    $('.add-submit').click(function () {
+
+        const playlistList = document.querySelector('.playlistList');
+        playlistList.toggle();
+    }
+</script>

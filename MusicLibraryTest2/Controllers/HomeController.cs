@@ -403,6 +403,78 @@ namespace MusicLibraryTest2.Controllers
             return PartialView("_SongsList", songModels);
         }
 
+        public ActionResult AddToPlaylistForm(int songId)
+        {
+            AddToPlaylistModel addToPlaylistModel = new AddToPlaylistModel();
+
+            addToPlaylistModel.UserPlaylistDictionary = GetDictionaryOfUserPlaylists();
+            addToPlaylistModel.songId = songId;
+
+            return PartialView("_AddToPlaylistForm", addToPlaylistModel);
+        }
+
+        [HttpPost]
+        public bool AddToPlaylist(AddToPlaylistModel addToPlaylistModel)
+        {
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"INSERT INTO playlist_songs (playlistId,songId)" +
+                    $" values ('{addToPlaylistModel.playlistId}','{addToPlaylistModel.songId}')";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                try
+                {
+                    if (cmd.ExecuteNonQuery() > 0)
+                    {
+                        return true;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    return false;
+                }
+
+            }
+            return false;
+        }
+
+        Dictionary<string, int> GetDictionaryOfUserPlaylists()
+        {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+            
+            Dictionary<string, int> userPlaylists = new Dictionary<string, int>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"SELECT playlist.id, playlist.name" +
+
+                    $" FROM user,user_playlists,playlist" +
+
+                    $" WHERE user.id = user_playlists.userId" +
+                    $" AND user_playlists.playlistId = playlist.id" +
+                    $" AND user.id = {profile.Id}" +
+                    $" AND playlist.isArchived = 0";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    int id = Convert.ToInt32(reader["id"]);
+                    string title = Convert.ToString(reader["name"]);
+                    userPlaylists.Add(title, id);
+                }
+            }
+            return userPlaylists;
+        }
+
         [HttpPost]
         public ActionResult CreatePlaylist(CreatePlaylistModel createPlaylistModel)
         {
@@ -435,6 +507,51 @@ namespace MusicLibraryTest2.Controllers
                 }
             }
             return View("HomePage", (ProfileModel)Session["ProfileInfo"]);
+        }
+
+        public ActionResult GetPlaylistSongs(int? playlistId)
+        {
+            List<SongModel> songList = new List<SongModel>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"SELECT song.id, song.title, song.genre" +
+
+                    $" FROM playlist, playlist_songs, song" +
+
+                    $" WHERE playlist.id = playlist_songs.playlistId" +
+                    $" AND playlist_songs.songId = song.id" +
+                    $" AND playlist.id = {playlistId}";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var songModel = new SongModel
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            Title = reader["title"].ToString(),
+                            Genre = reader["genre"].ToString(),
+                        };
+
+                        songList.Add(songModel);
+                    }
+                    reader.NextResult();
+                }
+            }
+
+            SongModels songModels = new SongModels()
+            {
+                SongList = songList
+            };
+
+            return PartialView("_SongsList", songModels);
         }
 
         public ActionResult CreatePlaylistForm(CreatePlaylistModel createPlaylistModel)

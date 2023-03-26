@@ -32,6 +32,8 @@
             <button class="like-button" data-song-id="@song.Id">
                 <i class="fa-regular fa-thumbs-up"></i>
             </button>
+
+
         }
         else
         {
@@ -39,6 +41,12 @@
                 <i class="fa-solid fa-thumbs-up"></i>
             </button>
         }
+
+        <button class="add-button" data-playlist-song-id="@song.Id">
+            <i class="fa-regular fa-square-plus"></i>
+        </button>
+
+        <div class="playlistList toggle-container sub-container" id="playlist-@song.Id"></div>
 
     </div>
  }
@@ -86,6 +94,39 @@
 
             $(this).find('.triangle').toggleClass('rotate');
             $songsContainer.toggle();
+        });
+
+        var playlistListLoaded = false;
+        $('.add-button').click(function () {
+
+            var playlistSongId = $(this).data('playlist-song-id');
+            var $playlistListContainer = $('#playlist-' + playlistSongId);
+            var button = $(this);
+
+            if (!playlistListLoaded) {
+                $.ajax({
+                    url: '/Home/AddToPlaylistForm',
+                    type: 'GET',
+                    data: { songId: playlistSongId },
+                    success: function (data) {
+                        $playlistListContainer.html(data);
+                        playlistListLoaded = true;
+                        button.addClass('add-button-glow');
+
+                        setTimeout(function () {
+                            button.classList.remove('add-button-glow');
+                        }, 500);
+
+                        button.addClass('add-button-fade');
+
+                        setTimeout(function () {
+                            button.classList.remove('add-button-fade');
+                        }, 500);
+                    }
+                });
+            }
+
+            $playlistListContainer.toggle();
         });
     });
 </script>

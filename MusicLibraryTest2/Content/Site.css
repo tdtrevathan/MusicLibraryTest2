@@ -109,3 +109,11 @@ dd {
     padding: 2rem 2rem;
 }
 
+.add-button-glow {
+    box-shadow: 0 0 10px var(--color-primary);
+}
+
+.add-button-fade {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}

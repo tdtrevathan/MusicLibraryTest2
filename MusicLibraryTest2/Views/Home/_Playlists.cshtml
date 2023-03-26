@@ -14,19 +14,16 @@
         Load Songs
     </span>
 
-    <div class="songs toggle-container sub-container" id="playlist-@playlist.Id"></div>
+    <div class="playlist-songs toggle-container sub-container" id="playlist-@playlist.Id"></div>
 }
 
 <script>
     $(document).ready(function () {
-        var loaded = false;
 
         $('.load-playlist-songs').click(function () {
             var playlistId = $(this).data('playlist-id');
+            console.log(playlistId);
             var $songsContainer = $('#playlist-' + playlistId);
-
-
-            if (!loaded) {
 
                 $.ajax({
                     url: '/Home/GetPlaylistSongs',
@@ -34,11 +31,10 @@
                     data: { playlistId: playlistId },
                     success: function (result) {
                         $songsContainer.html(result);
-                        loaded = true;
+          
                     }
                 });
-            }
-
+    
             $(this).find('.triangle').toggleClass('rotate');
             $songsContainer.toggle();
         });
