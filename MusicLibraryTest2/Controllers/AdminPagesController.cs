@@ -27,6 +27,36 @@ namespace MusicLibraryTest2.Controllers
         public ActionResult UserList()
         {
             List<User> users = db.GetUserData();
+            string sortBy = Request.QueryString["sortBy"];
+            bool isAscending = bool.Parse(Request.QueryString["isAscending"]);
+            switch (sortBy)
+            {
+                case "id":
+                    if (isAscending)
+                        users = users.OrderBy(u => u.Id).ToList();
+                    else
+                        users = users.OrderByDescending(u => u.Id).ToList();
+                    break;
+                case "name":
+                    if (isAscending)
+                        users = users.OrderBy(u => u.Username).ToList();
+                    else
+                        users = users.OrderByDescending(u => u.Username).ToList();
+                    break;
+                case "created":
+                    if (isAscending)
+                        users = users.OrderBy(u => u.CreatedAt).ToList();
+                    else
+                        users = users.OrderByDescending(u => u.CreatedAt).ToList();
+                    break;
+                default:
+                    users = users.OrderBy(u => u.Id).ToList();
+                    break;
+            }
+
+            ViewBag.sortBy = sortBy;
+            ViewBag.isAscending = isAscending;
+
             return View(users);
         }
         public ActionResult SongList()
@@ -34,5 +64,6 @@ namespace MusicLibraryTest2.Controllers
             List<Song> songs = db.GetSongData();
             return View(songs);
         }
+
     }
 }

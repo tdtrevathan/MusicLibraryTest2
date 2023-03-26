@@ -18,7 +18,7 @@ namespace MusicLibraryTest2.Data
             List<User> users = new List<User>();
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                MySqlCommand cmd = new MySqlCommand($"SELECT *, role.type AS role " +
+                MySqlCommand cmd = new MySqlCommand($"SELECT user.id, user.username, user.created_at, user.modified_at, user.last_login_at, user.is_archived, role.type AS role " +
                                                     $"FROM user " +
                                                     $"LEFT JOIN user_roles ON user.id = user_roles.userid " +
                                                     $"LEFT JOIN role ON role.id = user_roles.roleid", con);
@@ -32,6 +32,10 @@ namespace MusicLibraryTest2.Data
                     user.Id = Convert.ToInt32(reader["ID"]);
                     user.Username = reader["username"].ToString();
                     user.Role = reader["role"].ToString();
+                    user.CreatedAt = (reader["created_at"] as DateTime?).GetValueOrDefault();
+                    user.ModifiedAt = (reader["modified_at"] as DateTime?).GetValueOrDefault();
+                    user.LastLoginAt = (reader["last_login_at"] as DateTime?).GetValueOrDefault();
+                    user.IsArchived = (reader["is_archived"] as bool?).GetValueOrDefault(false);
                     users.Add(user);
                 }
                 return users;
