@@ -414,6 +414,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CreatePlaylistModel.cs" />
     <Compile Include="Models\PlaylistModel.cs" />
     <Compile Include="Models\PlaylistModels.cs" />
     <Compile Include="Models\AlbumModels.cs" />
@@ -481,6 +482,7 @@
     <Content Include="Views\Home\_Playlists.cshtml" />
     <Content Include="Views\AdminPages\SongList.cshtml" />
     <Content Include="Views\AdminPages\UserList.cshtml" />
+    <Content Include="Views\Home\_CreatePlaylistForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,10 +8,11 @@ using System.Security.Cryptography.X509Certificates;
 using System.Web;
 using System.Web.Mvc;
 
-namespace MusicLibraryTest2.Models
+namespace MusicLibraryTest2.Models 
 {
-    public class PlaylistModels
+    public class CreatePlaylistModel
     {
-        public List<PlaylistModel> Playlists = new List<PlaylistModel>();
+        public string Name { get; set; }
     }
 }
+

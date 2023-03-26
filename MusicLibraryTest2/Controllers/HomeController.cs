@@ -29,6 +29,16 @@ namespace MusicLibraryTest2.Controllers
             return View("HomePage", profileModel);
         }
 
+        public ActionResult LoadSong(int songId)
+        {
+
+            SongModel songModel = new SongModel()
+            {
+                Id = songId
+            };
+            return PartialView("_PlaySong", songModel);
+        }
+
         public ActionResult BecomeArtist()
         {
             ProfileModel profileModel = (ProfileModel)Session["ProfileInfo"];
@@ -392,6 +402,90 @@ namespace MusicLibraryTest2.Controllers
 
             return PartialView("_SongsList", songModels);
         }
+
+        [HttpPost]
+        public ActionResult CreatePlaylist(CreatePlaylistModel createPlaylistModel)
+        {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"INSERT INTO playlist (name) " +
+                    $" values ('{createPlaylistModel.Name}')";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+
+                }
+
+                command = $"INSERT INTO user_playlists (userId,playlistId) " +
+                $"values ('{profile.Id}',(SELECT id From playlist " +
+                $"WHERE name = '{createPlaylistModel.Name}' " +
+                $"LIMIT 1))";
+
+                cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+
+                }
+            }
+            return View("HomePage", (ProfileModel)Session["ProfileInfo"]);
+        }
+
+        public ActionResult CreatePlaylistForm(CreatePlaylistModel createPlaylistModel)
+        {
+            return PartialView("_CreatePlaylistForm", createPlaylistModel);
+        }
+
+        public ActionResult GetPlaylists()
+        {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
+            List<PlaylistModel> playlists = new List<PlaylistModel>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"SELECT playlist.id, playlist.name" +
+
+                    $" FROM playlist, user_playlists, user" +
+
+                    $" WHERE user.id = user_playlists.userId" +
+                    $" AND user_playlists.playlistId = playlist.id" +
+                    $" AND user.id = {profile.Id}" +
+                    $" AND playlist.isArchived = 0";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+
+                while (reader.Read())
+                {
+                    var playlistModel = new PlaylistModel
+                    {
+                        Id = Convert.ToInt32(reader["id"]),
+                        Name = reader["name"].ToString(),
+                    };
+
+                    playlists.Add(playlistModel);
+                }
+            }
+
+            PlaylistModels playlistModels = new PlaylistModels()
+            {
+                Playlists = playlists
+            };
+
+            return PartialView("_Playlists", playlistModels);
+        }
+
 
         public ActionResult SignUpForm()
         {

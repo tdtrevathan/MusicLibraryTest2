@@ -1,5 +1,16 @@
-﻿body {
-    background-color:lightblue;
+﻿:root {
+    --color-primary: #93C6D6;
+    --color-secondary: #668586;
+    --color-tertiary: #A7ACD9;
+    --color-tertiary-light: #9E8FB2;
+    --color-secondary-light: #82AEB1;
+    --br-sm-2: 20px;
+    --box-shadow-1: 0 3px 15px rgba(0,0,0,.3);
+}
+
+
+body {
+    background-color: var(--color-primary);
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -32,8 +43,8 @@ textarea {
 
 .navbar-inverse .navbar-toggle:hover,
 .navbar-inverse .navbar-toggle:focus {
-    background-color: #777;
-    border-color: #fff
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary-light)
 }
 
 
@@ -73,11 +84,11 @@ dd {
 
 .toggle-button {
     cursor: pointer;
-    color: #007bff;
+    color: var(--color-secondary);
 }
 
 .sub-toggle {
-    color: lightskyblue !important;
+    color: var(--color-tertiary);
     padding-left: 20px !important;
 }
 
@@ -91,14 +102,10 @@ dd {
     }
 
 .songBox {
-    background-color: cadetblue;
+    background-color: var(--color-tertiary-light);
     margin: 2rem 2rem;
     border-radius: 1rem;
-    max-width: 200px;
+    max-width: 40%;
     padding: 2rem 2rem;
 }
 
-.clicked-like-button{
-    background-color: gray;
-    color:floralwhite;
-}

@@ -277,7 +277,7 @@ namespace MusicLibraryTest2.Controllers
                 SongList = songList
             };
 
-            return PartialView("_PlaySong", songModels);
+            return PartialView("_SongsList", songModels);
         }
 
         public ActionResult PlayAudio(int songId)

@@ -1,37 +1,27 @@
 ﻿@model MusicLibraryTest2.Models.PlaylistModels
 
-@foreach (var album in Model.Albums)
- {
+@Html.Action("CreatePlaylistForm", "Home")
+
+@foreach (var playlist in Model.Playlists)
+{
     <dl>
-        <dt>Album:</dt>
-        <dd>@album.Title</dd>
-        <dt>Artist:</dt>
-        <dd>@album.ArtistName</dd> 
-        <dt>Genre:</dt>
-        <dd>@album.Genre</dd>
-        <dt>Release Date:</dt>
-        <dd>@album.ReleaseDate</dd>
+        <dt>Playlist:</dt>
+        <dd>@playlist.Name</dd>
     </dl>
 
-    if (album.Description != null)
-    {
-        <h4>Description</h4>
-        <p>@album.Description</p>
-    }
-
-    <span class="load-songs toggle-button sub-toggle" data-album-id="@album.Id">
+    <span class="load-playlist-songs toggle-button sub-toggle" data-playlist-id="@playlist.Id">
         <span class="triangle"></span>
         Load Songs
     </span>
 
-    <div class="songs toggle-container sub-container" id="album-@album.Id"></div>
- }
+    <div class="songs toggle-container sub-container" id="playlist-@playlist.Id"></div>
+}
 
 <script>
     $(document).ready(function () {
-        $('.load-songs').click(function () {
-            var albumId = $(this).data('album-id');
-            var $songsContainer = $('#album-' + albumId);
+        $('.load-playlist-songs').click(function () {
+            var playlistId = $(this).data('playlist-id');
+            var $songsContainer = $('#playlist-' + playlistId);
             var loaded = false;
 
             if (!loaded) {
@@ -39,7 +29,7 @@
                 $.ajax({
                     url: '/Home/GetPlaylistSongs',
                     type: 'GET',
-                    data: { albumId: albumId },
+                    data: { playlistId: playlistId },
                     success: function (result) {
                         $songsContainer.html(result);
                         loaded = true;

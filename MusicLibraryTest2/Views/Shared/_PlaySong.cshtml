@@ -1,14 +1,10 @@
-﻿@model MusicLibraryTest2.Models.SongModels
+﻿@model MusicLibraryTest2.Models.SongModel
 
-@foreach (var song in Model.SongList)
-{
-    <p>@song.Title</p>
-    <p>@song.Genre</p>
-    <audio id="audioPlayer_@song.Id" controls data-song-id="@song.Id">
-        <source src="@Url.Action("PlayAudio", "Home", new { songId = song.Id })" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
-}
+  <audio id="audioPlayer_@Model.Id" controls data-song-id="@Model.Id">
+      <source src="@Url.Action("PlayAudio", "ArtistPages", new { songId = Model.Id })" type="audio/mp3">
+      Your browser does not support the audio element.
+  </audio>
+
 
 <script>
   var audioPlayers = document.querySelectorAll("audio[id^='audioPlayer_']");

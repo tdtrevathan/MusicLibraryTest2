@@ -9,16 +9,23 @@
         <p>Artist: @song.Artist</p>
 
         @if (song.AlbumName != null)
-         {
+        {
             <p>Album: @song.AlbumName</p>
-         }
+        }
 
         <p>
             <span> Likes: </span>
-            <span class="likes-count" data-song-id="@song.Id">
+            <span class="likes-count" data-song-likes-id="@song.Id">
                 @song.Likes
             </span>
         </p>
+
+        <span class="load-song toggle-button sub-toggle" data-song-id="@song.Id">
+            <span class="triangle"></span>
+            Load Player
+        </span>
+
+        <div class="songs toggle-container sub-container" id="song-@song.Id"></div>
 
         @if (!song.LikedByUser)
         {
@@ -43,20 +50,42 @@
 
         $('.like-button').click(function () {
 
-            var songId = $(this).data('song-id');
+            var songLikesId = $(this).data('song-likes-id');
             var button = $(this);
             if (button.find('.fa-regular').length > 0) {
                  $.ajax({
                     url: '/Home/AddLike',
                     type: 'GET',
-                    data: { songId: songId },
+                     data: { songId: songLikesId },
                      success: function (data) {
                          button.find('.fa-thumbs-up').removeClass('fa-regular');
                          button.find('.fa-thumbs-up').addClass('fa-solid');
-                        $('.likes-count[data-song-id="' + songId + '"]').text(data);
+                         $('.likes-count[data-song-likes-id="' + songLikesId + '"]').text(data);
                     }
                 });
             }
+        });
+
+        var songLoaded = false;
+        $('.load-song').click(function () {
+
+            var songId = $(this).data('song-id');
+            var $songsContainer = $('#song-' + songId);
+
+            if (!songLoaded) {
+                $.ajax({
+                    url: '/Home/LoadSong',
+                    type: 'GET',
+                    data: { songId: songId },
+                    success: function (data) {
+                        $songsContainer.html(data);
+                        songLoaded = true;
+                    }
+                });
+            }
+
+            $(this).find('.triangle').toggleClass('rotate');
+            $songsContainer.toggle();
         });
     });
 </script>

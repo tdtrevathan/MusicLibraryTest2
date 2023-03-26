@@ -19,12 +19,12 @@
 
         <div class="browse toggle-container" id="get-all-songs-container"></div>
 
-        <span class="toggle-button">
+        <span class="get-playlists toggle-button">
             <span class="triangle"></span>
             My Playlists
         </span>
 
-        <div class=" toggle-container" id=""></div>
+        <div class="playlist toggle-container" id="get-playlists-container"></div>
 
         <span class="get-liked-songs toggle-button">
             <span class="triangle"></span>
@@ -55,12 +55,31 @@
                 url: '/Home/BrowseAllSongs',
                     success: function(data) {
                         $getAllSongsContainer.html(data);
-                        getAllSongsContainer = true;
+                        getAllSongsContainerLoaded = true;
                     }
                 });
             }
             $(this).find('.triangle').toggleClass('rotate');
             $getAllSongsContainer.toggle();
+        });
+
+        $('.get-playlists').click(function () {
+
+            var getPlaylistsContainerLoaded = false;
+            var $getPlaylistsContainer = $('#get-playlists-container')
+
+            if (!getPlaylistsContainerLoaded) {
+                $.ajax({
+                    data: null,
+                    url: '/Home/GetPlaylists',
+                    success: function (data) {
+                        $getPlaylistsContainer.html(data);
+                        getPlaylistsContainerLoaded = true;
+                    }
+                });
+            }
+            $(this).find('.triangle').toggleClass('rotate');
+            $getPlaylistsContainer.toggle();
         });
 
         $('.get-liked-songs').click(function () {
