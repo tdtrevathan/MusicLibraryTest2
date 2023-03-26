@@ -29,10 +29,12 @@
 
 <script>
     $(document).ready(function () {
+        var loaded = false;
+
         $('.load-songs').click(function () {
             var albumId = $(this).data('album-id');
             var $songsContainer = $('#album-' + albumId);
-            var loaded = false;
+
 
             if (!loaded) {
 

@@ -40,18 +40,20 @@
 <script>
     $(document).ready(function () {
 
+        var addMusicLoaded = false;
+        var albumsLoaded = false;
+
         $('.get-add-music').click(function () {
 
-            var loaded = false;
             var $addMusicContainer = $('#add-music-container')
 
-            if (!loaded) {
+            if (!addMusicLoaded) {
                 $.ajax({
                 data: null,
                 url: '/ArtistPages/AddMusic',
                     success: function(data) {
                         $addMusicContainer.html(data);
-                        loaded = true;
+                        addMusicLoaded = true;
                     }
                 });
             }
@@ -60,16 +62,15 @@
         });
         $('.get-albums').click(function () {
 
-            var loaded = false;
             var $albumsContainer = $('#albums-container')
 
-            if (!loaded) {
+            if (!albumsLoaded) {
                 $.ajax({
                 url: '/ArtistPages/GetUserAlbums',
                 data: { userId: '@Model.Id' },
                     success: function(data) {
                         $albumsContainer.html(data);
-                        loaded = true;
+                        albumsLoaded = true;
                     }
                 });
             }

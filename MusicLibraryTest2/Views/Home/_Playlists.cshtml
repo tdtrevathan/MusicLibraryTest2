@@ -19,10 +19,12 @@
 
 <script>
     $(document).ready(function () {
+        var loaded = false;
+
         $('.load-playlist-songs').click(function () {
             var playlistId = $(this).data('playlist-id');
             var $songsContainer = $('#playlist-' + playlistId);
-            var loaded = false;
+
 
             if (!loaded) {
 

@@ -43,10 +43,13 @@
 
 <script>
     $(document).ready(function () {
+        var getAllSongsContainerLoaded = false;
+        var getPlaylistsContainerLoaded = false;
+        var getLikedSongsContainerLoaded = false;
 
         $('.get-all-songs').click(function () {
 
-            var getAllSongsContainerLoaded = false;
+            
             var $getAllSongsContainer = $('#get-all-songs-container')
 
             if (!getAllSongsContainerLoaded) {
@@ -65,7 +68,7 @@
 
         $('.get-playlists').click(function () {
 
-            var getPlaylistsContainerLoaded = false;
+            
             var $getPlaylistsContainer = $('#get-playlists-container')
 
             if (!getPlaylistsContainerLoaded) {
@@ -84,7 +87,7 @@
 
         $('.get-liked-songs').click(function () {
 
-            var getLikedSongsContainerLoaded = false;
+            
             var $getLikedSongsContainer = $('#get-liked-songs-container')
 
             if (!getLikedSongsContainerLoaded) {
