@@ -262,6 +262,8 @@ namespace MusicLibraryTest2.Controllers
 
         public int AddLike(int songId)
         {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
             using (MySqlConnection con = new MySqlConnection(connection))
             {
                 MySqlCommand cmd = new MySqlCommand($"UPDATE song SET likes = likes + 1 WHERE song.id = {songId}", con);
@@ -271,14 +273,18 @@ namespace MusicLibraryTest2.Controllers
 
                 if (cmd.ExecuteNonQuery() > 0)
                 {
-                    cmd = new MySqlCommand($"SELECT likes FROM song WHERE song.id = {songId}", con);
-                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd = new MySqlCommand($"INSERT INTO user_likes (userId,songId) values ({profile.Id},{songId})", con);
 
-                    MySqlDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
+                    if (cmd.ExecuteNonQuery() > 0)
                     {
-                        return Convert.ToInt32(reader["likes"]);
+                        cmd = new MySqlCommand($"SELECT likes FROM song WHERE song.id = {songId}", con);
+
+                        MySqlDataReader reader = cmd.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            return Convert.ToInt32(reader["likes"]);
+                        }
                     }
                 }
             }
@@ -313,7 +319,8 @@ namespace MusicLibraryTest2.Controllers
                         Genre = reader["genre"].ToString(),
                         Artist = reader["username"].ToString(),
                         AlbumName = reader["albumName"].ToString(),
-                        Likes = Convert.ToInt32(reader["likes"])
+                        Likes = Convert.ToInt32(reader["likes"]),
+                        LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"]))
                     };
 
                     songList.Add(songModel);
@@ -333,6 +340,30 @@ namespace MusicLibraryTest2.Controllers
             ViewBag.Message = "Create a profile";
 
             return View();
+        }
+
+        public bool CheckIfLikedByUser(int songId)
+        {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand(
+                    $"SELECT * FROM user_likes WHERE" +
+                    $" userId = {profile.Id} AND songId = {songId}",con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
 
     }
