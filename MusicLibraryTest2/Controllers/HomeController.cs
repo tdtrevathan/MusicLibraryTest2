@@ -297,13 +297,8 @@ namespace MusicLibraryTest2.Controllers
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes, user.username, album.title AS albumName " +
-                    $" FROM user,user_albums,album,album_songs,song" +
-                    $" WHERE user.Id = user_albums.userId" +
-                    $" AND user_albums.albumId = album.Id" +
-                    $" AND album_songs.albumId = album.Id" +
-                    $" AND album_songs.songId = song.Id" +
-                    $" ORDER BY song.likes DESC LIMIT 50", con);
+                MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes " +
+                    $" FROM song", con);
 
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
@@ -317,11 +312,11 @@ namespace MusicLibraryTest2.Controllers
                         Id = Convert.ToInt32(reader["id"]),
                         Title = reader["title"].ToString(),
                         Genre = reader["genre"].ToString(),
-                        Artist = reader["username"].ToString(),
-                        AlbumName = reader["albumName"].ToString(),
                         Likes = Convert.ToInt32(reader["likes"]),
                         LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"]))
                     };
+
+                    GetArtistInfo(songModel);
 
                     songList.Add(songModel);
                 }
@@ -366,5 +361,24 @@ namespace MusicLibraryTest2.Controllers
             }
         }
 
+        public void GetArtistInfo(SongModel songModel)
+        {
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand(
+                    $"SELECT album.title, album.artist_name FROM album,album_songs,song WHERE" +
+                    $" album.Id = album_songs.albumId " +
+                    $" AND album_songs.songId = {songModel.Id}", con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    songModel.Artist = reader["artist_name"].ToString();
+                    songModel.AlbumName = reader["title"].ToString();
+                }
+            }
+        }
     }
 }
