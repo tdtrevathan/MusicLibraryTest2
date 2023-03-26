@@ -3,10 +3,15 @@
 @foreach (var song in Model.SongList)
  {
     <div class="songBox">
+
         <p>Title: @song.Title</p>
         <p>Genre: @song.Genre</p>
         <p>Artist: @song.Artist</p>
-        <p>Album: @song.AlbumName</p>
+
+        @if (song.AlbumName != null)
+         {
+            <p>Album: @song.AlbumName</p>
+         }
 
         <p>
             <span> Likes: </span>

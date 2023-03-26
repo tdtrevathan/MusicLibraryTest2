@@ -90,13 +90,13 @@ dd {
         display: none
     }
 
-    .songBox{
-        background-color: cadetblue;
-        margin: 2rem 2rem;
-        border-radius: 1rem;
-        max-width: 200px;
-        padding-left: 1rem;
-    }
+.songBox {
+    background-color: cadetblue;
+    margin: 2rem 2rem;
+    border-radius: 1rem;
+    max-width: 200px;
+    padding: 2rem 2rem;
+}
 
 .clicked-like-button{
     background-color: gray;

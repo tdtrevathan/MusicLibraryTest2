@@ -26,12 +26,18 @@
 
         <div class=" toggle-container" id=""></div>
 
-        <span class=" toggle-button">
+        <span class="get-liked-songs toggle-button">
             <span class="triangle"></span>
             Liked Songs
         </span>
 
-        <div class=" toggle-container" id=""></div>
+        <div class="browseLiked toggle-container" id="get-liked-songs-container"></div>
+
+        @if (!Model.Roles.Contains("artist"))
+        {
+            <button class="become-artist">Become Artist</button>
+        }
+
     </div>
 </body>
 
@@ -56,7 +62,32 @@
             $(this).find('.triangle').toggleClass('rotate');
             $getAllSongsContainer.toggle();
         });
-       
+
+        $('.get-liked-songs').click(function () {
+
+            var getLikedSongsContainerLoaded = false;
+            var $getLikedSongsContainer = $('#get-liked-songs-container')
+
+            if (!getLikedSongsContainerLoaded) {
+                $.ajax({
+                    data: null,
+                    url: '/Home/BrowseLikedSongs',
+                    success: function (data) {
+                        $getLikedSongsContainer.html(data);
+                        getLikedSongsContainer = true;
+                    }
+                });
+            }
+            $(this).find('.triangle').toggleClass('rotate');
+            $getLikedSongsContainer.toggle();
+        });
+
+        $('.become-artist').click(function () {
+                $.ajax({
+                    data: null,
+                    url: '/Home/BecomeArtist?_=' + new Date().getTime(),
+                });
+        });
     });
 </script>
 

@@ -23,9 +23,6 @@
         <p style="color:red">Username or Password is not valid</p>
     }
 }
-@using (Html.BeginForm("SignUpForm", "Home"))
-{
-    <input id="Submit" type="submit" value="Sign Up" />
-}
+@Html.ActionLink("Sign Up", "SignUpForm", "Home")
 
 
