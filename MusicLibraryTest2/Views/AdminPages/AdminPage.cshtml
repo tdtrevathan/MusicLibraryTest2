@@ -8,6 +8,8 @@
 </head>
 
 @Html.Action("ShowNavbar", "Home")
+@Html.ActionLink("User List", "UserList")
+@Html.ActionLink("Song List", "SongList")
 
 <body>
     <div class="mainBox">
@@ -52,7 +54,7 @@
             if (!loaded) {
                 $.ajax({
                 url: '/ArtistPages/GetUserAlbums',
-                data: { userId: '@Model.Id' },
+                data: { userId: '@(Model?.Id ?? 0)' },
                     success: function(data) {
                         $albumsContainer.html(data);
                         loaded = true;
