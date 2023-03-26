@@ -1,0 +1,6 @@
+﻿@model MusicLibraryTest2.Models.NotificationsModel
+
+@foreach (var notification in Model.Notifications)
+ {
+    <p>@notification.ArtistName released a new album called @notification.AlubmTitle</p>
+ }

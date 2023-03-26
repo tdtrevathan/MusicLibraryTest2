@@ -20,7 +20,7 @@
             </span>
         </p>
 
-        <span class="load-song toggle-button sub-toggle" data-song-id="@song.Id">
+        <span class="load-song toggle-button sub-toggle" data-song-likes-id="@song.Id">
             <span class="triangle"></span>
             Load Player
         </span>
@@ -43,13 +43,13 @@
         }
         @if (!song.UserFollowingArtist)
         {
-            <button class="follow-button" data-song-id="@song.Id">
-                <i class="fa-solid fa-user-group" style="color: #668586"></i>
+            <button class="follow-button" data-artist-name="@song.Artist">
+                <i class="fa-solid fa-user-group unclicked-icon"></i>
             </button>
         }
         else
         {
-            <button class="follow-button" data-song-id="@song.Id">
+            <button class="follow-button" data-artist-name="@song.Artist">
                 <i class="fa-solid fa-user-group"></i>
             </button>
         }
@@ -69,8 +69,8 @@
     $(document).ready(function () {
 
         $('.like-button').click(function () {
-
-            var songLikesId = $(this).data('song-likes-id');
+            
+            var songLikesId = $(this).data('song-id');
             var button = $(this);
             if (button.find('.fa-regular').length > 0) {
                  $.ajax({
@@ -81,14 +81,15 @@
                          button.find('.fa-thumbs-up').removeClass('fa-regular');
                          button.find('.fa-thumbs-up').addClass('fa-solid');
                          $('.likes-count[data-song-likes-id="' + songLikesId + '"]').text(data);
-                    }
-                });
+                     }
+                 });
             }
         });
 
-        var songLoaded = false;
+
         $('.load-song').click(function () {
 
+            var songLoaded = false;
             var songId = $(this).data('song-id');
             var $songsContainer = $('#song-' + songId);
 
@@ -108,9 +109,9 @@
             $songsContainer.toggle();
         });
 
-        var playlistListLoaded = false;
-        $('.add-button').click(function () {
 
+        $('.add-button').click(function () {
+            var playlistListLoaded = false;
             var playlistSongId = $(this).data('playlist-song-id');
             var $playlistListContainer = $('#playlist-' + playlistSongId);
             var button = $(this);
@@ -126,19 +127,37 @@
                         button.addClass('add-button-glow');
 
                         setTimeout(function () {
-                            button.classList.remove('add-button-glow');
+                            button.addClass('add-button-glow');
                         }, 500);
 
                         button.addClass('add-button-fade');
 
                         setTimeout(function () {
-                            button.classList.remove('add-button-fade');
+                            button.addClass('add-button-fade');
                         }, 500);
                     }
                 });
             }
 
             $playlistListContainer.toggle();
+        });
+
+        $('.follow-button').click(function () {
+
+            var songFollowId = $(this).data('artist-name');
+            console.log(songFollowId);
+            var button = $(this);
+            if (button.find('.not-following').length > 0) {
+                $.ajax({
+                    url: '/Home/FollowArtist',
+                    type: 'GET',
+                    data: { artistName: songFollowId },
+                    success: function (data) {
+                        $songFollowId.html(data);
+                        button.find('.fa-thumbs-up').removeClass('not-following');
+                    }
+                });
+            }
         });
     });
 </script>

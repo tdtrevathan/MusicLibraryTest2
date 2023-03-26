@@ -322,6 +322,23 @@ namespace MusicLibraryTest2.Controllers
             return 0;
         }
 
+        public bool FollowArtist(string artistName)
+        {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand($"INSERT INTO user_follows (followerId,followingId) values ({profile.Id},(SELECT user.Id FROM user WHERE user.username = '{artistName}'))", con);
+                con.Open();
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    return true;
+                }
+
+            }
+            return false;
+        }
+
         public ActionResult BrowseAllSongs()
         {
             List<SongModel> songList = new List<SongModel>();
@@ -554,6 +571,44 @@ namespace MusicLibraryTest2.Controllers
             };
 
             return PartialView("_SongsList", songModels);
+        }
+
+        public ActionResult GetNotifications()
+        {
+            ProfileModel profileModel = (ProfileModel)Session["ProfileInfo"];
+            List<NotificationModel> list = new List<NotificationModel>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"SELECT notifications.album_title, notifications.artist_name" +
+
+                    $" FROM notifications" +
+
+                    $" WHERE notifications.userId = {profileModel.Id}" +
+                    $" AND notifications.isArchived = 0" +
+                    $" ORDER BY created_at DESC";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    NotificationModel notificationModel = new NotificationModel()
+                    {
+                        ArtistName = reader["artist_name"].ToString(),
+                        AlubmTitle = reader["album_title"].ToString(),
+                    };
+                    list.Add(notificationModel);
+                }
+            }
+            NotificationsModel notificationsModel = new NotificationsModel()
+            {
+                Notifications = list
+            };
+            return PartialView("_NotificationsList", notificationsModel);
         }
 
         public ActionResult CreatePlaylistForm(CreatePlaylistModel createPlaylistModel)

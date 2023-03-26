@@ -19,7 +19,7 @@
         <p>@album.Description</p>
     }
 
-    <span class="load-songs toggle-button sub-toggle" data-album-id="@album.Id">
+    <span class="load-songs toggle-button sub-toggle " data-album-id="@album.Id">
         <span class="triangle"></span>
         Load Songs
     </span>
@@ -29,28 +29,26 @@
 
 <script>
     $(document).ready(function () {
-        var loaded = {};
 
-        $('.load-songs').click(function () {
+       $('load-songs').click(function () {
             var albumId = $(this).data('album-id');
-            var $songsContainer = $('#album-' + albumId);
+            var $albumSongsContainer = $('#album-' + albumId);
 
 
-            if (!loaded[albumId]) {
+            if (true) {
 
                 $.ajax({
                     url: '/ArtistPages/GetAlbumSongs',
                     type: 'GET',
                     data: { albumId: albumId },
                     success: function (result) {
-                        $songsContainer.html(result);
-                        loaded[albumId] = true;
+                        $albumSongsContainer.html(result);
                     }
                 });
             }
 
             $(this).find('.triangle').toggleClass('rotate');
-            $songsContainer.toggle();
+           $albumSongsContainer.toggle();
         });
     });
 </script>

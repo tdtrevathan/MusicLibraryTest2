@@ -33,6 +33,13 @@
 
         <div class="browseLiked toggle-container" id="get-liked-songs-container"></div>
 
+        <span class="get-notifications toggle-button">
+            <span class="triangle"></span>
+            Notifications
+        </span>
+
+        <div class="notifications toggle-container" id="get-notifications-container"></div>
+
         @if (!Model.Roles.Contains("artist"))
         {
             <button class="become-artist">Become Artist</button>
@@ -43,12 +50,9 @@
 
 <script>
     $(document).ready(function () {
-        var getAllSongsContainerLoaded = false;
-        var getPlaylistsContainerLoaded = false;
-        var getLikedSongsContainerLoaded = false;
 
         $('.get-all-songs').click(function () {
-
+            var getAllSongsContainerLoaded = false;
             
             var $getAllSongsContainer = $('#get-all-songs-container')
 
@@ -67,7 +71,7 @@
         });
 
         $('.get-playlists').click(function () {
-
+            var getPlaylistsContainerLoaded = false;
             
             var $getPlaylistsContainer = $('#get-playlists-container')
 
@@ -87,7 +91,8 @@
 
         $('.get-liked-songs').click(function () {
 
-            
+            var getLikedSongsContainerLoaded = false;
+
             var $getLikedSongsContainer = $('#get-liked-songs-container')
 
             if (!getLikedSongsContainerLoaded) {
@@ -102,6 +107,25 @@
             }
             $(this).find('.triangle').toggleClass('rotate');
             $getLikedSongsContainer.toggle();
+        });
+
+        $('.get-notifications').click(function () {
+            var getNotificationsContainerLoaded = false;
+
+            var $getNotificationsContainer = $('#get-notifications-container')
+
+            if (!getNotificationsContainerLoaded) {
+                $.ajax({
+                    data: null,
+                    url: '/Home/GetNotifications',
+                    success: function (data) {
+                        $getNotificationsContainer.html(data);
+                        getNotificationsContainerLoaded = true;
+                    }
+                });
+            }
+            $(this).find('.triangle').toggleClass('rotate');
+            $getNotificationsContainer.toggle();
         });
 
         $('.become-artist').click(function () {

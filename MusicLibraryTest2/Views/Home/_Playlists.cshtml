@@ -20,22 +20,27 @@
 <script>
     $(document).ready(function () {
 
+        var loaded = false;
+
         $('.load-playlist-songs').click(function () {
             var playlistId = $(this).data('playlist-id');
             console.log(playlistId);
-            var $songsContainer = $('#playlist-' + playlistId);
+            var $playlistSongsContainer = $('#playlist-' + playlistId);
 
+            if (!loaded) {
                 $.ajax({
                     url: '/Home/GetPlaylistSongs',
                     type: 'GET',
                     data: { playlistId: playlistId },
                     success: function (result) {
-                        $songsContainer.html(result);
+                        $playlistSongsContainer.html(result);
+                        loaded = true;
                     }
                 });
-    
+            }
+
             $(this).find('.triangle').toggleClass('rotate');
-            $songsContainer.toggle();
+            $playlistSongsContainer.toggle();
         });
     });
 </script>

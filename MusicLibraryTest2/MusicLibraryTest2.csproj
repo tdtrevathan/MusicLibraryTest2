@@ -414,6 +414,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\CreatePlaylistModel.cs" />
     <Compile Include="Models\AddToPlaylistModel.cs" />
     <Compile Include="Models\PlaylistModel.cs" />
@@ -441,6 +442,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Compile Include="Models\AlbumModel.cs" />
+    <Compile Include="Models\NotificationsModel.cs" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -483,6 +485,7 @@
     <Content Include="Views\AdminPages\UserList.cshtml" />
     <Content Include="Views\Home\_CreatePlaylistForm.cshtml" />
     <Content Include="Views\Shared\_AddToPlaylistForm.cshtml" />
+    <Content Include="Views\Shared\_NotificationsList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
