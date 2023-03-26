@@ -413,6 +413,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\PlaylistModel.cs" />
+    <Compile Include="Models\PlaylistModels.cs" />
     <Compile Include="Models\AlbumModels.cs" />
     <Compile Include="Models\CreateAlbumModel.cs" />
     <Compile Include="Models\SongModel.cs" />
@@ -473,6 +475,7 @@
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\AdminPages\AdminPage.cshtml" />
     <Content Include="Views\Shared\_SongsList.cshtml" />
+    <Content Include="Views\Home\_Playlists.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
