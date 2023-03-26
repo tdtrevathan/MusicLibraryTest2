@@ -18,7 +18,6 @@ namespace MusicLibraryTest2.Controllers
         string connection = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         public ActionResult GetArtist(int? artistId)
         {
-
             using (MySqlConnection con = new MySqlConnection(connection))
             {
                 MySqlCommand cmd = new MySqlCommand($"SELECT * FROM artist WHERE artist.Id = {artistId}", con);

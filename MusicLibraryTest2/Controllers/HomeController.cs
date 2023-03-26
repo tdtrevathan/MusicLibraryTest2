@@ -9,6 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Web.Mvc;
 using NAudio.Wave;
 using System.Web.Profile;
+using System.Web.Security;
 
 
 namespace MusicLibraryTest2.Controllers
@@ -20,6 +21,12 @@ namespace MusicLibraryTest2.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult HomePage()
+        {
+            ProfileModel profileModel = (ProfileModel)Session["ProfileInfo"];
+            return View("HomePage", profileModel);
         }
 
         public ActionResult ShowNavbar()
@@ -251,6 +258,74 @@ namespace MusicLibraryTest2.Controllers
             }
 
             return roles;
+        }
+
+        public int AddLike(int songId)
+        {
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand($"UPDATE song SET likes = likes + 1 WHERE song.id = {songId}", con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    cmd = new MySqlCommand($"SELECT likes FROM song WHERE song.id = {songId}", con);
+                    cmd.CommandType = System.Data.CommandType.Text;
+
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        return Convert.ToInt32(reader["likes"]);
+                    }
+                }
+            }
+            return 0;
+        }
+
+        public ActionResult BrowseAllSongs()
+        {
+            List<SongModel> songList = new List<SongModel>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes, user.username, album.title AS albumName " +
+                    $" FROM user,user_albums,album,album_songs,song" +
+                    $" WHERE user.Id = user_albums.userId" +
+                    $" AND user_albums.albumId = album.Id" +
+                    $" AND album_songs.albumId = album.Id" +
+                    $" AND album_songs.songId = song.Id" +
+                    $" ORDER BY song.likes DESC LIMIT 50", con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var songModel = new SongModel
+                    {
+                        Id = Convert.ToInt32(reader["id"]),
+                        Title = reader["title"].ToString(),
+                        Genre = reader["genre"].ToString(),
+                        Artist = reader["username"].ToString(),
+                        AlbumName = reader["albumName"].ToString(),
+                        Likes = Convert.ToInt32(reader["likes"])
+                    };
+
+                    songList.Add(songModel);
+                }
+            }
+
+            SongModels songModels = new SongModels()
+            {
+                SongList = songList
+            };
+
+            return PartialView("_SongsList", songModels);
         }
 
         public ActionResult SignUpForm()

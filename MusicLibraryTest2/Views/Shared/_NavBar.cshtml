@@ -9,16 +9,20 @@
                 <span class="icon-bar"></span>
             </button>
             @if (Model != null && Model.LogedIn)
-             {
+            {
                 @Html.ActionLink("Home Page", "HomePage", "Home", new { area = "" }, new { @class = "navbar-brand" })
-             }
+            }
 
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                @if (Model != null &&  Model.Roles.Contains("artist"))
+                @if (Model != null && Model.Roles.Contains("artist"))
                 {
                     <li>@Html.ActionLink("Artist Page", "ArtistPage", "ArtistPages")</li>
+                }
+                @if (Model != null && Model.Roles.Contains("admin"))
+                {
+                    <li>@Html.ActionLink("Admin Page", "AdminPage", "AdminPages")</li>
                 }
             </ul>
         </div>

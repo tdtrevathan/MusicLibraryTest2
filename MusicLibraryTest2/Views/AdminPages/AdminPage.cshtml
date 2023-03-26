@@ -1,0 +1,68 @@
+﻿@model MusicLibraryTest2.Models.ProfileModel
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<head>
+    <link rel="stylesheet" href="~/Content/Site.css" />
+</head>
+
+@Html.Action("ShowNavbar", "Home")
+@Html.ActionLink("User List", "UserList")
+@Html.ActionLink("Song List", "SongList")
+
+<body>
+    <div class="mainBox">
+
+        <span class="admin-thing toggle-button">
+            <span class="triangle"></span>
+            Admin Stuff
+        </span>
+
+        <div class="admin toggle-container" id="admin-container"></div>
+
+    </div>
+</body>
+
+
+<script>
+    $(document).ready(function () {
+
+        $('.get-add-music').click(function () {
+
+            var loaded = false;
+            var $addMusicContainer = $('#add-music-container')
+
+            if (!loaded) {
+                $.ajax({
+                data: null,
+                url: '/ArtistPages/AddMusic',
+                    success: function(data) {
+                        $addMusicContainer.html(data);
+                        loaded = true;
+                    }
+                });
+            }
+            $(this).find('.triangle').toggleClass('rotate');
+            $addMusicContainer.toggle();
+        });
+        $('.get-albums').click(function () {
+
+            var loaded = false;
+            var $albumsContainer = $('#albums-container')
+
+            if (!loaded) {
+                $.ajax({
+                url: '/ArtistPages/GetUserAlbums',
+                data: { userId: '@(Model?.Id ?? 0)' },
+                    success: function(data) {
+                        $albumsContainer.html(data);
+                        loaded = true;
+                    }
+                });
+            }
+            $(this).find('.triangle').toggleClass('rotate');
+            $albumsContainer.toggle();
+        });
+    });
+</script>

@@ -1,0 +1,54 @@
+﻿@model MusicLibraryTest2.Models.PlaylistModels
+
+@foreach (var album in Model.Albums)
+ {
+    <dl>
+        <dt>Album:</dt>
+        <dd>@album.Title</dd>
+        <dt>Artist:</dt>
+        <dd>@album.ArtistName</dd> 
+        <dt>Genre:</dt>
+        <dd>@album.Genre</dd>
+        <dt>Release Date:</dt>
+        <dd>@album.ReleaseDate</dd>
+    </dl>
+
+    if (album.Description != null)
+    {
+        <h4>Description</h4>
+        <p>@album.Description</p>
+    }
+
+    <span class="load-songs toggle-button sub-toggle" data-album-id="@album.Id">
+        <span class="triangle"></span>
+        Load Songs
+    </span>
+
+    <div class="songs toggle-container sub-container" id="album-@album.Id"></div>
+ }
+
+<script>
+    $(document).ready(function () {
+        $('.load-songs').click(function () {
+            var albumId = $(this).data('album-id');
+            var $songsContainer = $('#album-' + albumId);
+            var loaded = false;
+
+            if (!loaded) {
+
+                $.ajax({
+                    url: '/Home/GetPlaylistSongs',
+                    type: 'GET',
+                    data: { albumId: albumId },
+                    success: function (result) {
+                        $songsContainer.html(result);
+                        loaded = true;
+                    }
+                });
+            }
+
+            $(this).find('.triangle').toggleClass('rotate');
+            $songsContainer.toggle();
+        });
+    });
+</script>

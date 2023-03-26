@@ -1,0 +1,41 @@
+﻿@model MusicLibraryTest2.Models.SongModels
+
+@foreach (var song in Model.SongList)
+ {
+    <div class="songBox">
+        <p>Title: @song.Title</p>
+        <p>Genre: @song.Genre</p>
+        <p>Artist: @song.Artist</p>
+        <p>Album: @song.AlbumName</p>
+        <p>Likes: @song.Likes</p>
+
+        <button class="like-button" data-song-id="@song.Id">
+            <i class="fa-regular fa-thumbs-up"></i>
+        </button>
+    </div>
+ }
+
+<script src="https://kit.fontawesome.com/0baa800b55.js" crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('.like-button').click(function () {
+
+            var loaded = false;
+            var songId = $(this).data('song-id');
+
+            if (!loaded) {
+                 $.ajax({
+                    url: '/Home/AddLike',
+                    type: 'GET',
+                    data: { songId: songId },
+                    success: function (data) {
+                        $(this).addClass('clicked-like-button');
+                        $('.likes-count[data-song-id="' + songId + '"]').text('Likes: ' + data);
+                    }
+                });
+            }
+        });
+    });
+</script>

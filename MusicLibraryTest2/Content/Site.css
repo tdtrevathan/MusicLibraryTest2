@@ -89,3 +89,16 @@ dd {
     .toggle-container{
         display: none
     }
+
+    .songBox{
+        background-color: cadetblue;
+        margin: 2rem 2rem;
+        border-radius: 1rem;
+        max-width: 200px;
+        padding-left: 1rem;
+    }
+
+.clicked-like-button{
+    background-color: black;
+    color: white;
+}
