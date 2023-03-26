@@ -7,7 +7,13 @@
         <p>Genre: @song.Genre</p>
         <p>Artist: @song.Artist</p>
         <p>Album: @song.AlbumName</p>
-        <p>Likes: @song.Likes</p>
+
+        <p>
+            <span> Likes: </span>
+        <span class="likes-count" data-song-id="@song.Id">
+           @song.Likes
+            </span>
+        </p>
 
         <button class="like-button" data-song-id="@song.Id">
             <i class="fa-regular fa-thumbs-up"></i>
@@ -24,15 +30,16 @@
 
             var loaded = false;
             var songId = $(this).data('song-id');
-
+            var button = $(this);
             if (!loaded) {
                  $.ajax({
                     url: '/Home/AddLike',
                     type: 'GET',
                     data: { songId: songId },
-                    success: function (data) {
-                        $(this).addClass('clicked-like-button');
-                        $('.likes-count[data-song-id="' + songId + '"]').text('Likes: ' + data);
+                     success: function (data) {
+                         button.find('.fa-thumbs-up').removeClass('fa-regular');
+                         button.find('.fa-thumbs-up').addClass('fa-solid');
+                        $('.likes-count[data-song-id="' + songId + '"]').text(data);
                     }
                 });
             }

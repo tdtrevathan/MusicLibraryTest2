@@ -99,6 +99,6 @@ dd {
     }
 
 .clicked-like-button{
-    background-color: black;
-    color: white;
+    background-color: gray;
+    color:floralwhite;
 }

@@ -410,6 +410,7 @@
     <Compile Include="Controllers\ArtistPagesController.cs" />
     <Compile Include="Controllers\AdminPagesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Data\MusicDatabase.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -417,6 +418,7 @@
     <Compile Include="Models\PlaylistModels.cs" />
     <Compile Include="Models\AlbumModels.cs" />
     <Compile Include="Models\CreateAlbumModel.cs" />
+    <Compile Include="Models\Song.cs" />
     <Compile Include="Models\SongModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\SignUpModel.cs" />
@@ -424,6 +426,7 @@
     <Compile Include="Models\ArtistModel.cs" />
     <Compile Include="Models\CreateSongModel.cs" />
     <Compile Include="Models\SongModels.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -476,6 +479,8 @@
     <Content Include="Views\AdminPages\AdminPage.cshtml" />
     <Content Include="Views\Shared\_SongsList.cshtml" />
     <Content Include="Views\Home\_Playlists.cshtml" />
+    <Content Include="Views\AdminPages\SongList.cshtml" />
+    <Content Include="Views\AdminPages\UserList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
