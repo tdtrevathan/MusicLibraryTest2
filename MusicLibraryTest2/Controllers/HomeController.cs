@@ -344,7 +344,8 @@ namespace MusicLibraryTest2.Controllers
                         Title = reader["title"].ToString(),
                         Genre = reader["genre"].ToString(),
                         Likes = Convert.ToInt32(reader["likes"]),
-                        LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"]))
+                        LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"])),
+                        UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"])))
                     };
 
                     GetArtistInfo(songModel);
@@ -538,6 +539,7 @@ namespace MusicLibraryTest2.Controllers
                             Id = Convert.ToInt32(reader["id"]),
                             Title = reader["title"].ToString(),
                             Genre = reader["genre"].ToString(),
+                            LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"]))
                         };
 
                         songList.Add(songModel);
@@ -634,6 +636,40 @@ namespace MusicLibraryTest2.Controllers
                 }
             }
         }
+        public bool CheckIfUserFollowingArtist(int songId)
+        {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
+            SongModel songModel = new SongModel()
+            {
+                Id = songId
+            };
+
+            GetArtistInfo(songModel);
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand(
+                    $" SELECT followingId FROM user_follows,user_albums,album_songs" +
+                    $" WHERE user_follows.followerId = {profile.Id}" +
+                    " AND user_follows.followingId = user_albums.userId" +
+                    " AND user_albums.albumId = album_songs.albumId" +
+                    $" AND album_songs.songId = {songModel.Id}; ", con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
 
         public void GetArtistInfo(SongModel songModel)
         {

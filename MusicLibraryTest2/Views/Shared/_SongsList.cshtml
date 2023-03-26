@@ -41,6 +41,18 @@
                 <i class="fa-solid fa-thumbs-up"></i>
             </button>
         }
+        @if (!song.UserFollowingArtist)
+        {
+            <button class="follow-button" data-song-id="@song.Id">
+                <i class="fa-solid fa-user-group" style="color: #668586"></i>
+            </button>
+        }
+        else
+        {
+            <button class="follow-button" data-song-id="@song.Id">
+                <i class="fa-solid fa-user-group"></i>
+            </button>
+        }
 
         <button class="add-button" data-playlist-song-id="@song.Id">
             <i class="fa-regular fa-square-plus"></i>
