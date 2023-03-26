@@ -1,0 +1,12 @@
+﻿@model MusicLibraryTest2.Models.SongModels
+
+@foreach (var song in Model.SongList)
+ {
+    <div class="songBox">
+        <p>Title: @song.Title</p>
+        <p>Genre: @song.Genre</p>
+        <p>Artist: @song.Artist</p>
+        <p>Album: @song.AlbumName</p>
+    </div>
+ }
+

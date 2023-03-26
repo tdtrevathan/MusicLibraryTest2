@@ -408,6 +408,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ArtistPagesController.cs" />
+    <Compile Include="Controllers\AdminPagesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -470,10 +471,11 @@
     <Content Include="Views\ArtistPages\_AddMusic.cshtml" />
     <Content Include="Views\ArtistPages\ArtistPage.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
+    <Content Include="Views\AdminPages\AdminPage.cshtml" />
+    <Content Include="Views\Shared\_SongsList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\AdminPages\" />
     <Folder Include="Views\UserPages\" />
   </ItemGroup>
   <ItemGroup>

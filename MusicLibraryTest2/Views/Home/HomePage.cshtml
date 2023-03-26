@@ -11,15 +11,13 @@
 
 <body>
     <div class="mainBox">
-        <!--
 
-
-        <span class="toggle-button">
+        <span class="get-all-songs toggle-button">
             <span class="triangle"></span>
             Browse All Songs
         </span>
 
-        <div class="toggle-container" id=""></div>
+        <div class="browse toggle-container" id="get-all-songs-container"></div>
 
         <span class="toggle-button">
             <span class="triangle"></span>
@@ -34,21 +32,31 @@
         </span>
 
         <div class=" toggle-container" id=""></div>
-
-                    -->
-
-        <!--
-        @if (Model.Roles.Contains("Admin"))
-        {
-            <span class="admin-thing toggle-button">
-                <span class="triangle"></span>
-                Admin Stuff
-            </span>
-
-            <div class="admin toggle-container" id="admin-container"></div>
-        }
-        -->
-
     </div>
 </body>
+
+<script>
+    $(document).ready(function () {
+
+        $('.get-all-songs').click(function () {
+
+            var getAllSongsContainerLoaded = false;
+            var $getAllSongsContainer = $('#get-all-songs-container')
+
+            if (!getAllSongsContainerLoaded) {
+                $.ajax({
+                data: null,
+                url: '/Home/BrowseAllSongs',
+                    success: function(data) {
+                        $getAllSongsContainer.html(data);
+                        getAllSongsContainer = true;
+                    }
+                });
+            }
+            $(this).find('.triangle').toggleClass('rotate');
+            $getAllSongsContainer.toggle();
+        });
+       
+    });
+</script>
 

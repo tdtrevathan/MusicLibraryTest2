@@ -89,3 +89,11 @@ dd {
     .toggle-container{
         display: none
     }
+
+    .songBox{
+        background-color: cadetblue;
+        margin-left: 2rem;
+        border-radius: 1rem;
+        max-width: 200px;
+        padding-left: 1rem;
+    }

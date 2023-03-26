@@ -18,7 +18,6 @@ namespace MusicLibraryTest2.Controllers
         string connection = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         public ActionResult GetArtist(int? artistId)
         {
-
             using (MySqlConnection con = new MySqlConnection(connection))
             {
                 MySqlCommand cmd = new MySqlCommand($"SELECT * FROM artist WHERE artist.Id = {artistId}", con);
@@ -135,20 +134,20 @@ namespace MusicLibraryTest2.Controllers
 
                 }
 
-                //command = $"INSERT INTO user_albums (userId,albumId) " +
-                //$"values ('{profile.Id}',(SELECT id From album " +
-                //$"WHERE title = '{createAlbumModel.Title}' " +
-                //$"AND artist_name = '{profile.Name}' " +
-                //$"AND releaseDate = '{createAlbumModel.ReleaseDate}' " +
-                //$"LIMIT 1))";
-                //
-                //cmd = new MySqlCommand(command, con);
-                //cmd.CommandType = System.Data.CommandType.Text;
-                //
-                //if (cmd.ExecuteNonQuery() > 0)
-                //{
-                //
-                //}
+                command = $"INSERT INTO user_albums (userId,albumId) " +
+                $"values ('{profile.Id}',(SELECT id From album " +
+                $"WHERE title = '{createAlbumModel.Title}' " +
+                $"AND artist_name = '{profile.Name}' " +
+                $"AND releaseDate = '{createAlbumModel.ReleaseDate}' " +
+                $"LIMIT 1))";
+                
+                cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                
+                }
             }
             return View("HomePage", (ProfileModel)Session["ProfileInfo"]);
         }

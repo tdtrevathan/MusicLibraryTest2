@@ -22,6 +22,12 @@ namespace MusicLibraryTest2.Controllers
             return View();
         }
 
+        public ActionResult HomePage()
+        {
+            ProfileModel profileModel = (ProfileModel)Session["ProfileInfo"];
+            return View("HomePage", profileModel);
+        }
+
         public ActionResult ShowNavbar()
         {
             ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
@@ -251,6 +257,46 @@ namespace MusicLibraryTest2.Controllers
             }
 
             return roles;
+        }
+
+        public ActionResult BrowseAllSongs()
+        {
+            List<SongModel> songList = new List<SongModel>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand($"SELECT song.title, song.genre, user.username, album.title AS albumName " +
+                    $" FROM user,user_albums,album,album_songs,song" +
+                    $" WHERE user.Id = user_albums.userId" +
+                    $" AND user_albums.albumId = album.Id" +
+                    $" AND album_songs.songId = song.Id" +
+                    $" ORDER BY song.likes DESC LIMIT 50", con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var songModel = new SongModel
+                    {
+                        Title = reader["title"].ToString(),
+                        Genre = reader["genre"].ToString(),
+                        Artist = reader["username"].ToString(),
+                        AlbumName = reader["albumName"].ToString()
+                    };
+
+                    songList.Add(songModel);
+                }
+            }
+
+            SongModels songModels = new SongModels()
+            {
+                SongList = songList
+            };
+
+            return PartialView("_SongsList", songModels);
         }
 
         public ActionResult SignUpForm()
