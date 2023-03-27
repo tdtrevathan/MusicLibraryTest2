@@ -13,7 +13,7 @@ namespace MusicLibraryTest2.Data
     {
         string connection = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-        public List<User> GetUserData()
+        public List<User> GetUsersData(DateTime? fromDate = null, DateTime? toDate = null)
         {
             List<User> users = new List<User>();
             using (MySqlConnection con = new MySqlConnection(connection))
@@ -21,7 +21,9 @@ namespace MusicLibraryTest2.Data
                 MySqlCommand cmd = new MySqlCommand($"SELECT user.id, user.username, user.created_at, user.modified_at, user.last_login_at, user.is_archived, role.type AS role " +
                                                     $"FROM user " +
                                                     $"LEFT JOIN user_roles ON user.id = user_roles.userid " +
-                                                    $"LEFT JOIN role ON role.id = user_roles.roleid", con);
+                                                    $"LEFT JOIN role ON role.id = user_roles.roleid " +
+                                                    $"{(fromDate != null ? $"WHERE created_at >= '{fromDate.Value.ToString("yyyy-MM-dd")}' " : "")}" +
+                                                    $"{(toDate != null ? $"{(fromDate != null ? "AND" : "WHERE")} created_at <= '{toDate.Value.ToString("yyyy-MM-dd 23:59:59")}'" : "")}", con);
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
 
@@ -47,7 +49,7 @@ namespace MusicLibraryTest2.Data
             List<Song> songs = new List<Song>();
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                MySqlCommand cmd = new MySqlCommand($"SELECT * ,song.title AS songTitle, album.title AS albumTitle " +
+                MySqlCommand cmd = new MySqlCommand($"SELECT song.title AS songTitle, song.genre,  album.artist_name, album.title AS albumTitle " +
                                                     $"FROM song " +
                                                     $"LEFT JOIN album_songs ON song.ID = album_songs.songId " +
                                                     $"LEFT JOIN album ON album.ID = album_songs.albumId;", con);

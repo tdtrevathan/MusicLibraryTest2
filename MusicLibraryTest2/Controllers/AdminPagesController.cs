@@ -26,9 +26,38 @@ namespace MusicLibraryTest2.Controllers
         }
         public ActionResult UserList()
         {
-            List<User> users = db.GetUserData();
-            string sortBy = Request.QueryString["sortBy"];
-            bool isAscending = bool.Parse(Request.QueryString["isAscending"]);
+            List<User> users = new List<User>();
+            string sortBy = "id";
+            bool isAscending = true;
+            DateTime? fromDate = null;
+            DateTime? toDate = null;
+
+            if (!string.IsNullOrEmpty(Request.QueryString["fromDate"]))
+            {
+                fromDate = DateTime.Parse(Request.QueryString["fromDate"]);
+            }
+
+            if (!string.IsNullOrEmpty(Request.QueryString["toDate"]))
+            {
+                toDate = DateTime.Parse(Request.QueryString["toDate"]);
+            }
+
+            if (fromDate != null && toDate != null)
+            {
+                users = db.GetUsersData(fromDate.Value, toDate.Value);
+            }
+            else
+            {
+                users = db.GetUsersData();
+            }
+            if (!string.IsNullOrEmpty(Request.QueryString["sortBy"]))
+            {
+                sortBy = Request.QueryString["sortBy"];
+            }
+            if (!string.IsNullOrEmpty(Request.QueryString["isAscending"]))
+            {
+                isAscending = bool.Parse(Request.QueryString["isAscending"]);
+            }
             switch (sortBy)
             {
                 case "id":
@@ -56,9 +85,12 @@ namespace MusicLibraryTest2.Controllers
 
             ViewBag.sortBy = sortBy;
             ViewBag.isAscending = isAscending;
+            ViewBag.fromDate = fromDate;
+            ViewBag.toDate = toDate;
 
             return View(users);
         }
+
         public ActionResult SongList()
         {
             List<Song> songs = db.GetSongData();

@@ -4,13 +4,20 @@
     Layout = null;
     string sortBy = "id";
     bool isAscending = true;
+    DateTime fromDate;
+    DateTime toDate;
 }
 
 <h1>Sorting Variables:</h1>
 <ul>
     <li>Sort By: @ViewBag.sortBy</li>
     <li>Sort Order: @(ViewBag.isAscending ? "Ascending" : "Descending")</li>
+    @if (ViewBag.fromDate != null && ViewBag.toDate != null)
+    {
+        <li>Date Range: @ViewBag.fromDate.ToShortDateString() - @ViewBag.toDate.ToShortDateString()</li>
+    }
 </ul>
+
 
 <!DOCTYPE html>
 
@@ -23,18 +30,29 @@
     <p>
         @Html.ActionLink("Home", "HomePage", "Home")
         <br /><br />
-        @Html.ActionLink("Sort By ID", "UserList", new { sortBy = "id", ViewBag.isAscending })
+        @Html.ActionLink("Sort By ID", "UserList", new { sortBy = "id", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate})
         <span style="margin: 0 10px;">|</span>
-        @Html.ActionLink("Sort By Name", "UserList", new { sortBy = "name", ViewBag.isAscending })
+        @Html.ActionLink("Sort By Name", "UserList", new { sortBy = "name", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
         <span style="margin: 0 10px;">|</span>
-        @Html.ActionLink("Sort By Created Date", "UserList", new { sortBy = "created", ViewBag.isAscending })
+        @Html.ActionLink("Sort By Created Date", "UserList", new { sortBy = "created", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
         <span style="margin: 0 10px;">|</span>
         <br /><br />
-        @Html.ActionLink("Ascending", "UserList", new { ViewBag.sortBy, isAscending = true })
+        @Html.ActionLink("Ascending", "UserList", new { ViewBag.sortBy, isAscending = true, ViewBag.fromDate, ViewBag.toDate })
         <span style="margin: 0 10px;">|</span>
-        @Html.ActionLink("Descending", "UserList", new { ViewBag.sortBy, isAscending = false })
+        @Html.ActionLink("Descending", "UserList", new { ViewBag.sortBy, isAscending = false, ViewBag.fromDate, ViewBag.toDate })
         <span style="margin: 0 10px;">|</span>
     </p>
+    <form method="get" action="@Url.Action("UserList", "AdminPages", new { ViewBag.sortBy, ViewBag.isAscending })">
+        <label for="fromDate">From Date:</label>
+        <input type="date" id="fromDate" name="fromDate" step="1d">
+
+        <label for="toDate">To Date:</label>
+        <input type="date" id="toDate" name="toDate" step="1d">
+
+        <input type="submit" value="Submit">
+    </form>
+
+
     <style>
         table {
             border-collapse: collapse;
@@ -107,3 +125,13 @@
     </table>
 </body>
 </html>
+<script>
+    $(function () {
+        $("#datepicker").datepicker({
+            dateFormat: "yy-mm-dd",
+            onSelect: function (dateText) {
+                window.location.href = "/UserList?fromDate=" + dateText;
+            }
+        });
+    });
+</script>

@@ -8,8 +8,11 @@
 </head>
 
 @Html.Action("ShowNavbar", "Home")
-@Html.ActionLink("User List", "UserList", (new { sortBy = "id", isAscending = true}))
+<br /><br />
+@Html.ActionLink("User List", "UserList", (new { sortBy = "id", isAscending = true }))
+<span style="margin: 0 10px;">|</span>
 @Html.ActionLink("Song List", "SongList")
+<span style="margin: 0 10px;">|</span>
 
 <body>
     <div class="mainBox">
