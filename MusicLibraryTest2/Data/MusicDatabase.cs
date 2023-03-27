@@ -31,7 +31,7 @@ namespace MusicLibraryTest2.Data
                 while (reader.Read())
                 {
                     var user = new User();
-                    user.Id = Convert.ToInt32(reader["ID"]);
+                    user.Id = Convert.ToInt32(reader["id"]);
                     user.Username = reader["username"].ToString();
                     user.Role = reader["role"].ToString();
                     user.CreatedAt = (reader["created_at"] as DateTime?).GetValueOrDefault();
@@ -44,15 +44,19 @@ namespace MusicLibraryTest2.Data
             }
         }
 
-        public List<Song> GetSongData()
+        public List<Song> GetSongData(DateTime? fromDate = null, DateTime? toDate = null)
         {
             List<Song> songs = new List<Song>();
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                MySqlCommand cmd = new MySqlCommand($"SELECT song.title AS songTitle, song.genre,  album.artist_name, album.title AS albumTitle " +
+                MySqlCommand cmd = new MySqlCommand($"SELECT song.id, song.title AS songTitle, song.views, song.likes, song.genre,  album.artist_name, album.title AS albumTitle, song.created_at, song.modified_at, song.isarchived " +
                                                     $"FROM song " +
                                                     $"LEFT JOIN album_songs ON song.ID = album_songs.songId " +
-                                                    $"LEFT JOIN album ON album.ID = album_songs.albumId;", con);
+                                                    $"LEFT JOIN album ON album.ID = album_songs.albumId " +
+                                                    $"{(fromDate != null || toDate != null ? "WHERE " : "")}" +
+                                                    $"{(fromDate != null ? $"created_at >= '{fromDate.Value.ToString("yyyy-MM-dd")}'" : "")}" +
+                                                    $"{(fromDate != null && toDate != null ? " AND " : "")}" +
+                                                    $"{(toDate != null ? $"created_at <= '{toDate.Value.ToString("yyyy-MM-dd 23:59:59")}'" : "")}", con);
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
 
@@ -60,10 +64,16 @@ namespace MusicLibraryTest2.Data
                 while (reader.Read())
                 {
                     var song = new Song();
+                    song.Id = Convert.ToInt32(reader["id"]);
+                    song.Views = Convert.ToInt32(reader["views"]);
+                    song.Likes = Convert.ToInt32(reader["likes"]);
                     song.Title = reader["songTitle"].ToString();
                     song.Genre = reader["genre"].ToString();
                     song.Artist = reader["artist_name"].ToString();
                     song.AlbumName = reader["albumTitle"].ToString();
+                    song.CreatedAt = (reader["created_at"] as DateTime?).GetValueOrDefault();
+                    song.ModifiedAt = (reader["modified_at"] as DateTime?).GetValueOrDefault();
+                    song.IsArchived = (reader["isarchived"] as bool?).GetValueOrDefault(false);
                     songs.Add(song);
                 }
                 return songs;

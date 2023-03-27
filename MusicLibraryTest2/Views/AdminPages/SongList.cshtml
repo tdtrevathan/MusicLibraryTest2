@@ -2,8 +2,21 @@
 
 @{
     Layout = null;
+    string sortBy = "id";
+    bool isAscending = true;
+    DateTime fromDate;
+    DateTime toDate;
 }
-
+<h1>Song Count: @ViewBag.songCount</h1>
+<h2>Sorting Variables:</h2>
+<ul>
+    <li>Sort By: @ViewBag.sortBy</li>
+    <li>Sort Order: @(ViewBag.isAscending ? "Ascending" : "Descending")</li>
+    @if (ViewBag.fromDate != null && ViewBag.toDate != null)
+    {
+        <li>Date Range: @ViewBag.fromDate.ToShortDateString() - @ViewBag.toDate.ToShortDateString()</li>
+    }
+</ul>
 <!DOCTYPE html>
 
 <html>
@@ -13,8 +26,38 @@
 </head>
 <body>
     <p>
-        @Html.ActionLink("Home", "HomePage", "Home")
+        @Html.ActionLink("Back", "AdminPage")
+        <br /><br />
+        @Html.ActionLink("Sort By Title", "SongList", new { sortBy = "title", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+        <span style="margin: 0 10px;">|</span>
+        @Html.ActionLink("Sort By Genre", "SongList", new { sortBy = "genre", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+        <span style="margin: 0 10px;">|</span>
+        @Html.ActionLink("Sort By View", "SongList", new { sortBy = "view", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+        <span style="margin: 0 10px;">|</span>
+        @Html.ActionLink("Sort By Like", "SongList", new { sortBy = "like", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+        <span style="margin: 0 10px;">|</span>
+        @Html.ActionLink("Sort By Artist", "SongList", new { sortBy = "artist", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+        <span style="margin: 0 10px;">|</span>
+        @Html.ActionLink("Sort By Album", "SongList", new { sortBy = "album", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+        <span style="margin: 0 10px;">|</span>
+        @Html.ActionLink("Sort By Created Date", "SongList", new { sortBy = "created", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+        <span style="margin: 0 10px;">|</span>
+        <br /><br />
+        @Html.ActionLink("Ascending", "SongList", new { ViewBag.sortBy, isAscending = true, ViewBag.fromDate, ViewBag.toDate })
+        <span style="margin: 0 10px;">|</span>
+        @Html.ActionLink("Descending", "SongList", new { ViewBag.sortBy, isAscending = false, ViewBag.fromDate, ViewBag.toDate })
+        <span style="margin: 0 10px;">|</span>
     </p>
+    <p>Search for new songs that were created in a date range:</p>
+    <form method="get" action="@Url.Action("SongList", "AdminPages", new { ViewBag.sortBy, ViewBag.isAscending })">
+        <label for="fromDate">From Date:</label>
+        <input type="date" id="fromDate" name="fromDate">
+
+        <label for="toDate">To Date:</label>
+        <input type="date" id="toDate" name="toDate">
+
+        <input type="submit" value="Submit">
+    </form>
     <style>
         table {
             border-collapse: collapse;
@@ -40,10 +83,25 @@
                 @Html.DisplayNameFor(model => model.Genre)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Views)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Likes)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Artist)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AlbumName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsArchived)
             </th>
             <th></th>
         </tr>
@@ -58,10 +116,25 @@
                     @Html.DisplayFor(modelItem => item.Genre)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Views)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Likes)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Artist)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.AlbumName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsArchived)
                 </td>
             </tr>
         }

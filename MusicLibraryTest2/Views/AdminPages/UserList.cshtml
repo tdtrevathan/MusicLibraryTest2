@@ -30,7 +30,7 @@
 </head>
 <body>
     <p>
-        @Html.ActionLink("Home", "HomePage", "Home")
+        @Html.ActionLink("Back", "AdminPage")
         <br /><br />
         @Html.ActionLink("Sort By ID", "UserList", new { sortBy = "id", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
         <span style="margin: 0 10px;">|</span>
@@ -47,10 +47,10 @@
     <p>Search for new users that were created in a date range:</p>
     <form method="get" action="@Url.Action("UserList", "AdminPages", new { ViewBag.sortBy, ViewBag.isAscending })">
         <label for="fromDate">From Date:</label>
-        <input type="date" id="fromDate" name="fromDate" step="1d">
+        <input type="date" id="fromDate" name="fromDate">
 
         <label for="toDate">To Date:</label>
-        <input type="date" id="toDate" name="toDate" step="1d">
+        <input type="date" id="toDate" name="toDate">
 
         <input type="submit" value="Submit">
     </form>
@@ -128,13 +128,3 @@
     </table>
 </body>
 </html>
-<script>
-    $(function () {
-        $("#datepicker").datepicker({
-            dateFormat: "yy-mm-dd",
-            onSelect: function (dateText) {
-                window.location.href = "/UserList?fromDate=" + dateText;
-            }
-        });
-    });
-</script>
