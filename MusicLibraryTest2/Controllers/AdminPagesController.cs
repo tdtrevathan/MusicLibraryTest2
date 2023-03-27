@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using NAudio.Wave;
 using System.Web.Profile;
 using MusicLibraryTest2.Data;
+using Microsoft.Ajax.Utilities;
 
 namespace MusicLibraryTest2.Controllers
 {
@@ -82,7 +83,7 @@ namespace MusicLibraryTest2.Controllers
                     users = users.OrderBy(u => u.Id).ToList();
                     break;
             }
-
+            ViewBag.userCount = users.DistinctBy(u => u.Id).Count();
             ViewBag.sortBy = sortBy;
             ViewBag.isAscending = isAscending;
             ViewBag.fromDate = fromDate;

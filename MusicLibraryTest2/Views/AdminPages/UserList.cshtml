@@ -8,7 +8,8 @@
     DateTime toDate;
 }
 
-<h1>Sorting Variables:</h1>
+<h1>User Count: @ViewBag.userCount</h1>
+<h2>Sorting Variables:</h2>
 <ul>
     <li>Sort By: @ViewBag.sortBy</li>
     <li>Sort Order: @(ViewBag.isAscending ? "Ascending" : "Descending")</li>
@@ -17,6 +18,7 @@
         <li>Date Range: @ViewBag.fromDate.ToShortDateString() - @ViewBag.toDate.ToShortDateString()</li>
     }
 </ul>
+
 
 
 <!DOCTYPE html>
@@ -30,7 +32,7 @@
     <p>
         @Html.ActionLink("Home", "HomePage", "Home")
         <br /><br />
-        @Html.ActionLink("Sort By ID", "UserList", new { sortBy = "id", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate})
+        @Html.ActionLink("Sort By ID", "UserList", new { sortBy = "id", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
         <span style="margin: 0 10px;">|</span>
         @Html.ActionLink("Sort By Name", "UserList", new { sortBy = "name", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
         <span style="margin: 0 10px;">|</span>
@@ -42,6 +44,7 @@
         @Html.ActionLink("Descending", "UserList", new { ViewBag.sortBy, isAscending = false, ViewBag.fromDate, ViewBag.toDate })
         <span style="margin: 0 10px;">|</span>
     </p>
+    <p>Search for new users that were created in a date range:</p>
     <form method="get" action="@Url.Action("UserList", "AdminPages", new { ViewBag.sortBy, ViewBag.isAscending })">
         <label for="fromDate">From Date:</label>
         <input type="date" id="fromDate" name="fromDate" step="1d">
