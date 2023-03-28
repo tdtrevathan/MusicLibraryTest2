@@ -387,7 +387,7 @@ namespace MusicLibraryTest2.Controllers
 
                         while (reader.Read())
                         {
-                            return Convert.ToInt32(reader["veiws"]);
+                            return Convert.ToInt32(reader["views"]);
                         }
                     }
                 }
@@ -418,8 +418,8 @@ namespace MusicLibraryTest2.Controllers
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes " +
-                    $" FROM song ORDER BY likes DESC", con);
+                MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes, song.views" +
+                    $" FROM song ORDER BY views DESC LIMIT 10", con);
 
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
@@ -434,6 +434,7 @@ namespace MusicLibraryTest2.Controllers
                         Title = reader["title"].ToString(),
                         Genre = reader["genre"].ToString(),
                         Likes = Convert.ToInt32(reader["likes"]),
+                        Views = Convert.ToInt32(reader["views"]),
                         LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"])),
                         UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"])))
                     };
@@ -459,7 +460,7 @@ namespace MusicLibraryTest2.Controllers
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes " +
+                MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes, song.views " +
                     $" FROM song, user_likes " +
                     $" WHERE song.Id = user_likes.songId " +
                     $" AND user_likes.userId = {profile.Id}", con);
@@ -477,6 +478,7 @@ namespace MusicLibraryTest2.Controllers
                         Title = reader["title"].ToString(),
                         Genre = reader["genre"].ToString(),
                         Likes = Convert.ToInt32(reader["likes"]),
+                        Views = Convert.ToInt32(reader["views"]),
                         LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"]))
                     };
 

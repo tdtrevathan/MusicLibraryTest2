@@ -328,6 +328,42 @@ namespace MusicLibraryTest2.Controllers
             return null;
         }
 
+        public ActionResult GetMilestones()
+        {
+            ProfileModel profileModel = (ProfileModel)Session["ProfileInfo"];
+            List<MilestoneModel> list = new List<MilestoneModel>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"SELECT title" +
+
+                    $" FROM milestone" +
+
+                    $" WHERE milestone.userId = {profileModel.Id}" +
+                    $" ORDER BY created_at DESC";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    MilestoneModel notificationModel = new MilestoneModel()
+                    {
+                        SongName = reader["title"].ToString(),
+                    };
+                    list.Add(notificationModel);
+                }
+            }
+            MilestonesModel milestonesModel = new MilestonesModel()
+            {
+                Milestones = list
+            };
+            return PartialView("_MilestonesList", milestonesModel);
+        }
+
         ActionResult IncrimentViews(int songId)
         {
             using (MySqlConnection con = new MySqlConnection(connection))
