@@ -111,6 +111,11 @@ namespace MusicLibraryTest2.Controllers
                     }
                 }
             }
+            else
+            {
+
+                //create user_song relationship
+            }
 
             return View("ArtistPage", (ProfileModel)Session["ProfileInfo"]);
         }
@@ -193,7 +198,7 @@ namespace MusicLibraryTest2.Controllers
                 
                 }
             }
-            return View("HomePage", (ProfileModel)Session["ProfileInfo"]);
+            return View("ArtistPage", (ProfileModel)Session["ProfileInfo"]);
         }
 
         Dictionary<string, int> GetDictionaryOfUserAlbums(int artistId)

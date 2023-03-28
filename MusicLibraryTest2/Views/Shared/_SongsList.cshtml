@@ -21,14 +21,20 @@
         </p>
 
         <span> Views: </span>
-        <span>
+        <span class="views-count" data-song-views-id="@song.Id">
             @song.Views
         </span>
+
+        <br />
+        <br />
 
         <span class="load-song toggle-button sub-toggle" data-song-likes-id="@song.Id">
             <span class="triangle"></span>
             Load Player
         </span>
+
+        <br />
+        <br />
 
         <div class="songs toggle-container sub-container" id="song-@song.Id"></div>
 
@@ -52,7 +58,7 @@
         }
         else
         {
-            <button class="follow-button" data-artist-name="@song.Artist">
+            <button class="follow-button not-following" data-artist-name="@song.Artist">
                 <i class="fa-solid fa-user-group"></i>
             </button>
         }
@@ -93,16 +99,27 @@
 
             var songLoaded = false;
             var songId = $(this).data('song-likes-id');
+            var loadButton = $(this);
             var $songsContainer = $('#song-' + songId);
 
-            if (!songLoaded) {
+            console.log(loadButton.find('.song-loaded').length);
+
+            if (loadButton.find('.song-loaded').length < 1) {
                 $.ajax({
                     url: '/Home/LoadSong',
                     type: 'GET',
                     data: { songId: songId },
                     success: function (data) {
                         $songsContainer.html(data);
-                        songLoaded = true;
+                    }
+                });
+                $.ajax({
+                    url: '/Home/AddView',
+                    type: 'GET',
+                    data: { songId: songId },
+                    success: function (data) {
+                        loadButton.find('.load-song').addClass('song-loaded');
+                        $('.views-count[data-song-views-id="' + songId + '"]').text(data);
                     }
                 });
             }
@@ -146,17 +163,17 @@
 
         $('.follow-button').click(function () {
 
-            var songFollowId = $(this).data('artist-name');
-            console.log(songFollowId);
-            var button = $(this);
-            if (button.find('.not-following').length > 0) {
+            var artistName = $(this).data('artist-name');
+            var followButton = $(this);
+            console.log(followButton.find('.not-following').length > 0);
+            if (followButton.find('.not-following').length < 0) {
                 $.ajax({
                     url: '/Home/FollowArtist',
                     type: 'GET',
-                    data: { artistName: songFollowId },
+                    data: { artistName: artistName },
                     success: function (data) {
-                        $songFollowId.html(data);
-                        button.find('.fa-thumbs-up').removeClass('not-following');
+                        $followButton.html(data);
+                        followButton.find('.follow-button').removeClass('not-following');
                     }
                 });
             }

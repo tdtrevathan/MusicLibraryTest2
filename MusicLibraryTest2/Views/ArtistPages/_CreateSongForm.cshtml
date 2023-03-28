@@ -4,33 +4,37 @@
     ViewBag.Title = "Create Song";
 }
 
-@using (Html.BeginForm("CreateSong", "ArtistPages", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.LabelFor(model => model.Title)
-    <br>
-    @Html.TextBoxFor(model => model.Title)
-    <br>
-    @Html.LabelFor(model => model.Duration)
-    <br>
-    @Html.TextBoxFor(model => model.Duration)
-    <br>
-    @Html.LabelFor(model => model.Genre)
-    <br>
-    @Html.TextBoxFor(model => model.Genre)
-    <br>
-    <br>
-    @Html.LabelFor(model => model.songFile)
-    <br>
-    @Html.TextBoxFor(m => m.songFile, new { type = "file" })
-    @Html.ValidationMessageFor(m => m.songFile)
-    <br>
-    <br>
+<div class="infoBox">
+    @using (Html.BeginForm("CreateSong", "ArtistPages", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.LabelFor(model => model.Title)
+        <br>
+        @Html.TextBoxFor(model => model.Title)
+        <br>
+        @Html.LabelFor(model => model.Duration)
+        <br>
+        @Html.TextBoxFor(model => model.Duration)
+        <br>
+        @Html.LabelFor(model => model.Genre)
+        <br>
+        @Html.TextBoxFor(model => model.Genre)
+        <br>
+        <br>
+        @Html.LabelFor(model => model.songFile)
+        <br>
+        @Html.TextBoxFor(m => m.songFile, new { type = "file" })
+        @Html.ValidationMessageFor(m => m.songFile)
+        <br>
+        <br>
 
-    var selectList = new SelectList(Model.UserAlbumDictionary, "Value", "Key");
+        var selectList = new SelectList(Model.UserAlbumDictionary, "Value", "Key");
 
-    <label>Add to Album</label>
-    @Html.DropDownListFor(m => m.albumId, selectList, "No Album", new { @class = "form-control" })
-    <input id="Submit" type="submit" value="Create" />
-}
+        <label>Add to Album</label>
+        @Html.DropDownListFor(m => m.albumId, selectList, "No Album", new { @class = "form-control" })
+        <input id="Submit" type="submit" value="Create" />
+    }
+
+</div>
+
 
 

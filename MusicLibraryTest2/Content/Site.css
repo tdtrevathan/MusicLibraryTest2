@@ -109,6 +109,13 @@ dd {
     padding: 2rem 2rem;
 }
 
+.info-box {
+    background-color: var(--color-secondary-light);
+    margin: 2rem 2rem;
+    border-radius: 1rem;
+    padding: 2rem 2rem;
+}
+
 .home-page-image{
     max-width: 500px;
     object-fit: contain;

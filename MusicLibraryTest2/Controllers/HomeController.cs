@@ -32,7 +32,6 @@ namespace MusicLibraryTest2.Controllers
 
         public ActionResult LoadSong(int songId)
         {
-            AddView(songId);
 
             SongModel songModel = new SongModel()
             {
@@ -404,6 +403,7 @@ namespace MusicLibraryTest2.Controllers
             return 0;
         }
 
+        [HttpGet]
         public bool FollowArtist(string artistName)
         {
             ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
@@ -557,7 +557,8 @@ namespace MusicLibraryTest2.Controllers
                         Genre = reader["genre"].ToString(),
                         Likes = Convert.ToInt32(reader["likes"]),
                         Views = Convert.ToInt32(reader["views"]),
-                        LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"]))
+                        LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"])),
+                        UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"])))
                     };
 
                     GetArtistInfo(songModel);
@@ -709,7 +710,8 @@ namespace MusicLibraryTest2.Controllers
                             Id = Convert.ToInt32(reader["id"]),
                             Title = reader["title"].ToString(),
                             Genre = reader["genre"].ToString(),
-                            LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"]))
+                            LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"])),
+                            UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"])))
                         };
 
                         songList.Add(songModel);
