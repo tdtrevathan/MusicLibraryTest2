@@ -377,18 +377,27 @@ namespace MusicLibraryTest2.Controllers
 
                 if (cmd.ExecuteNonQuery() > 0)
                 {
-                    cmd = new MySqlCommand($"INSERT INTO user_views (userId,songId) values ({profile.Id},{songId})", con);
-
-                    if (cmd.ExecuteNonQuery() > 0)
+                    try
                     {
-                        cmd = new MySqlCommand($"SELECT views FROM song WHERE song.id = {songId}", con);
+                        cmd = new MySqlCommand($"INSERT INTO user_views (userId,songId) values ({profile.Id},{songId})", con);
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch(Exception ex)
+                    {
 
-                        MySqlDataReader reader = cmd.ExecuteReader();
+                            cmd = new MySqlCommand($"UPDATE user_views SET time_viewed = CURRENT_TIMESTAMP WHERE userID = {profile.Id} AND songID = {songId}", con);
+                        cmd.ExecuteNonQuery();
+                        
 
-                        while (reader.Read())
-                        {
-                            return Convert.ToInt32(reader["veiws"]);
-                        }
+                    }
+
+                    cmd = new MySqlCommand($"SELECT views FROM song WHERE song.id = {songId}", con);
+
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        return Convert.ToInt32(reader["views"]);
                     }
                 }
             }
