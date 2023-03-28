@@ -40,6 +40,13 @@
 
         <div class="milestones toggle-container" id="get-milestones-container"></div>
 
+        <span class="get-artist-report toggle-button">
+            <span class="triangle"></span>
+            Artist Report
+        </span>
+
+        <div class="aritst-report toggle-container" id="get-artist-report-container"></div>
+
     </div>
 </body>
 
@@ -101,6 +108,24 @@
             }
             $(this).find('.triangle').toggleClass('rotate');
             $getMilestonesContainer.toggle();
+        });
+        $('.get-artist-report').click(function () {
+            var getArtistReportContainerLoaded = false;
+
+            var $getArtistReportContainer = $('#get-artist-report-container')
+
+            if (!getArtistReportContainerLoaded) {
+                $.ajax({
+                    data: null,
+                    url: '/ArtistPages/GetArtistReport',
+                    success: function (data) {
+                        $getArtistReportContainer.html(data);
+                        getArtistReportContainerLoaded = true;
+                    }
+                });
+            }
+            $(this).find('.triangle').toggleClass('rotate');
+            $getArtistReportContainer.toggle();
         });
     });
 </script>

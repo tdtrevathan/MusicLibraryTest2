@@ -432,6 +432,8 @@
     <Compile Include="Models\CreateSongModel.cs" />
     <Compile Include="Models\SongModels.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\ArtistReportModel.cs" />
+    <Compile Include="Models\ArtistReportModels.cs" />
     <Compile Include="Models\UserReportModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -494,6 +496,7 @@
     <Content Include="Views\Shared\_NotificationsList.cshtml" />
     <Content Include="Views\Home\_UserReport.cshtml" />
     <Content Include="Views\Shared\_MilestonesList.cshtml" />
+    <Content Include="Views\ArtistPages\_ArtistReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

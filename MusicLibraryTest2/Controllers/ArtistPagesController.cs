@@ -93,52 +93,9 @@ namespace MusicLibraryTest2.Controllers
 
                 }
             }
-
-            public ActionResult GetArtistReport()
-            {
-                List<ArtistReportModel> userReports = new List<UserReportModel>();
-
-                using (MySqlConnection con = new MySqlConnection(connection))
-                {
-
-                    string command = $"SELECT song.title, album.title , SUM(likes) as TotalLikes, COUNT(*) as MonthlyViews" +
-                    " FROM album,album_songs,song,user_views" +
-                    " WHERE album.id = album_songs.albumid" +
-                    " AND album_songs.songId = song.id" +
-                    " AND user_views.time_viewed > now() - interval 1 month" +
-                    " AND user_views.songId = song.id" +
-                    " GROUP BY song.title, album.title" +
-                    " ORDER BY TotalLikes desc";
-
-                    MySqlCommand cmd = new MySqlCommand(command, con);
-                    cmd.CommandType = System.Data.CommandType.Text;
-                    con.Open();
-
-                    MySqlDataReader reader = cmd.ExecuteReader();
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var userReport = new UserReportModel()
-                            {
-                                ArtistName = reader["artist_name"].ToString(),
-                                Likes = Convert.ToInt32(reader["likes"]),
-                                Views = Convert.ToInt32(reader["views"])
-                            };
-
-                            userReports.Add(userReport);
-                        }
-                    }
-                }
-
-                var userReportModels = new UserReportModels() { UserReports = userReports };
-
-                return PartialView("_UserReport", userReportModels);
-            }
-
             if (createSongModel.albumId != 0)
             {
-      
+
                 using (MySqlConnection con = new MySqlConnection(connection))
                 {
                     string command = $"INSERT INTO album_songs (albumId,songId) values" +
@@ -157,6 +114,51 @@ namespace MusicLibraryTest2.Controllers
 
             return View("ArtistPage", (ProfileModel)Session["ProfileInfo"]);
         }
+
+        public ActionResult GetArtistReport()
+        {
+            List<ArtistReportModel> artistReports = new List<ArtistReportModel>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+
+                string command = $"SELECT song.title as song_title, album.title as album_title , SUM(likes) as TotalLikes, COUNT(*) as MonthlyViews" +
+                " FROM album,album_songs,song,user_views" +
+                " WHERE album.id = album_songs.albumid" +
+                " AND album_songs.songId = song.id" +
+                " AND user_views.time_viewed > now() - interval 1 month" +
+                " AND user_views.songId = song.id" +
+                " GROUP BY song.title, album.title" +
+                " ORDER BY TotalLikes desc";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var artistReport = new ArtistReportModel()
+                        {
+                            SongName = reader["song_title"].ToString(),
+                            AlbumName = reader["album_title"].ToString(),
+                            Likes = Convert.ToInt32(reader["TotalLikes"]),
+                            Views = Convert.ToInt32(reader["MonthlyViews"])
+                        };
+
+                        artistReports.Add(artistReport);
+                    }
+                }
+            }
+
+            var artistReportModels = new ArtistReportModels() { ArtistReports = artistReports };
+
+            return PartialView("_ArtistReport", artistReportModels);
+
+        }
+
 
         [HttpPost]
         public ActionResult CreateAlbum(CreateAlbumModel createAlbumModel)
