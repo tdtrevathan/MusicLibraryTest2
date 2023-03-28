@@ -40,6 +40,13 @@
 
         <div class="notifications toggle-container" id="get-notifications-container"></div>
 
+        <span class="get-user-report toggle-button">
+            <span class="triangle"></span>
+            Most Popular Artists
+        </span>
+
+        <div class="popular-artists toggle-container" id="get-user-report-container"></div>
+
         @if (!Model.Roles.Contains("artist"))
         {
             <button class="become-artist">Become Artist</button>
@@ -126,6 +133,25 @@
             }
             $(this).find('.triangle').toggleClass('rotate');
             $getNotificationsContainer.toggle();
+        });
+
+        $('.get-user-report').click(function () {
+            var getUserReportContainerLoaded = false;
+
+            var $getUserReportContainer = $('#get-user-report-container')
+
+            if (!getUserReportContainerLoaded) {
+                $.ajax({
+                    data: null,
+                    url: '/Home/GetMostPopularArtistReport',
+                    success: function (data) {
+                        $getUserReportContainer.html(data);
+                        getUserReportContainerLoaded = true;
+                    }
+                });
+            }
+            $(this).find('.triangle').toggleClass('rotate');
+            $getUserReportContainer.toggle();
         });
 
         $('.become-artist').click(function () {

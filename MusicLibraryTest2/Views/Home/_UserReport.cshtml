@@ -1,0 +1,16 @@
+﻿@model MusicLibraryTest2.Models.UserReportModels
+
+@foreach (var report in Model.UserReports)
+{
+    <dl>
+        <dt>Artist:</dt>
+        <dd>@report.ArtistName</dd>
+        <dt>Views:</dt>
+        <dd>@report.Views</dd>
+        <dt>Likes:</dt>
+        <dd>@report.Likes</dd>
+    </dl>
+    <br>
+    <br>
+}
+

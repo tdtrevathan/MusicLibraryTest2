@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using NAudio.Wave;
 using System.Web.Profile;
 using System.Web.Security;
+using System.Drawing;
 
 
 namespace MusicLibraryTest2.Controllers
@@ -289,6 +290,46 @@ namespace MusicLibraryTest2.Controllers
             }
 
             return roles;
+        }
+
+        public ActionResult GetMostPopularArtistReport()
+        {
+            List<UserReportModel> userReports = new List<UserReportModel>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+
+                string command = $"SELECT artist_name,SUM(views) as views,SUM(likes) as likes" +
+                    $" FROM album,album_songs,song WHERE album.id = album_songs.albumid" +
+                    $" AND album_songs.songId = song.id" +
+                    $" AND created_at > now() - interval 1 month" +
+                    $" GROUP BY artist_name " +
+                    $" ORDER BY views desc, likes desc";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var userReport = new UserReportModel()
+                        {
+                            ArtistName = reader["artist_name"].ToString(),
+                            Likes = Convert.ToInt32(reader["likes"]),
+                            Views = Convert.ToInt32(reader["views"])
+                        };
+
+                        userReports.Add(userReport);
+                    }
+                }
+            }
+
+            var userReportModels = new UserReportModels() { UserReports = userReports };
+
+            return PartialView("_UserReport", userReportModels);
         }
 
         public int AddLike(int songId)
