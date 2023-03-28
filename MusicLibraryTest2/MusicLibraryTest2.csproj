@@ -438,11 +438,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\artworks-000348307302-j2p2qf-t500x500.jpg" />
+    <Content Include="Content\beatpad.jpg" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\erik-mclean-QzpgqElvSiA-unsplash.jpg" />
+    <Content Include="Content\guitar-756326_1920.jpg" />
+    <Content Include="Content\music-free-micinterface.jpg" />
+    <Content Include="Content\singer-340210_1920.jpg" />
+    <Content Include="Content\songwriting-2757636_1920.jpg" />
+    <Content Include="Content\studio_artistpage_image.jpeg" />
+    <Content Include="Content\vinyl-1595847_1920.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
