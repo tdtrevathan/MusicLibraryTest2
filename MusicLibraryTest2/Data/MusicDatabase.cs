@@ -49,10 +49,12 @@ namespace MusicLibraryTest2.Data
             List<Song> songs = new List<Song>();
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                MySqlCommand cmd = new MySqlCommand($"SELECT song.id, song.title AS songTitle, song.views, song.likes, song.genre,  album.artist_name, album.title AS albumTitle, song.created_at, song.modified_at, song.isarchived " +
+                MySqlCommand cmd = new MySqlCommand($"SELECT song.id, song.title AS songTitle, song.views, song.likes, song.genre,  user.username AS artist_name, album.title AS albumTitle, song.created_at, song.modified_at, song.isarchived " +
                                                     $"FROM song " +
                                                     $"LEFT JOIN album_songs ON song.ID = album_songs.songId " +
                                                     $"LEFT JOIN album ON album.ID = album_songs.albumId " +
+                                                    $"LEFT JOIN user_songs ON user_songs.songid = song.id " +
+                                                    $"LEFT JOIN user ON user_songs.userid = user.id " +
                                                     $"{(fromDate != null || toDate != null ? "WHERE " : "")}" +
                                                     $"{(fromDate != null ? $"created_at >= '{fromDate.Value.ToString("yyyy-MM-dd")}'" : "")}" +
                                                     $"{(fromDate != null && toDate != null ? " AND " : "")}" +
