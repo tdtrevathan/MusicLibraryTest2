@@ -32,6 +32,7 @@ namespace MusicLibraryTest2.Controllers
 
         public ActionResult LoadSong(int songId)
         {
+            AddView(songId);
 
             SongModel songModel = new SongModel()
             {
@@ -356,6 +357,37 @@ namespace MusicLibraryTest2.Controllers
                         while (reader.Read())
                         {
                             return Convert.ToInt32(reader["likes"]);
+                        }
+                    }
+                }
+            }
+            return 0;
+        }
+
+        public int AddView(int songId)
+        {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand($"UPDATE song SET views = views + 1 WHERE song.id = {songId}", con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    cmd = new MySqlCommand($"INSERT INTO user_views (userId,songId) values ({profile.Id},{songId})", con);
+
+                    if (cmd.ExecuteNonQuery() > 0)
+                    {
+                        cmd = new MySqlCommand($"SELECT views FROM song WHERE song.id = {songId}", con);
+
+                        MySqlDataReader reader = cmd.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            return Convert.ToInt32(reader["veiws"]);
                         }
                     }
                 }

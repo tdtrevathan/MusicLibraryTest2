@@ -4,15 +4,3 @@
       <source src="@Url.Action("PlayAudio", "ArtistPages", new { songId = Model.Id })" type="audio/mp3">
       Your browser does not support the audio element.
   </audio>
-
-
-<script>
-  var audioPlayers = document.querySelectorAll("audio[id^='audioPlayer_']");
-  audioPlayers.forEach(function(audioPlayer) {
-    audioPlayer.addEventListener("play", function() {
-      var songId = audioPlayer.dataset.songId;
-      var url = "@Url.Action("IncrementViews", "Home")?songId=" + songId;
-      fetch(url);
-    });
-  });
-</script>
