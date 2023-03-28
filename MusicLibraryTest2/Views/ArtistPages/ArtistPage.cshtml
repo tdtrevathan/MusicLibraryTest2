@@ -33,6 +33,13 @@
 
         <div class=" toggle-container" id="song-report-container"></div>
 
+        <span class="get-milestones toggle-button">
+            <span class="triangle"></span>
+            Milestones
+        </span>
+
+        <div class="milestones toggle-container" id="get-milestones-container"></div>
+
     </div>
 </body>
 
@@ -76,6 +83,24 @@
             }
             $(this).find('.triangle').toggleClass('rotate');
             $albumsContainer.toggle();
+        });
+        $('.get-milestones').click(function () {
+            var getMilestonesContainerLoaded = false;
+
+            var $getMilestonesContainer = $('#get-milestones-container')
+
+            if (!getMilestonesContainerLoaded) {
+                $.ajax({
+                    data: null,
+                    url: '/ArtistPages/GetMilestones',
+                    success: function (data) {
+                        $getMilestonesContainer.html(data);
+                        getMilestonesContainerLoaded = true;
+                    }
+                });
+            }
+            $(this).find('.triangle').toggleClass('rotate');
+            $getMilestonesContainer.toggle();
         });
     });
 </script>

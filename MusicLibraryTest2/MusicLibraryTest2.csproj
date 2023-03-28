@@ -414,9 +414,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\MilestoneModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\CreatePlaylistModel.cs" />
     <Compile Include="Models\AddToPlaylistModel.cs" />
+    <Compile Include="Models\MilestonesModel.cs" />
     <Compile Include="Models\PlaylistModel.cs" />
     <Compile Include="Models\PlaylistModels.cs" />
     <Compile Include="Models\AlbumModels.cs" />
@@ -448,6 +450,7 @@
     <Compile Include="Models\UserReportModel.cs" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\MusicLibraryTest220230327213141 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -490,6 +493,7 @@
     <Content Include="Views\Shared\_AddToPlaylistForm.cshtml" />
     <Content Include="Views\Shared\_NotificationsList.cshtml" />
     <Content Include="Views\Home\_UserReport.cshtml" />
+    <Content Include="Views\Shared\_MilestonesList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
