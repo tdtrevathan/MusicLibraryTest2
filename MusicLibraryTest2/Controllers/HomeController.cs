@@ -420,15 +420,44 @@ namespace MusicLibraryTest2.Controllers
             }
             return false;
         }
-
-        public ActionResult BrowseAllSongs()
+        public ActionResult SearchSongs()
         {
             List<SongModel> songList = new List<SongModel>();
-
+            string searchText = Request.QueryString["searchTerm"];
+            string searchBy = Request.QueryString["searchBy"];
+            string query = "";
+            switch (searchBy)
+            {
+                case "title":
+                    query = $"SELECT song.Id, song.title, song.genre, song.likes " +
+                            $"FROM song " +
+                            $"WHERE song.title LIKE '%{searchText}%' " +
+                            $"ORDER BY song.likes DESC";
+                    break;
+                case "artist":
+                    query = $"SELECT song.Id, song.title, song.genre, song.likes " +
+                            $"FROM song " +
+                            $"LEFT JOIN album_songs ON song.ID = album_songs.songId " +
+                            $"LEFT JOIN album ON album.ID = album_songs.albumId " +
+                            $"WHERE album.artist_name LIKE '%{searchText}%' " +
+                            $"ORDER BY song.likes DESC";
+                    break;
+                case "genre":
+                    query = $"SELECT song.Id, song.title, song.genre, song.likes " +
+                            $"FROM song " +
+                            $"WHERE song.genre LIKE '%{searchText}%' " +
+                            $"ORDER BY song.likes DESC";
+                    break;
+                default:
+                    query = $"SELECT song.Id, song.title, song.genre, song.likes " +
+                            $"FROM song " +
+                            $"WHERE song.title LIKE '%{searchText}%' " +
+                            $"ORDER BY song.likes DESC";
+                    break;
+            }
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes " +
-                    $" FROM song ORDER BY likes DESC", con);
+                MySqlCommand cmd = new MySqlCommand(query, con);
 
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
@@ -461,6 +490,47 @@ namespace MusicLibraryTest2.Controllers
             return PartialView("_SongsList", songModels);
         }
 
+        public ActionResult BrowseAllSongs()
+        {
+            List<SongModel> songList = new List<SongModel>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes, song.views" +
+                    $" FROM song ORDER BY views DESC LIMIT 10", con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var songModel = new SongModel
+                    {
+                        Id = Convert.ToInt32(reader["id"]),
+                        Title = reader["title"].ToString(),
+                        Genre = reader["genre"].ToString(),
+                        Likes = Convert.ToInt32(reader["likes"]),
+                        Views = Convert.ToInt32(reader["views"]),
+                        LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"])),
+                        UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"])))
+                    };
+
+                    GetArtistInfo(songModel);
+
+                    songList.Add(songModel);
+                }
+            }
+
+            SongModels songModels = new SongModels()
+            {
+                SongList = songList
+            };
+
+            return PartialView("_SongsList", songModels);
+        }
+
         public ActionResult BrowseLikedSongs()
         {
             List<SongModel> songList = new List<SongModel>();
@@ -468,7 +538,7 @@ namespace MusicLibraryTest2.Controllers
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes " +
+                MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes, song.views " +
                     $" FROM song, user_likes " +
                     $" WHERE song.Id = user_likes.songId " +
                     $" AND user_likes.userId = {profile.Id}", con);
@@ -486,6 +556,7 @@ namespace MusicLibraryTest2.Controllers
                         Title = reader["title"].ToString(),
                         Genre = reader["genre"].ToString(),
                         Likes = Convert.ToInt32(reader["likes"]),
+                        Views = Convert.ToInt32(reader["views"]),
                         LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"]))
                     };
 
