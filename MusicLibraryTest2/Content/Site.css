@@ -109,6 +109,11 @@ dd {
     padding: 2rem 2rem;
 }
 
+.home-page-image{
+    max-width: 500px;
+    object-fit: contain;
+}
+
 .add-button-glow {
     box-shadow: 0 0 10px var(--color-primary);
 }
