@@ -25,12 +25,13 @@
             <button type="submit">Search</button>
         </form>
 
-        <span class="search-result">
+        <span class="search-result toggle-button">
             <span class="triangle"></span>
             Search Result
         </span>
 
-        <div class="result" id="result-container"></div>
+        <div class="result toggle-container" id="result-container"></div>
+
         <span class="get-all-songs toggle-button">
             <span class="triangle"></span>
             Browse All Songs
@@ -78,6 +79,12 @@
 
 <script>
     $(document).ready(function () {
+        $('.search-result').click(function () {
+            var $getResultContainer = $('#result-container')
+            $(this).find('.triangle').toggleClass('rotate');
+            $getResultContainer.toggle();
+        });
+
         $('.search-form').submit(function (event) {
             event.preventDefault();
             var getResultContainerLoaded = false;
@@ -91,6 +98,9 @@
                     success: function (data) {
                         $getResultContainer.html(data);
                         getResultContainerLoaded = true;
+                        if (!$('.search-result .triangle').hasClass('rotate')) {
+                            $('.search-result').trigger('click');
+                        }
                     }
                 });
             }
