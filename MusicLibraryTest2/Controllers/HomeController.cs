@@ -497,7 +497,7 @@ namespace MusicLibraryTest2.Controllers
             using (MySqlConnection con = new MySqlConnection(connection))
             {
                 MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes, song.views" +
-                    $" FROM song ORDER BY views DESC LIMIT 10", con);
+                    $" FROM song ORDER BY views DESC LIMIT 50", con);
 
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();

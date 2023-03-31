@@ -78,6 +78,8 @@ namespace MusicLibraryTest2.Controllers
         public ActionResult CreateSong(CreateSongModel createSongModel)
         {
 
+            ProfileModel profile = (ProfileModel)Session["ProfielInfo"];
+
             MemoryStream target = new MemoryStream();
             createSongModel.songFile.InputStream.CopyTo(target);
             byte[] songData = target.ToArray();
@@ -95,7 +97,7 @@ namespace MusicLibraryTest2.Controllers
             }
             if (createSongModel.albumId != 0)
             {
-
+                //create user_album relationship
                 using (MySqlConnection con = new MySqlConnection(connection))
                 {
                     string command = $"INSERT INTO album_songs (albumId,songId) values" +
@@ -113,8 +115,22 @@ namespace MusicLibraryTest2.Controllers
             }
             else
             {
-
                 //create user_song relationship
+                using (MySqlConnection con = new MySqlConnection(connection))
+                {
+                    string command = $"INSERT INTO user_songs (userId,songId) values" +
+                        $" ({profile.Id}, (SELECT * FROM song WHERE title = '{createSongModel.Title}' AND duration = {createSongModel.Duration} AND genre = {createSongModel.Genre}))";
+
+                    MySqlCommand cmd = new MySqlCommand(command, con);
+                    cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = songData;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    con.Open();
+                    if (cmd.ExecuteNonQuery() > 0)
+                    {
+
+                    }
+                }
+
             }
 
             return View("ArtistPage", (ProfileModel)Session["ProfileInfo"]);

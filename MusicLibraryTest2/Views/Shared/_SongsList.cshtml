@@ -50,15 +50,16 @@
                 <i class="fa-solid fa-thumbs-up"></i>
             </button>
         }
+
         @if (!song.UserFollowingArtist)
         {
             <button class="follow-button" data-artist-name="@song.Artist">
-                <i class="fa-solid fa-user-group unclicked-icon"></i>
+                <i class="unclicked-icon fa-solid fa-user-group"></i>
             </button>
         }
         else
         {
-            <button class="follow-button not-following" data-artist-name="@song.Artist">
+            <button class="not-following">
                 <i class="fa-solid fa-user-group"></i>
             </button>
         }
@@ -92,6 +93,21 @@
                          $('.likes-count[data-song-likes-id="' + songLikesId + '"]').text(data);
                      }
                  });
+            }
+        });
+        $('.follow-button').click(function () {
+
+            var artistName = $(this).data('artist-name');
+            var followButton = $(this);
+            if (followButton.find('.unclicked-icon').length > 0) {
+                $.ajax({
+                    url: '/Home/FollowArtist',
+                    type: 'GET',
+                    data: { artistName: artistName },
+                    success: function (data) {
+                        followButton.find('.unclicked-icon').removeClass('unclicked-icon');
+                    }
+                });
             }
         });
 
@@ -159,24 +175,6 @@
             }
 
             $playlistListContainer.toggle();
-        });
-
-        $('.follow-button').click(function () {
-
-            var artistName = $(this).data('artist-name');
-            var followButton = $(this);
-            console.log(followButton.find('.not-following').length > 0);
-            if (followButton.find('.not-following').length < 0) {
-                $.ajax({
-                    url: '/Home/FollowArtist',
-                    type: 'GET',
-                    data: { artistName: artistName },
-                    success: function (data) {
-                        $followButton.html(data);
-                        followButton.find('.follow-button').removeClass('not-following');
-                    }
-                });
-            }
         });
     });
 </script>
