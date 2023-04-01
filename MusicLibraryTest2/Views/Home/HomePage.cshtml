@@ -30,47 +30,53 @@
             Search Result
         </span>
 
-        <div class="result toggle-container" id="result-container"></div>
+
 
         <span class="get-all-songs toggle-button">
             <span class="triangle"></span>
             Browse All Songs
         </span>
 
-        <div class="browse toggle-container" id="get-all-songs-container"></div>
 
         <span class="get-playlists toggle-button">
             <span class="triangle"></span>
             My Playlists
         </span>
 
-        <div class="playlist toggle-container" id="get-playlists-container"></div>
+
 
         <span class="get-liked-songs toggle-button">
             <span class="triangle"></span>
             Liked Songs
         </span>
 
-        <div class="browseLiked toggle-container" id="get-liked-songs-container"></div>
+
 
         <span class="get-notifications toggle-button">
             <span class="triangle"></span>
             Notifications
         </span>
 
-        <div class="notifications toggle-container" id="get-notifications-container"></div>
+
 
         <span class="get-user-report toggle-button">
             <span class="triangle"></span>
             Most Popular Artists
         </span>
 
-        <div class="popular-artists toggle-container" id="get-user-report-container"></div>
+
 
         @if (!Model.Roles.Contains("artist"))
         {
             <button class="become-artist">Become Artist</button>
         }
+
+        <div class="result toggle-container" id="result-container"></div>
+        <div class="browse toggle-container" id="get-all-songs-container"></div>
+        <div class="playlist toggle-container" id="get-playlists-container"></div>
+        <div class="browseLiked toggle-container" id="get-liked-songs-container"></div>
+        <div class="notifications toggle-container" id="get-notifications-container"></div>
+        <div class="popular-artists toggle-container" id="get-user-report-container"></div>
 
         <img style="width: 100%; height: 100%;" src="~/Content/erik-mclean-QzpgqElvSiA-unsplash.jpg" />
 
