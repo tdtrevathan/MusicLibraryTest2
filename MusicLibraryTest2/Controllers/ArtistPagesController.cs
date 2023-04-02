@@ -451,6 +451,24 @@ namespace MusicLibraryTest2.Controllers
             return null;
         }
 
+        public ActionResult ArchiveAlbum(int albumId)
+        {
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"UPDATE album SET album.isArchived = 1 WHERE album.id = {albumId}";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+
+                }
+            }
+            return null;
+        }
+
         List<string> GetUserRoles(int id)
         {
             List<string> roles = new List<string>();

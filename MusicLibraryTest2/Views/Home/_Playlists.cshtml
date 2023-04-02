@@ -4,18 +4,30 @@
 
 @foreach (var playlist in Model.Playlists)
 {
-    <dl>
-        <dt>Playlist:</dt>
-        <dd>@playlist.Name</dd>
-    </dl>
+    <div class="playlist-box" id="playlist-box-@playlist.Id">
+        <dl>
+            <dt>Playlist:</dt>
+            <dd>@playlist.Name</dd>
+        </dl>
 
-    <span class="load-playlist-songs toggle-button sub-toggle" data-playlist-id="@playlist.Id">
-        <span class="triangle"></span>
-        Load Songs
-    </span>
+        <br />
 
-    <div class="playlist-songs toggle-container sub-container" id="playlist-@playlist.Id"></div>
+        <button class="archive-playlist-button" data-archive-playlist-id="@playlist.Id">
+            <i class="fa-solid fa-square-xmark unclicked-icon"></i>
+        </button>
+
+        <span class="load-playlist-songs toggle-button sub-toggle" data-playlist-songs-id="@playlist.Id">
+            <span class="triangle"></span>
+            Load Songs
+        </span>
+
+        <div class="playlist-songs toggle-container sub-container" id="playlist-songs-@playlist.Id"></div>
+
+
+    </div>
 }
+
+<script src="https://kit.fontawesome.com/0baa800b55.js" crossorigin="anonymous"></script>
 
 <script>
     $(document).ready(function () {
@@ -23,11 +35,9 @@
         var loaded = false;
 
         $('.load-playlist-songs').click(function () {
-            var playlistId = $(this).data('playlist-id');
-            console.log(playlistId);
-            var $playlistSongsContainer = $('#playlist-' + playlistId);
-
-            if (!loaded) {
+            var playlistId = $(this).data('playlist-songs-id');
+            var $playlistSongsContainer = $('#playlist-songs-' + playlistId);
+            console.log($playlistSongsContainer);
                 $.ajax({
                     url: '/Home/GetPlaylistSongs',
                     type: 'GET',
@@ -37,10 +47,29 @@
                         loaded = true;
                     }
                 });
-            }
-
+            
             $(this).find('.triangle').toggleClass('rotate');
             $playlistSongsContainer.toggle();
+        });
+
+        $('.archive-playlist-button').click(function () {
+            var button = $(this);
+            var playlistArchiveId = $(this).data('archive-playlist-id');
+            var $playlistBox = $('#playlist-box-' + playlistArchiveId);
+
+            $.ajax({
+                url: '/Home/ArchivePlaylist',
+                type: 'GET',
+                data: { playlistId: playlistArchiveId },
+                success: function (data) {
+
+                    button.find('.unclicked-icon').removeClass('unclicked-icon');
+                    setTimeout(function () {
+                        button.find('.unclicked-icon').removeClass('unclicked-icon');
+                    }, 1000);
+                    $playlistBox.toggle();
+                }
+            });
         });
     });
 </script>

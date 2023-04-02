@@ -405,6 +405,24 @@ namespace MusicLibraryTest2.Controllers
             return 0;
         }
 
+        public ActionResult ArchivePlaylist(int playlistId)
+        {
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"UPDATE playlist SET playlist.isArchived = 1 WHERE playlist.id = {playlistId}";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+
+                }
+            }
+            return null;
+        }
+
         [HttpGet]
         public bool FollowArtist(string artistName)
         {

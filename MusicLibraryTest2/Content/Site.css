@@ -1,9 +1,11 @@
 ﻿:root {
     --color-primary: #93C6D6;
     --color-secondary: #668586;
-    --color-tertiary: #A7ACD9;
-    --color-tertiary-light: #9E8FB2;
     --color-secondary-light: #82AEB1;
+    --color-tertiary: #A7ACD9;
+    --color-tertiary-dark: #685f75;
+    --color-tertiary-light: #aeb4ec;
+    --color-tertiary-superlight: #bdc3ff;
     --br-sm-2: 20px;
     --box-shadow-1: 0 3px 15px rgba(0,0,0,.3);
 }
@@ -19,12 +21,6 @@ body {
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
-}
-.mainBox {
-    background-color:lavender;
-    margin: 2% 2%;
-    padding: 1rem 1rem;
-    
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -88,7 +84,7 @@ dd {
 }
 
 .sub-toggle {
-    color: var(--color-primary);
+    color: var(--color-tertiary-dark);
     padding-left: 20px !important;
 }
 
@@ -101,8 +97,13 @@ dd {
         display: none
     }
 
+.mainBox {
+    background-color: var(--color-tertiary);
+    margin: 2% 2%;
+    padding: 1rem 1rem;
+}
 .songBox {
-    background-color: var(--color-tertiary-light);
+    background-color: var(--color-tertiary-superlight);
     margin: 2rem 2rem;
     border-radius: 1rem;
     max-width: 35%;
@@ -110,7 +111,14 @@ dd {
 }
 
 .info-box {
-    background-color: var(--color-secondary-light);
+    background-color: var(--color-tertiary-light);
+    margin: 2rem 2rem;
+    border-radius: 1rem;
+    padding: 2rem 2rem;
+}
+
+.playlist-box {
+    background-color: var(--color-tertiary-light);
     margin: 2rem 2rem;
     border-radius: 1rem;
     padding: 2rem 2rem;
