@@ -2,75 +2,83 @@
 
 @foreach (var song in Model.SongList)
  {
-    <div class="songBox">
+<div class="songBox" id="songBox-@song.Id">
 
-        <p>Title: @song.Title</p>
-        <p>Genre: @song.Genre</p>
-        <p>Artist: @song.Artist</p>
+    <p>Title: @song.Title</p>
+    <p>Genre: @song.Genre</p>
+    <p>Artist: @song.Artist</p>
 
-        @if (song.AlbumName != null)
-        {
-            <p>Album: @song.AlbumName</p>
-        }
+    @if (song.AlbumName != null)
+    {
+    <p>Album: @song.AlbumName</p>
+    }
 
-        <p>
-            <span> Likes: </span>
-            <span class="likes-count" data-song-likes-id="@song.Id">
-                @song.Likes
-            </span>
-        </p>
-
-        <span> Views: </span>
-        <span class="views-count" data-song-views-id="@song.Id">
-            @song.Views
+    <p>
+        <span> Likes: </span>
+        <span class="likes-count" data-song-likes-id="@song.Id">
+            @song.Likes
         </span>
+    </p>
 
-        <br />
-        <br />
+    <span> Views: </span>
+    <span class="views-count" data-song-views-id="@song.Id">
+        @song.Views
+    </span>
 
-        <span class="load-song toggle-button sub-toggle" data-song-likes-id="@song.Id">
-            <span class="triangle"></span>
-            Load Player
-        </span>
+    <br />
+    <br />
 
-        <br />
-        <br />
+    <span class="load-song toggle-button sub-toggle" data-song-likes-id="@song.Id">
+        <span class="triangle"></span>
+        Load Player
+    </span>
 
-        <div class="songs toggle-container sub-container" id="song-@song.Id"></div>
+    <br />
+    <br />
 
-        @if (!song.LikedByUser)
-        {
-            <button class="like-button" data-song-id="@song.Id">
-                <i class="fa-regular fa-thumbs-up"></i>
-            </button>
-        }
-        else
-        {
-            <button class="already-liked">
-                <i class="fa-solid fa-thumbs-up"></i>
-            </button>
-        }
+    <div class="songs toggle-container sub-container" id="song-@song.Id"></div>
 
-        @if (!song.UserFollowingArtist)
-        {
-            <button class="follow-button" data-artist-name="@song.Artist">
-                <i class="unclicked-icon fa-solid fa-user-group"></i>
-            </button>
-        }
-        else
-        {
-            <button class="not-following">
-                <i class="fa-solid fa-user-group"></i>
-            </button>
-        }
+    @if (song.LikedByUser != null && !(bool)song.LikedByUser)
+    {
+    <button class="like-button" data-song-id="@song.Id">
+        <i class="fa-regular fa-thumbs-up"></i>
+    </button>
+    }
+    else if(song.LikedByUser != null)
+    {
+    <button class="already-liked">
+        <i class="fa-solid fa-thumbs-up"></i>
+    </button>
+    }
 
-        <button class="add-button" data-playlist-song-id="@song.Id">
-            <i class="fa-regular fa-square-plus"></i>
+    @if (song.UserFollowingArtist != null && !(bool)song.UserFollowingArtist)
+    {
+    <button class="follow-button" data-artist-name="@song.Artist">
+        <i class="unclicked-icon fa-solid fa-user-group"></i>
+    </button>
+    }
+    else if (song.UserFollowingArtist != null)
+    {
+    <button class="not-following">
+        <i class="fa-solid fa-user-group"></i>
+    </button>
+    }
+
+    <button class="add-button" data-playlist-song-id="@song.Id">
+        <i class="fa-regular fa-square-plus"></i>
+    </button>
+
+    <div class="playlistList toggle-container sub-container" id="playlist-@song.Id"></div>
+
+    @if(song.UserIsArtist != null && (bool)song.UserIsArtist){
+        <button class="archive-button" data-playlist-song-id="@song.Id">
+            <i class="fa-solid fa-square-xmark unclicked-icon"></i>
         </button>
+    }
 
-        <div class="playlistList toggle-container sub-container" id="playlist-@song.Id"></div>
+    <div class="archive-button-box toggle-container sub-container" id="archive-@song.Id"></div>
 
-    </div>
+</div>
  }
 
 <script src="https://kit.fontawesome.com/0baa800b55.js" crossorigin="anonymous"></script>
@@ -175,6 +183,20 @@
             }
 
             $playlistListContainer.toggle();
+        });
+
+        $('.archive-button').click(function () {
+
+            var $songBox = $('#song-' + songId);
+            var songArchiveId = $(this).data('song-id');
+                 $.ajax({
+                    url: '/ArtistPages/ArchiveSong',
+                    type: 'GET',
+                     data: { songId: songArchiveId },
+                     success: function (data) {
+                         $songBox.toggle();
+                     }
+                 });
         });
     });
 </script>

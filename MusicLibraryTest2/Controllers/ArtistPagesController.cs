@@ -312,7 +312,9 @@ namespace MusicLibraryTest2.Controllers
 
                     $" WHERE album.id = album_songs.albumId" +
                     $" AND album_songs.songId = song.id" +
-                    $" AND album.id = {albumId}";
+                    $" AND album.id = {albumId}" +
+                    $" AND album.isArchived = 0" +
+                    $" AND song.isArchived = 0";
 
                 MySqlCommand cmd = new MySqlCommand(command, con);
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -329,6 +331,7 @@ namespace MusicLibraryTest2.Controllers
                             Id = Convert.ToInt32(reader["id"]),
                             Title = reader["title"].ToString(),
                             Genre = reader["genre"].ToString(),
+                            UserIsArtist = true
                         };
 
                         songList.Add(songModel);
@@ -405,6 +408,7 @@ namespace MusicLibraryTest2.Controllers
                     $" FROM milestone" +
 
                     $" WHERE milestone.userId = {profileModel.Id}" +
+                    $" AND milestone.isArchived = 0" +
                     $" ORDER BY created_at DESC";
 
                 MySqlCommand cmd = new MySqlCommand(command, con);
@@ -429,11 +433,11 @@ namespace MusicLibraryTest2.Controllers
             return PartialView("_MilestonesList", milestonesModel);
         }
 
-        ActionResult IncrimentViews(int songId)
+        ActionResult ArchiveSong(int songId)
         {
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                string command = $"UPDATE song SET song.views = song.views + 1 WHERE song.id = {songId}";
+                string command = $"UPDATE song SET song.isArchived = 1 WHERE song.id = {songId}";
 
                 MySqlCommand cmd = new MySqlCommand(command, con);
                 cmd = new MySqlCommand(command, con);

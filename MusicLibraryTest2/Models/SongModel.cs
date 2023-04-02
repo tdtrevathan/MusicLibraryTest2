@@ -21,8 +21,9 @@ namespace MusicLibraryTest2.Models
         public string Artist { get; set; }
         public string AlbumName { get; set; }
 
-        public bool LikedByUser { get; set; }
-        public bool UserFollowingArtist { get; set; }
+        public bool? LikedByUser { get; set; }
+        public bool? UserFollowingArtist { get; set; }
+        public bool? UserIsArtist { get; set; }
     }
 }
 

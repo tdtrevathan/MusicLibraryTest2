@@ -497,7 +497,7 @@ namespace MusicLibraryTest2.Controllers
             using (MySqlConnection con = new MySqlConnection(connection))
             {
                 MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes, song.views" +
-                    $" FROM song ORDER BY views DESC LIMIT 50", con);
+                    $" FROM song WHERE song.isArchived = 0 ORDER BY views DESC LIMIT 50", con);
 
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
@@ -541,7 +541,8 @@ namespace MusicLibraryTest2.Controllers
                 MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes, song.views " +
                     $" FROM song, user_likes " +
                     $" WHERE song.Id = user_likes.songId " +
-                    $" AND user_likes.userId = {profile.Id}", con);
+                    $" AND user_likes.userId = {profile.Id}" +
+                    $" AND song.isArchived = 0", con);
 
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
@@ -693,7 +694,8 @@ namespace MusicLibraryTest2.Controllers
 
                     $" WHERE playlist.id = playlist_songs.playlistId" +
                     $" AND playlist_songs.songId = song.id" +
-                    $" AND playlist.id = {playlistId}";
+                    $" AND playlist.id = {playlistId}" +
+                    $" AND song.isArchived = 0";
 
                 MySqlCommand cmd = new MySqlCommand(command, con);
                 cmd.CommandType = System.Data.CommandType.Text;
