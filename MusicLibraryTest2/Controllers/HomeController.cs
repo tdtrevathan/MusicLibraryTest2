@@ -363,6 +363,8 @@ namespace MusicLibraryTest2.Controllers
             return 0;
         }
 
+
+
         public int AddView(int songId)
         {
             ProfileModel profile = (ProfileModel)Session["ProfileInfo"];

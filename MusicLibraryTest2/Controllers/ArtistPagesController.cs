@@ -433,7 +433,7 @@ namespace MusicLibraryTest2.Controllers
             return PartialView("_MilestonesList", milestonesModel);
         }
 
-        ActionResult ArchiveSong(int songId)
+        public ActionResult ArchiveSong(int songId)
         {
             using (MySqlConnection con = new MySqlConnection(connection))
             {

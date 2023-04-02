@@ -71,7 +71,7 @@
     <div class="playlistList toggle-container sub-container" id="playlist-@song.Id"></div>
 
     @if(song.UserIsArtist != null && (bool)song.UserIsArtist){
-        <button class="archive-button" data-playlist-song-id="@song.Id">
+        <button class="archive-button" data-archive-song-id="@song.Id">
             <i class="fa-solid fa-square-xmark unclicked-icon"></i>
         </button>
     }
@@ -187,13 +187,19 @@
 
         $('.archive-button').click(function () {
 
-            var $songBox = $('#song-' + songId);
-            var songArchiveId = $(this).data('song-id');
+            var button = $(this);
+            var songArchiveId = $(this).data('archive-song-id');
+            var $songBox = $('#songBox-' + songArchiveId);
                  $.ajax({
-                    url: '/ArtistPages/ArchiveSong',
+                     url: '/ArtistPages/ArchiveSong',
                     type: 'GET',
                      data: { songId: songArchiveId },
                      success: function (data) {
+
+                         button.find('.unclicked-icon').removeClass('unclicked-icon');
+                         setTimeout(function () {
+                             button.find('.unclicked-icon').removeClass('unclicked-icon');
+                         }, 1000);
                          $songBox.toggle();
                      }
                  });
