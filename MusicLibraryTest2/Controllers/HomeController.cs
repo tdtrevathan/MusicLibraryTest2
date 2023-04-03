@@ -607,7 +607,7 @@ namespace MusicLibraryTest2.Controllers
         }
 
         [HttpPost]
-        public bool AddToPlaylist(AddToPlaylistModel addToPlaylistModel)
+        public ActionResult AddToPlaylist(AddToPlaylistModel addToPlaylistModel)
         {
             using (MySqlConnection con = new MySqlConnection(connection))
             {
@@ -619,20 +619,15 @@ namespace MusicLibraryTest2.Controllers
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
 
-                try
+                if (cmd.ExecuteNonQuery() > 0)
                 {
-                    if (cmd.ExecuteNonQuery() > 0)
-                    {
-                        return true;
-                    }
-                }
-                catch(Exception ex)
-                {
-                    return false;
-                }
 
+                }
             }
-            return false;
+
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
+            return View("HomePage", profile);
         }
 
         Dictionary<string, int> GetDictionaryOfUserPlaylists()
