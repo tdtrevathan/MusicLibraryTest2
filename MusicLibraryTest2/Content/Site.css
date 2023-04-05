@@ -1,11 +1,11 @@
 ﻿:root {
-    --color-primary: #93C6D6;
-    --color-secondary: #668586;
+    --color-primary: #f71c0c;
+    --color-secondary: #020303;
     --color-secondary-light: #82AEB1;
-    --color-tertiary: #A7ACD9;
+    --color-tertiary: #fcfdff;
     --color-tertiary-dark: #685f75;
-    --color-tertiary-light: #aeb4ec;
-    --color-tertiary-superlight: #bdc3ff;
+    --color-tertiary-light: #7d7f8a;
+    --color-tertiary-superlight: #7d7f8a;
     --br-sm-2: 20px;
     --box-shadow-1: 0 3px 15px rgba(0,0,0,.3);
 }
@@ -19,8 +19,8 @@ body {
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
