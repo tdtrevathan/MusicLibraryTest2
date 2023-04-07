@@ -6,6 +6,8 @@
     --color-tertiary-dark: #685f75;
     --color-tertiary-light: #aeb4ec;
     --color-tertiary-superlight: #bdc3ff;
+    --color-four: #C9DCF7;
+    --color-five: #617D94;
     --br-sm-2: 20px;
     --box-shadow-1: 0 3px 15px rgba(0,0,0,.3);
 }
@@ -48,13 +50,13 @@ textarea {
 dl {
     margin: 0;
     padding: 0;
-    max-width: 200px;
+    max-width: 500px;
 }
 
 dt {
     display: inline-block;
     font-weight: bold;
-    width: 100px; /* adjust as needed */
+    width: 500px; /* adjust as needed */
 }
 
 dd {
@@ -115,6 +117,51 @@ dd {
     margin: 2rem 2rem;
     border-radius: 1rem;
     padding: 2rem 2rem;
+}
+
+.notification {
+    background-color: var(--color-four);
+    margin: 2rem 2rem;
+    border-radius: 1rem;
+    padding: 2rem 2rem;
+}
+
+.milestone {
+    background-color: var(--color-five);
+    margin: 2rem 2rem;
+    border-radius: 1rem;
+    padding: 2rem 2rem;
+}
+
+.artist-report {
+    background-color: var(--color-four);
+    margin: 2rem 2rem;
+    border-radius: 1rem;
+    padding: 2rem 2rem;
+}
+
+.user-report {
+    background-color: var(--color-four);
+    margin: 2rem 2rem;
+    border-radius: 1rem;
+    padding: 2rem 2rem;
+}
+
+.admin-report {
+    background-color: var(--color-four);
+    margin: 2rem 2rem;
+    border-radius: 1rem;
+    padding: 2rem 2rem;
+}
+
+.report-head {
+    font: bold;
+    font-size: large;
+    color: var(--color-five);
+}
+
+.report-body {
+    font-size: medium;
 }
 
 .playlist-box {

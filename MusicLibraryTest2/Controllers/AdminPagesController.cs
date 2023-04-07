@@ -89,7 +89,7 @@ namespace MusicLibraryTest2.Controllers
             ViewBag.fromDate = fromDate;
             ViewBag.toDate = toDate;
 
-            return View(users);
+            return PartialView(users);
         }
 
         public ActionResult SongList()
@@ -180,7 +180,7 @@ namespace MusicLibraryTest2.Controllers
             ViewBag.fromDate = fromDate;
             ViewBag.toDate = toDate;
 
-            return View(songs);
+            return PartialView(songs);
         }
 
     }

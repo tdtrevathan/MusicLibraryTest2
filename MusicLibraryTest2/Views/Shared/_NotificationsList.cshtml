@@ -2,5 +2,9 @@
 
 @foreach (var notification in Model.Notifications)
  {
-    <p>@notification.ArtistName released a new album called @notification.AlubmTitle</p>
+    <div class="notification">
+        <h3>You Have a New Notification!</h3>
+        <p>@notification.ArtistName released a new album called @notification.AlubmTitle</p>
+    </div>
+
  }

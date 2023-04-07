@@ -78,7 +78,7 @@ namespace MusicLibraryTest2.Controllers
         public ActionResult CreateSong(CreateSongModel createSongModel)
         {
 
-            ProfileModel profile = (ProfileModel)Session["ProfielInfo"];
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
 
             MemoryStream target = new MemoryStream();
             createSongModel.songFile.InputStream.CopyTo(target);
@@ -138,17 +138,22 @@ namespace MusicLibraryTest2.Controllers
 
         public ActionResult GetArtistReport()
         {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
             List<ArtistReportModel> artistReports = new List<ArtistReportModel>();
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
 
                 string command = $"SELECT song.title as song_title, album.title as album_title , SUM(likes) as TotalLikes, COUNT(*) as MonthlyViews" +
-                " FROM album,album_songs,song,user_views" +
+                " FROM album,album_songs,song,user_views,user_albums" +
                 " WHERE album.id = album_songs.albumid" +
                 " AND album_songs.songId = song.id" +
                 " AND user_views.time_viewed > now() - interval 1 month" +
                 " AND user_views.songId = song.id" +
+                " AND album.id = user_albums.albumId" +
+                " AND song.isArchived = 0" +
+                $" AND user_albums.userid = {profile.Id}" +
                 " GROUP BY song.title, album.title" +
                 " ORDER BY TotalLikes desc";
 

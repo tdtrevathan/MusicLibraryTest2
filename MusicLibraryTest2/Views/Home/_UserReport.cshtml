@@ -1,16 +1,18 @@
 ﻿@model MusicLibraryTest2.Models.UserReportModels
 
+<h2>Most Popular Artist of the Month</h2>
 @foreach (var report in Model.UserReports)
 {
-    <dl>
-        <dt>Artist:</dt>
-        <dd>@report.ArtistName</dd>
-        <dt>Views:</dt>
-        <dd>@report.Views</dd>
-        <dt>Likes:</dt>
-        <dd>@report.Likes</dd>
-    </dl>
-    <br>
-    <br>
+    <div class="user-report">
+        <span class="report-head">Artist: </span><span class="report-body"> @report.ArtistName</span>
+        <br>
+        <br>
+        <span class="report-head">Views: </span><span class="report-body"> @report.Views</span>
+        <br>
+        <br>
+        <span class="report-head">Likes: </span><span class="report-body"> @report.Likes</span>
+        <br>
+        <br>
+    </div>
 }
 
