@@ -103,6 +103,8 @@ dd {
     background-color: var(--color-tertiary);
     margin: 2% 2%;
     padding: 1rem 1rem;
+    font-family: Arial !important;
+    font-weight: 700 !important;
 }
 .songBox {
     background-color: var(--color-tertiary-superlight);
