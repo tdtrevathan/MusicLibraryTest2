@@ -29,7 +29,7 @@
     <br />
 
     <span class="load-song toggle-button sub-toggle" data-song-likes-id="@song.Id">
-        <span class="triangle"></span>
+        <span class="triangle song-unloaded"></span>
         Load Player
     </span>
 
@@ -126,9 +126,7 @@
             var loadButton = $(this);
             var $songsContainer = $('#song-' + songId);
 
-            console.log(loadButton.find('.song-loaded').length);
-
-            if (loadButton.find('.song-loaded').length < 1) {
+            if (loadButton.find('.song-unloaded').length > 0) {
                 $.ajax({
                     url: '/Home/LoadSong',
                     type: 'GET',
@@ -142,7 +140,7 @@
                     type: 'GET',
                     data: { songId: songId },
                     success: function (data) {
-                        loadButton.find('.load-song').addClass('song-loaded');
+                        loadButton.find('.song-unloaded').removeClass('song-unloaded');
                         $('.views-count[data-song-views-id="' + songId + '"]').text(data);
                     }
                 });
