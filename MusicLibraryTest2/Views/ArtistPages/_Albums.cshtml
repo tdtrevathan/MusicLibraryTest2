@@ -1,18 +1,25 @@
 ﻿@model MusicLibraryTest2.Models.AlbumModels
 
 @foreach (var album in Model.Albums)
- {
-    <div class="info-box" id="info-box-@album.Id" >
-        <dl>
-            <dt>Album:</dt>
-            <dd>@album.Title</dd>
-            <dt>Artist:</dt>
-            <dd>@album.ArtistName</dd>
-            <dt>Genre:</dt>
-            <dd>@album.Genre</dd>
-            <dt>Release Date:</dt>
-            <dd>@album.ReleaseDate</dd>
-        </dl>
+{
+    <div class="info-box" id="info-box-@album.Id">
+
+        <span class="report-head">Album: </span>
+        <span span class="report-body">@album.Title</span>
+        <br />
+        <br />
+        <span class="report-head">Artist: </span>
+        <span span class="report-body">@album.ArtistName</span>
+        <br />
+        <br />
+        <span class="report-head">Genre: </span>
+        <span span class="report-body">@album.Genre</span>
+        <br />
+        <br />
+        <span class="report-head">Release Date: </span>
+        <span span class="report-body">@album.ReleaseDate</span>
+        <br />
+        <br />
 
         @if (album.Description != null)
         {
@@ -30,13 +37,12 @@
 
         <div class="songs toggle-container sub-container" id="album-@album.Id"></div>
     </div>
-
- }
+}
 
 <script>
     $(document).ready(function () {
 
-       $('.load-songs').click(function () {
+        $('.load-songs').click(function () {
             var albumId = $(this).data('album-id');
             var $albumSongsContainer = $('#album-' + albumId);
 
@@ -54,8 +60,8 @@
             }
 
             $(this).find('.triangle').toggleClass('rotate');
-           $albumSongsContainer.toggle();
-       });
+            $albumSongsContainer.toggle();
+        });
         $('.archive-album-button').click(function () {
 
             var button = $(this);

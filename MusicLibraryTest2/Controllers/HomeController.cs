@@ -703,13 +703,15 @@ namespace MusicLibraryTest2.Controllers
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                string command = $"SELECT song.id, song.title, song.genre" +
+                string command = $"SELECT song.id, song.title, song.genre, likes, views, username" +
 
-                    $" FROM playlist, playlist_songs, song" +
+                    $" FROM playlist, playlist_songs, song, user_songs, user" +
 
                     $" WHERE playlist.id = playlist_songs.playlistId" +
                     $" AND playlist_songs.songId = song.id" +
                     $" AND playlist.id = {playlistId}" +
+                    $" AND user_songs.songId = song.id" +
+                    $" AND user_songs.userId = user.id" +
                     $" AND song.isArchived = 0";
 
                 MySqlCommand cmd = new MySqlCommand(command, con);
@@ -727,6 +729,9 @@ namespace MusicLibraryTest2.Controllers
                             Id = Convert.ToInt32(reader["id"]),
                             Title = reader["title"].ToString(),
                             Genre = reader["genre"].ToString(),
+                            Likes = Convert.ToInt32(reader["likes"]),
+                            Views = Convert.ToInt32(reader["views"]),
+                            Artist = reader["username"].ToString(),
                             LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"])),
                             UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"])))
                         };

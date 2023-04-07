@@ -311,7 +311,7 @@ namespace MusicLibraryTest2.Controllers
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                string command = $"SELECT song.id, song.title, song.genre" +
+                string command = $"SELECT song.id, song.title, song.genre, artist_name, likes, views" +
 
                     $" FROM album, album_songs, song" +
 
@@ -336,6 +336,9 @@ namespace MusicLibraryTest2.Controllers
                             Id = Convert.ToInt32(reader["id"]),
                             Title = reader["title"].ToString(),
                             Genre = reader["genre"].ToString(),
+                            Artist = reader["artist_name"].ToString(),
+                            Likes = Convert.ToInt32(reader["likes"]),
+                            Views = Convert.ToInt32(reader["views"]),
                             UserIsArtist = true
                         };
 
