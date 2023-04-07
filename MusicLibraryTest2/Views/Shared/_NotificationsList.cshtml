@@ -1,10 +1,39 @@
 ﻿@model MusicLibraryTest2.Models.NotificationsModel
 
 @foreach (var notification in Model.Notifications)
- {
-    <div class="notification">
+{
+    <div class="notification" id="notification-@notification.AlbumId">
         <h3>You Have a New Notification!</h3>
         <p>@notification.ArtistName released a new album called @notification.AlubmTitle</p>
-    </div>
 
- }
+        <button class="archive-notification" data-notification-id="@notification.AlbumId">
+            <i class="fa-solid fa-square-xmark unclicked-icon"></i>
+        </button>
+
+        <div class="archive-button-box toggle-container sub-container" id="archive-@notification.AlbumId"></div>
+    </div>
+}
+<script src="https://kit.fontawesome.com/0baa800b55.js" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        $('.archive-notification').click(function () {
+
+            var button = $(this);
+            var notificationArchiveId = $(this).data('notification-id');
+            var $notificationBox = $('#notification-' + notificationArchiveId);
+            $.ajax({
+                url: '/Home/ArchiveNotification',
+                type: 'GET',
+                data: { notificationId: notificationArchiveId },
+                success: function (data) {
+
+                    button.find('.unclicked-icon').removeClass('unclicked-icon');
+                    setTimeout(function () {
+                        button.find('.unclicked-icon').removeClass('unclicked-icon');
+                    }, 1000);
+                    $notificationBox.toggle();
+                }
+            });
+        });
+    });
+</script>

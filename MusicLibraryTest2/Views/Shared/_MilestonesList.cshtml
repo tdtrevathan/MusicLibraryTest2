@@ -1,9 +1,39 @@
 ﻿@model MusicLibraryTest2.Models.MilestonesModel
 
 @foreach (var milestone in Model.Milestones)
- {
-    <div class="milestone">
+{
+    <div class="milestone" id="milestone-@milestone.SongId">
         <h3>You Have Acheived a Milestone!</h3>
         <p>Congratulations, @milestone.SongName has reached 100,000 views</p>
+
+        <button class="archive-milestone" data-milestone-id="@milestone.SongId">
+            <i class="fa-solid fa-square-xmark unclicked-icon"></i>
+        </button>
+
+        <div class="archive-button-box toggle-container sub-container" id="archive-@milestone.SongId"></div>
     </div>
- }
+}
+<script src="https://kit.fontawesome.com/0baa800b55.js" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        $('.archive-milestone').click(function () {
+
+            var button = $(this);
+            var milestoneArchiveId = $(this).data('milestone-id');
+            var $milestoneBox = $('#milestone-' + milestoneArchiveId);
+            $.ajax({
+                url: '/ArtistPages/ArchiveMilestone',
+                type: 'GET',
+                data: { milestoneId: milestoneArchiveId },
+                success: function (data) {
+
+                    button.find('.unclicked-icon').removeClass('unclicked-icon');
+                    setTimeout(function () {
+                        button.find('.unclicked-icon').removeClass('unclicked-icon');
+                    }, 1000);
+                    $milestoneBox.toggle();
+                }
+            });
+        });
+    });
+</script>

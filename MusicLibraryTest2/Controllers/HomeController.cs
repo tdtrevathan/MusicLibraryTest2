@@ -752,7 +752,7 @@ namespace MusicLibraryTest2.Controllers
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                string command = $"SELECT notifications.album_title, notifications.artist_name" +
+                string command = $"SELECT notifications.album_title, notifications.artist_name, notifications.albumId" +
 
                     $" FROM notifications" +
 
@@ -772,6 +772,7 @@ namespace MusicLibraryTest2.Controllers
                     {
                         ArtistName = reader["artist_name"].ToString(),
                         AlubmTitle = reader["album_title"].ToString(),
+                        AlbumId = Convert.ToInt32(reader["albumid"]),
                     };
                     list.Add(notificationModel);
                 }
@@ -832,7 +833,25 @@ namespace MusicLibraryTest2.Controllers
             return PartialView("_Playlists", playlistModels);
         }
 
+        public ActionResult ArchiveNotification(int notificationId)
+        {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
 
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"UPDATE notifications SET isArchived = 1 WHERE userid = {profile.Id} AND albumId = {notificationId}";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+
+                }
+            }
+            return null;
+        }
         public ActionResult SignUpForm()
         {
             ViewBag.Message = "Create a profile";

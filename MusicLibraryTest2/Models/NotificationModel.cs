@@ -11,6 +11,7 @@ namespace MusicLibraryTest2.Models
     {
         public string ArtistName { get; set; }
         public string AlubmTitle { get; set; }
+        public int AlbumId { get; set; }
     }
 }
 

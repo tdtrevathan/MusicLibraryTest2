@@ -10,6 +10,7 @@ namespace MusicLibraryTest2.Models
     public class MilestoneModel
     {
         public string SongName { get; set; }
+        public int SongId { get; set; }
     }
 }
 

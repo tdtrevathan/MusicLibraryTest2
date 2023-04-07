@@ -408,7 +408,7 @@ namespace MusicLibraryTest2.Controllers
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                string command = $"SELECT title" +
+                string command = $"SELECT title,songId" +
 
                     $" FROM milestone" +
 
@@ -427,6 +427,7 @@ namespace MusicLibraryTest2.Controllers
                     MilestoneModel notificationModel = new MilestoneModel()
                     {
                         SongName = reader["title"].ToString(),
+                        SongId = Convert.ToInt32(reader["songId"]),
                     };
                     list.Add(notificationModel);
                 }
@@ -436,6 +437,26 @@ namespace MusicLibraryTest2.Controllers
                 Milestones = list
             };
             return PartialView("_MilestonesList", milestonesModel);
+        }
+
+        public ActionResult ArchiveMilestone(int milestoneId)
+        {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"UPDATE milestone SET isArchived = 1 WHERE userid = {profile.Id} AND songId = {milestoneId}";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+
+                }
+            }
+            return null;
         }
 
         public ActionResult ArchiveSong(int songId)
