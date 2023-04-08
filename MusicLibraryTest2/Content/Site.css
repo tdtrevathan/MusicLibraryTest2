@@ -1,5 +1,6 @@
 ﻿:root {
-    --color-primary: #fa2a2a;
+    --color-primary: #7d2935;
+    --color-primary-light: #C8102E;
     --color-secondary: #000000;
     --color-secondary-light: #333333;
     --color-tertiary: #FFFFFF;
@@ -72,7 +73,7 @@ dd {
 
 .toggle-button {
     cursor: pointer;
-    color: var(--color-secondary);
+    color: var(--color-primary-light);
 }
 
 .sub-toggle {
@@ -82,7 +83,7 @@ dd {
 
 .toggle-button:hover {
     text-decoration: underline;
-    color: #C8102E;
+    color: var(--color-primary);
 }
 
 .toggle-container {
@@ -135,6 +136,7 @@ dd {
 
 .milestone {
     background-color: var(--color-secondary);
+    color: var(--color-tertiary-superlight);
     margin: 2rem 2rem;
     border-radius: 1rem;
     padding: 2rem 2rem;
@@ -189,7 +191,7 @@ dd {
 }
 
 .add-button-glow:hover {
-     box-shadow: 0 0 15px var(--color-primary);
+     box-shadow: 0 0 15px var(--color-primary-light);
 }
 
 .add-button-fade {
@@ -198,10 +200,19 @@ dd {
 }
 
 .unclicked-icon {
-    color: var(--color-tertiary);
+    color: var(--color-primary-light);
     transition: color 0.3s;
 }
 
 .unclicked-icon:hover {
-    color: var(--color-tertiary-superlight);
+    color: var(--color-primary);
+}
+
+.has-error {
+    background-color: var(--color-secondary-light);
+    color: var(--color-primary-light);
+    margin: 2% 2%;
+    padding: 1rem 1rem;
+    border-radius: 1rem;
+    max-width: 35%;
 }
