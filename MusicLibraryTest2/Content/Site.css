@@ -1,17 +1,14 @@
 ﻿:root {
-    --color-primary: #93C6D6;
-    --color-secondary: #668586;
-    --color-secondary-light: #82AEB1;
-    --color-tertiary: #A7ACD9;
-    --color-tertiary-dark: #685f75;
-    --color-tertiary-light: #aeb4ec;
-    --color-tertiary-superlight: #bdc3ff;
-    --color-four: #C9DCF7;
-    --color-five: #617D94;
+    --color-primary: #fa2a2a;
+    --color-secondary: #000000;
+    --color-secondary-light: #333333;
+    --color-tertiary: #FFFFFF;
+    --color-tertiary-dark: #666666;
+    --color-tertiary-light: #a8a7a7;
+    --color-tertiary-superlight: #CCCCCC;
     --br-sm-2: 20px;
     --box-shadow-1: 0 3px 15px rgba(0,0,0,.3);
 }
-
 
 body {
     background-color: var(--color-primary);
@@ -19,20 +16,15 @@ body {
     padding-bottom: 20px;
 }
 
-/* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
 .dl-horizontal dt {
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
@@ -42,10 +34,8 @@ textarea {
 .navbar-inverse .navbar-toggle:hover,
 .navbar-inverse .navbar-toggle:focus {
     background-color: var(--color-secondary);
-    border-color: var(--color-secondary-light)
+    border-color: var(--color-secondary-light);
 }
-
-
 
 dl {
     margin: 0;
@@ -56,7 +46,7 @@ dl {
 dt {
     display: inline-block;
     font-weight: bold;
-    width: 500px; /* adjust as needed */
+    width: 500px;
 }
 
 dd {
@@ -90,14 +80,14 @@ dd {
     padding-left: 20px !important;
 }
 
-    .toggle-button:hover {
-        text-decoration: underline;
-        color: #0056b3;
-    }
+.toggle-button:hover {
+    text-decoration: underline;
+    color: #C8102E;
+}
 
-    .toggle-container{
-        display: none
-    }
+.toggle-container {
+    display: none
+}
 
 .mainBox {
     background-color: var(--color-tertiary);
@@ -105,14 +95,29 @@ dd {
     padding: 1rem 1rem;
     font-family: Arial !important;
     font-weight: 700 !important;
+    transition: background-color 0.3s;
 }
+
+.mainBox:hover {
+     background-color: var(--color-tertiary-superlight);
+}
+
+ .mainBox:hover .songBox {
+      background-color: var(--color-tertiary);
+ }
+
 .songBox {
     background-color: var(--color-tertiary-superlight);
     margin: 2rem 2rem;
     border-radius: 1rem;
     max-width: 35%;
     padding: 2rem 2rem;
+    transition: background-color 0.3s;
 }
+
+.songBox:hover {
+    background-color: var(--color-tertiary);
+ }
 
 .info-box {
     background-color: var(--color-tertiary-light);
@@ -122,35 +127,35 @@ dd {
 }
 
 .notification {
-    background-color: var(--color-four);
+    background-color: var(--color-tertiary-light);
     margin: 2rem 2rem;
     border-radius: 1rem;
     padding: 2rem 2rem;
 }
 
 .milestone {
-    background-color: var(--color-five);
+    background-color: var(--color-secondary);
     margin: 2rem 2rem;
     border-radius: 1rem;
     padding: 2rem 2rem;
 }
 
 .artist-report {
-    background-color: var(--color-four);
+    background-color: var(--color-tertiary-light);
     margin: 2rem 2rem;
     border-radius: 1rem;
     padding: 2rem 2rem;
 }
 
 .user-report {
-    background-color: var(--color-four);
+    background-color: var(--color-tertiary-light);
     margin: 2rem 2rem;
     border-radius: 1rem;
     padding: 2rem 2rem;
 }
 
 .admin-report {
-    background-color: var(--color-four);
+    background-color: var(--color-tertiary-light);
     margin: 2rem 2rem;
     border-radius: 1rem;
     padding: 2rem 2rem;
@@ -159,7 +164,7 @@ dd {
 .report-head {
     font: bold;
     font-size: large;
-    color: var(--color-five);
+    color: var(--color-secondary);
 }
 
 .report-body {
@@ -173,13 +178,18 @@ dd {
     padding: 2rem 2rem;
 }
 
-.home-page-image{
+.home-page-image {
     max-width: 500px;
     object-fit: contain;
 }
 
 .add-button-glow {
     box-shadow: 0 0 10px var(--color-primary);
+    transition: box-shadow 0.3s;
+}
+
+.add-button-glow:hover {
+     box-shadow: 0 0 15px var(--color-primary);
 }
 
 .add-button-fade {
@@ -187,6 +197,11 @@ dd {
     transition: opacity 1s ease-out;
 }
 
-.unclicked-icon{
+.unclicked-icon {
     color: var(--color-tertiary);
+    transition: color 0.3s;
+}
+
+.unclicked-icon:hover {
+    color: var(--color-tertiary-superlight);
 }
