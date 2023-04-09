@@ -4,12 +4,10 @@
 
 @foreach (var playlist in Model.Playlists)
 {
-    <div class="playlist-box" id="playlist-box-@playlist.Id">
-        <dl>
-            <dt>Playlist:</dt>
-            <dd>@playlist.Name</dd>
-        </dl>
+    <div class="info-box" id="playlist-box-@playlist.Id">
 
+        <span class="report-head">Playlist:</span>
+        <span class="report-body">@playlist.Name</span>
         <br />
 
         <button class="archive-playlist-button" data-archive-playlist-id="@playlist.Id">
