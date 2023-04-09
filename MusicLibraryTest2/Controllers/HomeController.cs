@@ -948,10 +948,31 @@ namespace MusicLibraryTest2.Controllers
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
                 MySqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                if (reader.HasRows)
                 {
-                    songModel.Artist = reader["artist_name"].ToString();
-                    songModel.AlbumName = reader["title"].ToString();
+                    while (reader.Read())
+                    {
+                        songModel.Artist = reader["artist_name"].ToString();
+                        songModel.AlbumName = reader["title"].ToString();
+                    }
+                }
+                else
+                {
+                    con.Close();
+                    con.Open();
+                    string command = $"SELECT username FROM user,user_songs,song" +
+                    $" WHERE song.Id = user_songs.songId " +
+                    $" AND user.Id = user_songs.userId " +
+                    $" AND song.Id = {songModel.Id}";
+
+                    cmd = new MySqlCommand(command , con);
+
+                    reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        songModel.Artist = reader["username"].ToString();
+                    }
                 }
             }
         }
