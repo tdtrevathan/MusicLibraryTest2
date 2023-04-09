@@ -1,6 +1,8 @@
 ﻿:root {
     --color-primary: #7d2935;
     --color-primary-light: #C8102E;
+    --color-primary-superlight: #fdd0d7;
+    --color-primary-dark: #5a1c25;
     --color-secondary: #000000;
     --color-secondary-light: #333333;
     --color-tertiary: #FFFFFF;
@@ -74,11 +76,7 @@ dd {
 .toggle-button {
     cursor: pointer;
     color: var(--color-primary-light);
-}
-
-.sub-toggle {
-    color: var(--color-tertiary-dark);
-    padding-left: 20px !important;
+    padding-left: 20px;
 }
 
 .toggle-button:hover {
@@ -86,8 +84,13 @@ dd {
     color: var(--color-primary);
 }
 
+.sub-toggle {
+    color: var(--color-tertiary-dark);
+    padding-left: 20px !important;
+}
+
 .toggle-container {
-    display: none
+    display: none;
 }
 
 .mainBox {
@@ -100,7 +103,7 @@ dd {
 }
 
 .mainBox:hover {
-     background-color: var(--color-tertiary-superlight);
+     background-color: var(--color-tertiary-light);
 }
 
  .mainBox:hover .songBox {
@@ -121,14 +124,14 @@ dd {
  }
 
 .info-box {
-    background-color: var(--color-tertiary-light);
+    background-color: var(--color-primary-dark);
     margin: 2rem 2rem;
     border-radius: 1rem;
     padding: 2rem 2rem;
 }
 
 .notification {
-    background-color: var(--color-tertiary-light);
+    background-color: var(--color-tertiary-superlight);
     margin: 2rem 2rem;
     border-radius: 1rem;
     padding: 2rem 2rem;
@@ -143,21 +146,28 @@ dd {
 }
 
 .artist-report {
-    background-color: var(--color-tertiary-light);
+    background-color: var(--color-tertiary-superlight);
     margin: 2rem 2rem;
     border-radius: 1rem;
     padding: 2rem 2rem;
 }
 
+.sign-up-box {
+    background-color: var(--color-tertiary-superlight);
+    margin-top: 1rem;
+    border-radius: 1rem;
+    padding: 1rem 1rem;
+}
+
 .user-report {
-    background-color: var(--color-tertiary-light);
+    background-color: var(--color-tertiary-superlight);
     margin: 2rem 2rem;
     border-radius: 1rem;
     padding: 2rem 2rem;
 }
 
 .admin-report {
-    background-color: var(--color-tertiary-light);
+    background-color: var(--color-tertiary-superlight);
     margin: 2rem 2rem;
     border-radius: 1rem;
     padding: 2rem 2rem;
@@ -166,11 +176,12 @@ dd {
 .report-head {
     font: bold;
     font-size: large;
-    color: var(--color-secondary);
+    color: var(--color-tertiary-light);
 }
 
 .report-body {
     font-size: medium;
+    color: var(--color-secondary);
 }
 
 .playlist-box {
@@ -211,7 +222,7 @@ dd {
 .has-error {
     background-color: var(--color-secondary-light);
     color: var(--color-primary-light);
-    margin: 2% 2%;
+    margin-top: 1rem;
     padding: 1rem 1rem;
     border-radius: 1rem;
     max-width: 35%;

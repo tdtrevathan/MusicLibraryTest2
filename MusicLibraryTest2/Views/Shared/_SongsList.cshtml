@@ -53,7 +53,7 @@
     @if (song.LikedByUser != null && !(bool)song.LikedByUser)
     {
         <button class="like-button" data-song-id="@song.Id">
-            <i class="fa-regular fa-thumbs-up"></i>
+            <i class="unclicked-icon fa-regular fa-thumbs-up"></i>
         </button>
     }
     else if (song.LikedByUser != null)

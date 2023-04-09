@@ -4,31 +4,39 @@
     ViewBag.Title = "Sign Up Page";
 }
 
-@using (Html.BeginForm("SignUp", "Home", FormMethod.Post))
-{
-    <span class="small">Enter your desired username</span>
-    <br />
-    @Html.LabelFor(m => m.UserName)
-    @Html.TextBoxFor(model => model.UserName)
-    <br>
-    <br>
-    <span class="small">Enter your desired password</span>
-    <br />
+<div class="mainBox">
 
-    @Html.LabelFor(m => m.Password)
-    @Html.PasswordFor(model => model.Password)
-    <br />
-    <span class="small">(Password must contain at least one capital letter and either a number or special character and be between 5 and 10 characters long)</span>
-    <br />
-    <br />
-
-    if (Model != null && !Model.ValidCredentials)
+    @using (Html.BeginForm("SignUp", "Home", FormMethod.Post))
     {
-        foreach (var message in Model.ErrorMessages)
+        <span class="small">Enter your desired username</span>
+        <br />
+        <span class="sign-up-box">
+            <span class="report-head">User Name</span>
+            @Html.TextBoxFor(model => model.UserName)
+        </span>
+        <br>
+        <br>
+        <span class="small">Enter your desired password</span>
+        <br />
+        <span class="sign-up-box">
+            <span class="report-head">Password</span>
+            @Html.PasswordFor(model => model.Password)
+        </span>
+        <br />
+        <br>
+        <span class="small">(Password must contain at least one capital letter and either a number or special character and be between 5 and 10 characters long)</span>
+        <br />
+        <br />
+
+        if (Model != null && !Model.ValidCredentials)
         {
-            <p style="color:red">@message</p>
+            foreach (var message in Model.ErrorMessages)
+            {
+                <p class="has-error">@message</p>
+            }
         }
+
+        <input id="Submit" type="submit" value="Create" />
     }
 
-    <input id="Submit" type="submit" value="Create" />
-}
+</div>

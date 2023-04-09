@@ -235,6 +235,20 @@ namespace MusicLibraryTest2.Controllers
 
         private bool PasswordIsValid(SignUpModel signUpModel)
         {
+            if(signUpModel.UserName == null)
+            {
+                var errorMessage = "A user name must be provided";
+                signUpModel.ErrorMessages.Add(errorMessage);
+                return false;
+            }
+
+            if (signUpModel.Password == null)
+            {
+                var errorMessage = "A password must be provided";
+                signUpModel.ErrorMessages.Add(errorMessage);
+                return false;
+            }
+
             if (signUpModel.Password.All(char.IsLetter))
             {
                 var errorMessage = "Password must contain either a number or special character";

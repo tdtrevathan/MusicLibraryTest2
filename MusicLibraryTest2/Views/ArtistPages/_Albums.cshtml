@@ -21,11 +21,12 @@
         <br />
         <br />
 
-        @if (album.Description != null)
+        @if (album.Description != null && album.Description != "")
         {
-            <h4>Description</h4>
-            <p>@album.Description</p>
+            <h4 class="report-head">Description</h4>
+            <p class="report-body">@album.Description</p>
         }
+
         <button class="archive-album-button" data-archive-album-id="@album.Id">
             <i class="fa-solid fa-square-xmark unclicked-icon"></i>
         </button>
