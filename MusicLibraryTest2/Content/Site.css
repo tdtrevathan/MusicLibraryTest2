@@ -184,6 +184,17 @@ dd {
     color: var(--color-secondary);
 }
 
+.album-playlist-head {
+    font: bold;
+    font-size: large;
+    color: var(--color-secondary);
+}
+
+.album-playlist-body {
+    font-size: medium;
+    color: var(--color-tertiary-light);
+}
+
 .playlist-box {
     background-color: var(--color-tertiary-light);
     margin: 2rem 2rem;
