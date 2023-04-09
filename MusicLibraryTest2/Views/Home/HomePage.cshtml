@@ -30,46 +30,30 @@
             Search Result
         </span>
 
-
-
         <span class="get-all-songs toggle-button">
             <span class="triangle"></span>
             Browse All Songs
         </span>
-
 
         <span class="get-playlists toggle-button">
             <span class="triangle"></span>
             My Playlists
         </span>
 
-
-
         <span class="get-liked-songs toggle-button">
             <span class="triangle"></span>
             Liked Songs
         </span>
-
-
 
         <span class="get-notifications toggle-button">
             <span class="triangle"></span>
             Notifications
         </span>
 
-
-
         <span class="get-user-report toggle-button">
             <span class="triangle"></span>
             Most Popular Artists
         </span>
-
-
-
-        @if (!Model.Roles.Contains("artist"))
-        {
-            <button class="become-artist">Become Artist</button>
-        }
 
         <div class="result toggle-container" id="result-container"></div>
         <div class="browse toggle-container" id="get-all-songs-container"></div>
@@ -206,13 +190,6 @@
             }
             $(this).find('.triangle').toggleClass('rotate');
             $getUserReportContainer.toggle();
-        });
-
-        $('.become-artist').click(function () {
-                $.ajax({
-                    data: null,
-                    url: '/Home/BecomeArtist?_=' + new Date().getTime(),
-                });
         });
     });
 </script>

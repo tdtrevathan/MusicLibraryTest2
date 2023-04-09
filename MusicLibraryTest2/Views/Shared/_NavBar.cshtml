@@ -24,6 +24,10 @@
                 {
                     <li>@Html.ActionLink("Admin Page", "AdminPage", "AdminPages")</li>
                 }
+                @if (Model != null && !Model.Roles.Contains("artist"))
+                {
+                    <li>@Html.ActionLink("Enroll As Artist", "BecomeArtist", "Home")</li>
+                }
                 @if (Model != null)
                 {
                     <li>@Html.ActionLink("Log Out", "Index", "Home")</li>

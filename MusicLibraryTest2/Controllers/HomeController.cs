@@ -52,13 +52,11 @@ namespace MusicLibraryTest2.Controllers
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
 
-
                 if (cmd.ExecuteNonQuery() > 0)
                 {
                     profileModel.Roles.Add("artist");
                     Session["ProfileInfo"] = profileModel;
                 }
-
             }
 
             return View("HomePage", profileModel);
