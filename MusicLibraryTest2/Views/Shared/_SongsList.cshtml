@@ -101,6 +101,11 @@
 </div>
  }
 
+@if (Model.SongList.Count == 0)
+ {
+    <div class="has-error">No Songs to Display</div>
+ }
+
 <script src="https://kit.fontawesome.com/0baa800b55.js" crossorigin="anonymous"></script>
 
 <script>
@@ -119,6 +124,7 @@
                          button.find('.fa-thumbs-up').removeClass('fa-regular');
                          button.find('.fa-thumbs-up').addClass('fa-solid');
                          $('.likes-count[data-song-likes-id="' + songLikesId + '"]').text(data);
+                         button.find('.unclicked-icon').removeClass('unclicked-icon');
                      }
                  });
             }
