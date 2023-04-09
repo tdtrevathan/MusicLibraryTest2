@@ -17,14 +17,14 @@
     @Html.PasswordFor(model => model.Password)
     <br>
     <input id="Submit" type="submit" value="Log In" />
-
-    <button>@Html.ActionLink("Sign Up", "SignUpForm", "Home")</button>
-
-    if (Model != null && !Model.ValidCredentials)
-    {
-        <p class="has-error">Username or Password is not valid</p>
-    }
 }
+
+<button>@Html.ActionLink("Sign Up", "SignUpForm", "Home")</button>
+
+@if (Model != null && !Model.ValidCredentials)
+ {
+     <p class="has-error">Username or Password is not valid</p>
+ }
 
 
 
