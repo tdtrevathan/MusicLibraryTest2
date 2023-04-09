@@ -21,6 +21,7 @@ namespace MusicLibraryTest2.Controllers
 
         public ActionResult Index()
         {
+            Session["ProfileInfo"] = null;
             return View();
         }
 
