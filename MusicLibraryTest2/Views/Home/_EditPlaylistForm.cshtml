@@ -1,0 +1,24 @@
+﻿@model MusicLibraryTest2.Models.EditPlaylistModel
+
+@{
+    ViewBag.Title = "Create Playlist";
+}
+
+<div class="mainBox">
+    <h4>Edit Playlist</h4>
+
+    @using (Html.BeginForm("EditPlaylist", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.LabelFor(model => model.Name)
+        <br>
+        @Html.TextBoxFor(model => model.Name)
+        <br>
+        <br>
+        @Html.HiddenFor(model => model.Id)
+
+        <input id="Submit" type="submit" value="Submit" />
+    }
+</div>
+
+
+

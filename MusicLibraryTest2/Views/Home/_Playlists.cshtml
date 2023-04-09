@@ -10,9 +10,17 @@
         <span class="album-playlist-body">@playlist.Name</span>
         <br />
 
+        <button class="edit-playlist-button" data-edit-playlist-id="@playlist.Id">
+            <i class="fa-solid fa-wrench unclicked-icon"></i>
+        </button>
+
         <button class="archive-playlist-button" data-archive-playlist-id="@playlist.Id">
             <i class="fa-solid fa-square-xmark unclicked-icon"></i>
         </button>
+
+        <div class="edit-container" id="edit-box-@playlist.Id" data-playlist-edit-id="@playlist.Id">
+            @Html.Action("EditPlaylistForm", "Home", playlist)
+        </div>
 
         <span class="load-playlist-songs toggle-button sub-toggle" data-playlist-songs-id="@playlist.Id">
             <span class="triangle"></span>
@@ -20,7 +28,6 @@
         </span>
 
         <div class="playlist-songs toggle-container sub-container" id="playlist-songs-@playlist.Id"></div>
-
 
     </div>
 }
@@ -68,6 +75,14 @@
                     $playlistBox.toggle();
                 }
             });
+        });
+
+        $('.edit-playlist-button').click(function () {
+            var button = $(this);
+            var playlistEditId = $(this).data('edit-playlist-id');
+            var $editPlaylistBox = $('#edit-box-' + playlistEditId);
+
+            $editPlaylistBox.toggle();
         });
     });
 </script>

@@ -610,6 +610,17 @@ namespace MusicLibraryTest2.Controllers
             return PartialView("_SongsList", songModels);
         }
 
+        public ActionResult EditPlaylistForm(PlaylistModel playlistModel)
+        {
+            EditPlaylistModel editPlaylistModel = new EditPlaylistModel() 
+            { 
+                Id = playlistModel.Id, 
+                Name = playlistModel.Name 
+            };
+
+            return PartialView("_EditPlaylistForm", editPlaylistModel);
+        }
+
         public ActionResult AddToPlaylistForm(int songId)
         {
             AddToPlaylistModel addToPlaylistModel = new AddToPlaylistModel();
@@ -703,6 +714,28 @@ namespace MusicLibraryTest2.Controllers
                 cmd = new MySqlCommand(command, con);
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+
+                }
+            }
+            return View("HomePage", (ProfileModel)Session["ProfileInfo"]);
+        }
+
+
+
+        [HttpPost]
+        public ActionResult EditPlaylist(EditPlaylistModel editPlaylistModel)
+        {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"UPDATE playlist SET name =  '{editPlaylistModel.Name}' WHERE id = {editPlaylistModel.Id}";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
                 if (cmd.ExecuteNonQuery() > 0)
                 {
 
@@ -935,7 +968,6 @@ namespace MusicLibraryTest2.Controllers
             }
         }
 
-
         public void GetArtistInfo(SongModel songModel)
         {
             using (MySqlConnection con = new MySqlConnection(connection))
@@ -960,8 +992,8 @@ namespace MusicLibraryTest2.Controllers
                 {
                     con.Close();
                     con.Open();
-                    string command = $"SELECT username FROM user,user_songs,song" +
-                    $" WHERE song.Id = user_songs.songId " +
+                    string command = $"SELECT username FROM user,user_songs,song WHERE" +
+                    $" AND song.Id = user_songs.songId " +
                     $" AND user.Id = user_songs.userId " +
                     $" AND song.Id = {songModel.Id}";
 

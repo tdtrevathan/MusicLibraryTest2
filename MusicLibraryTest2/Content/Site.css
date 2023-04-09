@@ -93,6 +93,10 @@ dd {
     display: none;
 }
 
+.edit-container {
+    display: none;
+}
+
 .mainBox {
     background-color: var(--color-tertiary);
     margin: 2% 2%;
