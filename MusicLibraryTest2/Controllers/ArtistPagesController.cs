@@ -87,6 +87,18 @@ namespace MusicLibraryTest2.Controllers
             return PartialView("_EditAlbumForm", editAlbumModel);
         }
 
+        public ActionResult EditSongForm(SongModel songModel)
+        {
+            EditSongModel editSongModel = new EditSongModel()
+            {
+                Id = songModel.Id,
+                Title = songModel.Title,
+                Genre = songModel.Genre,
+            };
+
+            return PartialView("_EditSongForm", editSongModel);
+        }
+
         [HttpPost]
         public ActionResult EditAlbum(EditAlbumModel editAlbumModel)
         {
@@ -96,6 +108,27 @@ namespace MusicLibraryTest2.Controllers
             {
                 string command = $"UPDATE album SET title = '{editAlbumModel.Title}', description = '{editAlbumModel.Description}', genre = '{editAlbumModel.Genre}'"+
                     $"WHERE Id = {editAlbumModel.Id}";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+
+                }
+            }
+            return View("ArtistPage", (ProfileModel)Session["ProfileInfo"]);
+        }
+
+        [HttpPost]
+        public ActionResult EditSong(EditSongModel editSongModel)
+        {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"UPDATE song SET title = '{editSongModel.Title}', genre = '{editSongModel.Genre}'" +
+                    $"WHERE Id = {editSongModel.Id}";
 
                 MySqlCommand cmd = new MySqlCommand(command, con);
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -120,7 +153,7 @@ namespace MusicLibraryTest2.Controllers
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                MySqlCommand cmd = new MySqlCommand($"INSERT INTO song (title,duration,genre,songFile) values ('{createSongModel.Title}',{createSongModel.Duration},'{createSongModel.Genre}',@data)", con);
+                MySqlCommand cmd = new MySqlCommand($"INSERT INTO song (title,duration,genre,songFile) values ('{createSongModel.Title}','{createSongModel.Genre}',@data)", con);
                 cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = songData;
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
@@ -135,7 +168,7 @@ namespace MusicLibraryTest2.Controllers
                 using (MySqlConnection con = new MySqlConnection(connection))
                 {
                     string command = $"INSERT INTO album_songs (albumId,songId) values" +
-                        $" ({createSongModel.albumId}, (SELECT song.id from song WHERE song.title = '{createSongModel.Title}' AND song.duration = {createSongModel.Duration} AND song.genre = '{createSongModel.Genre}'))";
+                        $" ({createSongModel.albumId}, (SELECT song.id from song WHERE song.title = '{createSongModel.Title}' AND song.genre = '{createSongModel.Genre}'))";
 
                     MySqlCommand cmd = new MySqlCommand(command, con);
                     cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = songData;
@@ -153,7 +186,7 @@ namespace MusicLibraryTest2.Controllers
                 using (MySqlConnection con = new MySqlConnection(connection))
                 {
                     string command = $"INSERT INTO user_songs (userId,songId) values" +
-                        $" ({profile.Id}, (SELECT * FROM song WHERE title = '{createSongModel.Title}' AND duration = {createSongModel.Duration} AND genre = {createSongModel.Genre}))";
+                        $" ({profile.Id}, (SELECT * FROM song WHERE title = '{createSongModel.Title}' AND genre = {createSongModel.Genre}))";
 
                     MySqlCommand cmd = new MySqlCommand(command, con);
                     cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = songData;

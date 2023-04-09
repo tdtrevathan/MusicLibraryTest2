@@ -1,0 +1,28 @@
+﻿@model MusicLibraryTest2.Models.EditSongModel
+
+@{
+    ViewBag.Title = "Edit Song";
+}
+
+<div class="mainBox">
+    @using (Html.BeginForm("EditSong", "ArtistPages", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.LabelFor(model => model.Title)
+        <br>
+        @Html.TextBoxFor(model => model.Title)
+        <br>
+        @Html.LabelFor(model => model.Genre)
+        <br>
+        @Html.TextBoxFor(model => model.Genre)
+        <br>
+        <br>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <input id="Submit" type="submit" value="Submit" />
+    }
+
+</div>
+
+
+

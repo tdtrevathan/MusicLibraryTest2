@@ -83,10 +83,18 @@
 
     @if (song.UserIsArtist != null && (bool)song.UserIsArtist)
     {
+        <button class="edit-song-button" data-edit-song-id="@song.Id">
+            <i class="fa-solid fa-wrench unclicked-icon"></i>
+        </button>
+
         <button class="archive-button" data-archive-song-id="@song.Id">
             <i class="fa-solid fa-square-xmark unclicked-icon"></i>
         </button>
     }
+
+    <div class="edit-container" id="edit-box-@song.Id" data-edit-album-id="@song.Id">
+        @Html.Action("EditSongForm", "ArtistPages", song)
+    </div>
 
     <div class="archive-button-box toggle-container sub-container" id="archive-@song.Id"></div>
 
@@ -162,7 +170,6 @@
             $songsContainer.toggle();
         });
 
-
         $('.add-button').click(function () {
             var playlistListLoaded = false;
             var playlistSongId = $(this).data('playlist-song-id');
@@ -213,6 +220,14 @@
                          $songBox.toggle();
                      }
                  });
+        });
+
+        $('.edit-song-button').click(function () {
+            var button = $(this);
+            var songEditId = $(this).data('edit-song-id');
+            var $editSongBox = $('#edit-box-' + songEditId);
+
+            $editSongBox.toggle();
         });
     });
 </script>
