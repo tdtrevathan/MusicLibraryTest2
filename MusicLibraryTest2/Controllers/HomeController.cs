@@ -992,8 +992,8 @@ namespace MusicLibraryTest2.Controllers
                 {
                     con.Close();
                     con.Open();
-                    string command = $"SELECT username FROM user,user_songs,song WHERE" +
-                    $" AND song.Id = user_songs.songId " +
+                    string command = $"SELECT username FROM user,user_songs,song" +
+                    $" WHERE song.Id = user_songs.songId " +
                     $" AND user.Id = user_songs.userId " +
                     $" AND song.Id = {songModel.Id}";
 

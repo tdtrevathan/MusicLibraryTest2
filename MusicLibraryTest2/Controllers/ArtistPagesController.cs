@@ -74,6 +74,40 @@ namespace MusicLibraryTest2.Controllers
             return PartialView("_CreateAlbumForm", createAlbumModel);
         }
 
+        public ActionResult EditAlbumForm(AlbumModel albumModel)
+        {
+            EditAlbumModel editAlbumModel = new EditAlbumModel()
+            {
+                Id = albumModel.Id,
+                Title = albumModel.Title,
+                Genre = albumModel.Genre,
+                Description = albumModel.Description,
+            };
+
+            return PartialView("_EditAlbumForm", editAlbumModel);
+        }
+
+        [HttpPost]
+        public ActionResult EditAlbum(EditAlbumModel editAlbumModel)
+        {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"UPDATE album SET title = '{editAlbumModel.Title}', description = '{editAlbumModel.Description}', genre = '{editAlbumModel.Genre}'"+
+                    $"WHERE Id = {editAlbumModel.Id}";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+
+                }
+            }
+            return View("ArtistPage", (ProfileModel)Session["ProfileInfo"]);
+        }
+
         [HttpPost]
         public ActionResult CreateSong(CreateSongModel createSongModel)
         {
