@@ -1,4 +1,7 @@
-﻿@model MusicLibraryTest2.Models.LoginModel
+﻿<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+@model MusicLibraryTest2.Models.LoginModel
 
 @{
     ViewBag.Title = "Login Page";
@@ -17,14 +20,18 @@
     @Html.PasswordFor(model => model.Password)
     <br>
     <input id="Submit" type="submit" value="Log In" />
+    <br>
 }
 
-<button>@Html.ActionLink("Sign Up", "SignUpForm", "Home")</button>
+@using (Html.BeginForm("SignUpForm", "Home", FormMethod.Post))
+{
+    <input id="Submit" type="submit" value="Sign Up" />
+    <br>
+}
 
 @if (Model != null && !Model.ValidCredentials)
- {
-     <p class="has-error">Username or Password is not valid</p>
- }
-
+{
+    <p class="has-error">Username or Password is not valid</p>
+}
 
 

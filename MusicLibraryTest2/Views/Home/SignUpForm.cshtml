@@ -4,6 +4,8 @@
     ViewBag.Title = "Sign Up Page";
 }
 
+@Html.Action("ShowNavbar", "Home")
+
 <div class="mainBox">
 
     @using (Html.BeginForm("SignUp", "Home", FormMethod.Post))
