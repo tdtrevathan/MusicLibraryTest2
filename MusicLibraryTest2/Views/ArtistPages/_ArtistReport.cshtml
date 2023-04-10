@@ -15,8 +15,12 @@
         <br>
         <br>
         <span class="report-head">Total Likes: </span><span class="report-body"> @report.Likes</span>
-    <br>
-    <br>
-</div>
+        <br>
+        <br>
+    </div>
 }
 
+@if (Model.ArtistReports.Count == 0)
+{
+    <div class="has-error">No Reports to Display</div>
+}

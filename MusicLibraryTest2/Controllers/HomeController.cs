@@ -481,13 +481,13 @@ namespace MusicLibraryTest2.Controllers
             switch (searchBy)
             {
                 case "title":
-                    query = $"SELECT song.Id, song.title, song.genre, song.likes " +
+                    query = $"SELECT song.Id, song.title, song.genre, song.likes, song.views " +
                             $"FROM song " +
                             $"WHERE song.title LIKE '%{searchText}%' " +
                             $"ORDER BY song.likes DESC";
                     break;
                 case "artist":
-                    query = $"SELECT song.Id, song.title, song.genre, song.likes " +
+                    query = $"SELECT song.Id, song.title, song.genre, song.likes, song.views " +
                             $"FROM song " +
                             $"LEFT JOIN album_songs ON song.ID = album_songs.songId " +
                             $"LEFT JOIN album ON album.ID = album_songs.albumId " +
@@ -495,13 +495,13 @@ namespace MusicLibraryTest2.Controllers
                             $"ORDER BY song.likes DESC";
                     break;
                 case "genre":
-                    query = $"SELECT song.Id, song.title, song.genre, song.likes " +
+                    query = $"SELECT song.Id, song.title, song.genre, song.likes, song.views " +
                             $"FROM song " +
                             $"WHERE song.genre LIKE '%{searchText}%' " +
                             $"ORDER BY song.likes DESC";
                     break;
                 default:
-                    query = $"SELECT song.Id, song.title, song.genre, song.likes " +
+                    query = $"SELECT song.Id, song.title, song.genre, song.likes, song.views " +
                             $"FROM song " +
                             $"WHERE song.title LIKE '%{searchText}%' " +
                             $"ORDER BY song.likes DESC";
@@ -524,6 +524,7 @@ namespace MusicLibraryTest2.Controllers
                         Title = reader["title"].ToString(),
                         Genre = reader["genre"].ToString(),
                         Likes = Convert.ToInt32(reader["likes"]),
+                        Views = Convert.ToInt32(reader["views"]),
                         LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"])),
                         UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"])))
                     };
