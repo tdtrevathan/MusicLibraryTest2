@@ -11,6 +11,9 @@ using NAudio.Wave;
 using System.Web.Profile;
 using System.Web.Security;
 using System.Drawing;
+using NAudio.Gui;
+using System.Security.Cryptography;
+using System.Windows.Forms;
 
 
 namespace MusicLibraryTest2.Controllers
@@ -311,13 +314,29 @@ namespace MusicLibraryTest2.Controllers
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
+                string command = "SELECT * FROM" +
 
-                string command = $"SELECT artist_name,SUM(views) as views,SUM(likes) as likes" +
-                    $" FROM album,album_songs,song WHERE album.id = album_songs.albumid" +
-                    $" AND album_songs.songId = song.id" +
-                    $" AND created_at > now() - interval 1 month" +
-                    $" GROUP BY artist_name " +
-                    $" ORDER BY views desc, likes desc";
+                   " (SELECT username, COUNT(*) as likes" +
+                   " FROM user, user_songs, song, user_likes" +
+                   " WHERE user.Id = user_songs.userId" +
+                   " AND user_songs.songId = song.Id" +
+                   " AND user_likes.songId = song.Id" +
+                   " AND song.isArchived = 0" +
+                   " Group by username" +
+                   " Order by likes desc) res1" +
+                     
+                   " INNER JOIN" +
+                     
+                   " (SELECT username, COUNT(*) as views" +
+                   " FROM user, user_songs, song, user_views" +
+                   " WHERE user.Id = user_songs.userId" +
+                   " AND user_songs.songId = song.Id" +
+                   " AND user_views.songId = song.Id" +
+                   " AND song.isArchived = 0" +
+                   " Group by username" +
+                   " order by views desc) res2" +
+
+                   " ON res1.username = res2.username";
 
                 MySqlCommand cmd = new MySqlCommand(command, con);
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -330,7 +349,7 @@ namespace MusicLibraryTest2.Controllers
                     {
                         var userReport = new UserReportModel()
                         {
-                            ArtistName = reader["artist_name"].ToString(),
+                            ArtistName = reader["username"].ToString(),
                             Likes = Convert.ToInt32(reader["likes"]),
                             Views = Convert.ToInt32(reader["views"])
                         };
