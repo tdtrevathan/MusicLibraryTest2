@@ -55,12 +55,18 @@
             Most Popular Artists
         </span>
 
+        <span class="get-my-artists toggle-button">
+            <span class="triangle"></span>
+            My Artists
+        </span>
+
         <div class="result toggle-container" id="result-container"></div>
         <div class="browse toggle-container" id="get-all-songs-container"></div>
         <div class="playlist toggle-container" id="get-playlists-container"></div>
         <div class="browseLiked toggle-container" id="get-liked-songs-container"></div>
         <div class="notifications toggle-container" id="get-notifications-container"></div>
         <div class="popular-artists toggle-container" id="get-user-report-container"></div>
+        <div class="my-artists toggle-container" id="get-my-artists-container"></div>
 
         <img style="width: 100%; height: 100%;" src="~/Content/erik-mclean-QzpgqElvSiA-unsplash.jpg" />
 
@@ -190,6 +196,25 @@
             }
             $(this).find('.triangle').toggleClass('rotate');
             $getUserReportContainer.toggle();
+        });
+
+        $('.get-my-artists').click(function () {
+            var getMyArtistsContainerLoaded = false;
+
+            var $getMyArtistsContainer = $('#get-my-artists-container')
+
+            if (!getMyArtistsContainerLoaded) {
+                $.ajax({
+                    data: null,
+                    url: '/Home/GetMyArtists',
+                    success: function (data) {
+                        $getMyArtistsContainer.html(data);
+                        getMyArtistsContainerLoaded = true;
+                    }
+                });
+            }
+            $(this).find('.triangle').toggleClass('rotate');
+            $getMyArtistsContainer.toggle();
         });
     });
 </script>

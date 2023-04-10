@@ -629,6 +629,53 @@ namespace MusicLibraryTest2.Controllers
             return PartialView("_SongsList", songModels);
         }
 
+        public ActionResult GetMyArtists()
+        {
+            List<SongModel> songList = new List<SongModel>();
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes, song.views " +
+                    $" FROM song, user_songs, user_follows " +
+                    $" WHERE song.Id = user_songs.songId " +
+                    $" AND user_follows.followingId = user_songs.userId" +
+                    $" AND user_follows.followerId = {profile.Id}" +
+                    $" AND song.isArchived = 0" +
+                    $" ORDER BY created_at DESC", con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var songModel = new SongModel
+                    {
+                        Id = Convert.ToInt32(reader["id"]),
+                        Title = reader["title"].ToString(),
+                        Genre = reader["genre"].ToString(),
+                        Likes = Convert.ToInt32(reader["likes"]),
+                        Views = Convert.ToInt32(reader["views"]),
+                        LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"])),
+                        UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"])))
+                    };
+
+                    GetArtistInfo(songModel);
+
+                    songList.Add(songModel);
+                }
+            }
+
+            SongModels songModels = new SongModels()
+            {
+                SongList = songList
+            };
+
+            return PartialView("_SongsList", songModels);
+        }
+
         public ActionResult EditPlaylistForm(PlaylistModel playlistModel)
         {
             EditPlaylistModel editPlaylistModel = new EditPlaylistModel() 
