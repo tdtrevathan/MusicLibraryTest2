@@ -321,6 +321,7 @@ namespace MusicLibraryTest2.Controllers
                    " WHERE user.Id = user_songs.userId" +
                    " AND user_songs.songId = song.Id" +
                    " AND user_likes.songId = song.Id" +
+                   " AND user_likes.created_at > now() - interval 1 month" +
                    " AND song.isArchived = 0" +
                    " Group by username" +
                    " Order by likes desc) res1" +
@@ -332,6 +333,7 @@ namespace MusicLibraryTest2.Controllers
                    " WHERE user.Id = user_songs.userId" +
                    " AND user_songs.songId = song.Id" +
                    " AND user_views.songId = song.Id" +
+                   " AND user_views.time_viewed > now() - interval 1 month" +
                    " AND song.isArchived = 0" +
                    " Group by username" +
                    " order by views desc) res2" +

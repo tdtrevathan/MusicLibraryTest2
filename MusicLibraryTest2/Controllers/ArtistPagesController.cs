@@ -153,7 +153,7 @@ namespace MusicLibraryTest2.Controllers
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                MySqlCommand cmd = new MySqlCommand($"INSERT INTO song (title,duration,genre,songFile) values ('{createSongModel.Title}','{createSongModel.Genre}',@data)", con);
+                MySqlCommand cmd = new MySqlCommand($"INSERT INTO song (title,genre,songFile) values ('{createSongModel.Title}','{createSongModel.Genre}',@data)", con);
                 cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = songData;
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
