@@ -212,7 +212,7 @@ namespace MusicLibraryTest2.Controllers
             using (MySqlConnection con = new MySqlConnection(connection))
             {
 
-                string command = $"SELECT song.title as song_title, album.title as album_title , SUM(likes) as TotalLikes, COUNT(*) as MonthlyViews" +
+                string command = $"SELECT song.title as song_title, album.title as album_title, song.genre, SUM(likes) as TotalLikes, COUNT(*) as MonthlyViews" +
                 " FROM album,album_songs,song,user_views,user_albums" +
                 " WHERE album.id = album_songs.albumid" +
                 " AND album_songs.songId = song.id" +
@@ -237,6 +237,7 @@ namespace MusicLibraryTest2.Controllers
                         {
                             SongName = reader["song_title"].ToString(),
                             AlbumName = reader["album_title"].ToString(),
+                            Genre = reader["genre"].ToString(),
                             Likes = Convert.ToInt32(reader["TotalLikes"]),
                             Views = Convert.ToInt32(reader["MonthlyViews"])
                         };
@@ -251,7 +252,6 @@ namespace MusicLibraryTest2.Controllers
             return PartialView("_ArtistReport", artistReportModels);
 
         }
-
 
         [HttpPost]
         public ActionResult CreateAlbum(CreateAlbumModel createAlbumModel)

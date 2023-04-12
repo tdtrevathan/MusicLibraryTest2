@@ -14,6 +14,7 @@ using System.Drawing;
 using NAudio.Gui;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using System.Web.UI.WebControls;
 
 
 namespace MusicLibraryTest2.Controllers
@@ -316,26 +317,26 @@ namespace MusicLibraryTest2.Controllers
             {
                 string command = "SELECT * FROM" +
 
-                   " (SELECT username, COUNT(*) as likes" +
+                   " (SELECT username, user.Id, COUNT(*) as likes" +
                    " FROM user, user_songs, song, user_likes" +
                    " WHERE user.Id = user_songs.userId" +
                    " AND user_songs.songId = song.Id" +
                    " AND user_likes.songId = song.Id" +
                    " AND user_likes.created_at > now() - interval 1 month" +
                    " AND song.isArchived = 0" +
-                   " Group by username" +
+                   " Group by username, user.Id" +
                    " Order by likes desc) res1" +
                      
                    " INNER JOIN" +
                      
-                   " (SELECT username, COUNT(*) as views" +
+                   " (SELECT username, user.Id, COUNT(*) as views" +
                    " FROM user, user_songs, song, user_views" +
                    " WHERE user.Id = user_songs.userId" +
                    " AND user_songs.songId = song.Id" +
                    " AND user_views.songId = song.Id" +
                    " AND user_views.time_viewed > now() - interval 1 month" +
                    " AND song.isArchived = 0" +
-                   " Group by username" +
+                   " Group by username, user.Id" +
                    " order by views desc) res2" +
 
                    " ON res1.username = res2.username";
@@ -353,7 +354,8 @@ namespace MusicLibraryTest2.Controllers
                         {
                             ArtistName = reader["username"].ToString(),
                             Likes = Convert.ToInt32(reader["likes"]),
-                            Views = Convert.ToInt32(reader["views"])
+                            Views = Convert.ToInt32(reader["views"]),
+                            Songs = GetArtistSongReport(Convert.ToInt32(reader["Id"]))
                         };
 
                         userReports.Add(userReport);
@@ -397,7 +399,71 @@ namespace MusicLibraryTest2.Controllers
             return 0;
         }
 
+        public List<SongInfo> GetArtistSongReport(int artistId)
+        {
 
+            List<SongInfo> songs = new List<SongInfo>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+
+                string command = $"SELECT * FROM"+
+
+                "(SELECT song.title, song.genre, COUNT(*) as likes"+
+                " FROM user, user_songs, song, user_likes"+
+                " WHERE user.Id = user_songs.userId"+
+                " AND user_songs.songId = song.Id"+
+                " AND user_likes.songId = song.Id"+
+                " AND user_likes.created_at > now() - interval 1 month"+
+                " AND song.isArchived = 0"+
+                $" AND user.id = {artistId}"+
+                " Group by song.title, song.genre, song.created_at"+
+                " Order by likes desc) res1"+
+                " INNER JOIN"+
+                  
+                "(SELECT song.title, song.genre, COUNT(*) as views"+
+                " FROM user, user_songs, song, user_views"+
+                " WHERE user.Id = user_songs.userId"+
+                " AND user_songs.songId = song.Id"+
+                " AND user_views.songId = song.Id"+
+                " AND user_views.time_viewed > now() - interval 1 month"+
+                " AND song.isArchived = 0"+
+                $" AND user.id = {artistId}"+
+                " Group by song.title, song.genre, song.created_at"+
+                " order by views desc) res2"+
+
+                " ON res1.title = res2.title; ";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        SongModel songModel = new SongModel();
+                        songModel.Id = artistId;
+                        GetArtistInfo(songModel);
+
+                        var song = new SongInfo()
+                        {
+                            SongName = reader["title"].ToString(),
+                            AlbumName = songModel.AlbumName,
+                            Genre = reader["genre"].ToString(),
+                            Likes = Convert.ToInt32(reader["likes"]),
+                            Views = Convert.ToInt32(reader["views"])
+                        };
+
+                        songs.Add(song);
+                    }
+                }
+            }
+
+            return songs;
+
+        }
 
         public int AddView(int songId)
         {

@@ -414,6 +414,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\SongInfo.cs" />
     <Compile Include="Models\EditSongModel.cs" />
     <Compile Include="Models\EditAlbumModel.cs" />
     <Compile Include="Models\EditPlaylistModel.cs" />

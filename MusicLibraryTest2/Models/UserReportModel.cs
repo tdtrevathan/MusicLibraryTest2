@@ -15,5 +15,7 @@ namespace MusicLibraryTest2.Models
         public string ArtistName { get; set; }
         public int Views { get; set; }
         public int Likes { get; set; }
+
+        public List<SongInfo> Songs { get; set; }
     }
 }

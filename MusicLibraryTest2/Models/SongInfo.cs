@@ -10,12 +10,11 @@ using System.Web.Mvc;
 
 namespace MusicLibraryTest2.Models
 {
-    public class ArtistReportModel
+    public class SongInfo
     {
         public string SongName { get; set; }
-        public string AlbumName { get; set; }
-
         public string Genre { get; set; }
+        public string AlbumName { get; set; }
         public int Views { get; set; }
         public int Likes { get; set; }
     }

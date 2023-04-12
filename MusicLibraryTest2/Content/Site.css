@@ -6,6 +6,7 @@
     --color-secondary: #000000;
     --color-secondary-light: #333333;
     --color-tertiary: #FFFFFF;
+    --color-tertiary-mid: #a5a5a5;
     --color-tertiary-dark: #666666;
     --color-tertiary-light: #a8a7a7;
     --color-tertiary-superlight: #CCCCCC;
@@ -164,7 +165,14 @@ dd {
 }
 
 .user-report {
-    background-color: var(--color-tertiary-superlight);
+    background-color: var(--color-primary-superlight);
+    margin: 2rem 2rem;
+    border-radius: 1rem;
+    padding: 2rem 2rem;
+}
+
+.sub-report {
+    background-color: var(--color-primary-superlight);
     margin: 2rem 2rem;
     border-radius: 1rem;
     padding: 2rem 2rem;
