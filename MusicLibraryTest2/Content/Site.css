@@ -98,6 +98,16 @@ dd {
     display: none;
 }
 
+.login-box {
+    background-color: var(--color-tertiary-superlight);
+    margin: 2rem 2rem;
+    border-radius: 1rem;
+    max-width: 35%;
+    padding: 2rem 2rem;
+    font-family: Arial !important;
+    font-weight: 700 !important;
+}
+
 .mainBox {
     background-color: var(--color-tertiary);
     margin: 2% 2%;
