@@ -212,17 +212,55 @@ namespace MusicLibraryTest2.Controllers
             using (MySqlConnection con = new MySqlConnection(connection))
             {
 
-                string command = $"SELECT song.title as song_title, album.title as album_title, song.genre, SUM(likes) as TotalLikes, COUNT(*) as MonthlyViews" +
-                " FROM album,album_songs,song,user_views,user_albums" +
-                " WHERE album.id = album_songs.albumid" +
-                " AND album_songs.songId = song.id" +
-                " AND user_views.time_viewed > now() - interval 1 month" +
-                " AND user_views.songId = song.id" +
-                " AND album.id = user_albums.albumId" +
-                " AND song.isArchived = 0" +
-                $" AND user_albums.userid = {profile.Id}" +
-                " GROUP BY song.title, album.title" +
-                " ORDER BY TotalLikes desc";
+                string command = $"SELECT * FROM" +
+
+                                " (SELECT * FROM" +
+                                  
+                                " (SELECT song.title as song_title1, album.title as album_title1," +
+                                " song.genre as genre1, COUNT(*) as MonthlyLikes" +
+                                " FROM album, album_songs, song, user_likes, user_albums" +
+                                " WHERE album.id = album_songs.albumid" +
+                                " AND album_songs.songId = song.id" +
+                                " AND user_likes.created_at > now() - interval 1 month" +
+                                " AND user_likes.songId = song.id" +
+                                " AND album.id = user_albums.albumId" +
+                                " AND song.isArchived = 0" +
+                                $" AND user_albums.userid = {profile.Id}" +
+                                " GROUP BY song_title1, album_title1, genre1" +
+                                " ORDER BY MonthlyLikes desc) res1" +
+                                  
+                                " INNER JOIN" +
+                                  
+                                " (SELECT song.title as song_title2, album.title as album_title2," +
+                                " song.genre as genre2, COUNT(*) as MonthlyViews" +
+                                " FROM album, album_songs, song, user_views, user_albums" +
+                                " WHERE album.id = album_songs.albumid" +
+                                " AND album_songs.songId = song.id" +
+                                " AND user_views.time_viewed > now() - interval 1 month" +
+                                " AND user_views.songId = song.id" +
+                                " AND album.id = user_albums.albumId" +
+                                " AND song.isArchived = 0" +
+                                $" AND user_albums.userid = {profile.Id}" +
+                                " GROUP BY song_title2, album_title2, genre2" +
+                                " ORDER BY MonthlyViews desc) res2" +
+                                  
+                                " ON res1.song_title1 = res2.song_title2) res12" +
+                                  
+                                " INNER JOIN" +
+                                  
+                                " (SELECT song.title as song_title, COUNT(*) as MonthlyPlaylistAdds" +
+                                " FROM playlist, playlist_songs, song, user_views, user_playlists" +
+                                " WHERE playlist.id = playlist_songs.playlistid" +
+                                " AND playlist_songs.songId = song.id" +
+                                " AND user_views.time_viewed > now() - interval 1 month" +
+                                " AND user_views.songId = song.id" +
+                                " AND playlist.id = user_playlists.playlistId" +
+                                " AND song.isArchived = 0" +
+                                $" AND user_playlists.userid = {profile.Id}" +
+                                " GROUP BY song.title" +
+                                " ORDER BY MonthlyPlaylistAdds desc) res3" +
+                                  
+                                " ON res12.song_title1 = res3.song_title"; ;
 
                 MySqlCommand cmd = new MySqlCommand(command, con);
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -235,11 +273,12 @@ namespace MusicLibraryTest2.Controllers
                     {
                         var artistReport = new ArtistReportModel()
                         {
-                            SongName = reader["song_title"].ToString(),
-                            AlbumName = reader["album_title"].ToString(),
-                            Genre = reader["genre"].ToString(),
-                            Likes = Convert.ToInt32(reader["TotalLikes"]),
-                            Views = Convert.ToInt32(reader["MonthlyViews"])
+                            SongName = reader["song_title1"].ToString(),
+                            AlbumName = reader["album_title1"].ToString(),
+                            Genre = reader["genre1"].ToString(),
+                            Likes = Convert.ToInt32(reader["MonthlyLikes"]),
+                            Views = Convert.ToInt32(reader["MonthlyViews"]),
+                            PlaylistAdds = Convert.ToInt32(reader["MonthlyPlaylistAdds"])
                         };
 
                         artistReports.Add(artistReport);

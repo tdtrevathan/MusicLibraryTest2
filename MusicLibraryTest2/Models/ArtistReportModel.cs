@@ -14,9 +14,9 @@ namespace MusicLibraryTest2.Models
     {
         public string SongName { get; set; }
         public string AlbumName { get; set; }
-
         public string Genre { get; set; }
         public int Views { get; set; }
         public int Likes { get; set; }
+        public int PlaylistAdds { get; set; }
     }
 }
