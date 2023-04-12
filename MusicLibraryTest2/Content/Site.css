@@ -100,7 +100,10 @@ dd {
 
 .login-box {
     background-color: var(--color-tertiary-superlight);
-    margin: 2rem 2rem;
+    display: block;
+    align-content: center;
+    text-align: center;
+    margin: 30%;
     border-radius: 1rem;
     max-width: 35%;
     padding: 2rem 2rem;
@@ -108,7 +111,13 @@ dd {
     font-weight: 700 !important;
 }
 
+.login-box .p {
+    align-content: center;
+}
+
 .mainBox {
+    display: block;
+    align-content: center;
     background-color: var(--color-tertiary);
     margin: 2% 2%;
     padding: 1rem 1rem;
