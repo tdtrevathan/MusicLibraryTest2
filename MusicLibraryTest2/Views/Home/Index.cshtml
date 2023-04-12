@@ -9,29 +9,33 @@
 
 @Html.Action("ShowNavbar", "Home")
 
-@using (Html.BeginForm("SubmitCredentials", "Home", FormMethod.Post))
-{
-    @Html.LabelFor(m => m.UserName)
-    <br>
-    @Html.TextBoxFor(model => model.UserName)
-    <br>
-    @Html.LabelFor(m => m.Password)
-    <br>
-    @Html.PasswordFor(model => model.Password)
-    <br>
-    <input id="Submit" type="submit" value="Log In" />
-    <br>
-}
+<div class="login-box">
+    @using (Html.BeginForm("SubmitCredentials", "Home", FormMethod.Post))
+    {
+        @Html.LabelFor(m => m.UserName)
+        <br>
+        @Html.TextBoxFor(model => model.UserName)
+        <br>
+        @Html.LabelFor(m => m.Password)
+        <br>
+        @Html.PasswordFor(model => model.Password)
+        <br>
+        <input id="Submit" type="submit" value="Log In" />
+        <br>
+    }
 
-@using (Html.BeginForm("SignUpForm", "Home", FormMethod.Post))
-{
-    <input id="Submit" type="submit" value="Sign Up" />
-    <br>
-}
+    @using (Html.BeginForm("SignUpForm", "Home", FormMethod.Post))
+    {
+        <input id="Submit" type="submit" value="Sign Up" />
+        <br>
+    }
 
-@if (Model != null && !Model.ValidCredentials)
-{
-    <p class="has-error">Username or Password is not valid</p>
-}
+    @if (Model != null && !Model.ValidCredentials)
+    {
+        <p class="has-error">Username or Password is not valid</p>
+    }
+</div>
+
+
 
 
