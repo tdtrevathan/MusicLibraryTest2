@@ -1082,11 +1082,10 @@ namespace MusicLibraryTest2.Controllers
             using (MySqlConnection con = new MySqlConnection(connection))
             {
                 MySqlCommand cmd = new MySqlCommand(
-                    $" SELECT followingId FROM user_follows,user_albums,album_songs" +
+                    $" SELECT followingId FROM user_follows,user_songs" +
                     $" WHERE user_follows.followerId = {profile.Id}" +
-                    " AND user_follows.followingId = user_albums.userId" +
-                    " AND user_albums.albumId = album_songs.albumId" +
-                    $" AND album_songs.songId = {songModel.Id}; ", con);
+                    " AND user_follows.followingId = user_songs.userId" +
+                    $" AND user_songs.songId = {songModel.Id}; ", con);
 
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();

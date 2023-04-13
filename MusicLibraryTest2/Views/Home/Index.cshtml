@@ -8,8 +8,12 @@
 }
 
 @Html.Action("ShowNavbar", "Home")
+
+
 <div class="box">
+
     <div class="login-box">
+        <h1>Coog Music Database</h1>
         @using (Html.BeginForm("SubmitCredentials", "Home", FormMethod.Post))
         {
             <div>Username</div>
