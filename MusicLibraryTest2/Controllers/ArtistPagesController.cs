@@ -185,8 +185,9 @@ namespace MusicLibraryTest2.Controllers
                 //create user_song relationship
                 using (MySqlConnection con = new MySqlConnection(connection))
                 {
-                    string command = $"INSERT INTO user_songs (userId,songId) values" +
-                        $" ({profile.Id}, (SELECT * FROM song WHERE title = '{createSongModel.Title}' AND genre = '{createSongModel.Genre}'))";
+                    string command = $"INSERT INTO user_songs (userId,songId, songTitle) values" +
+                        $" ({profile.Id}, (SELECT id FROM song WHERE title = '{createSongModel.Title}' AND genre = '{createSongModel.Genre}' LIMIT 1)," +
+                        $"(SELECT title FROM song WHERE title = '{createSongModel.Title}' AND genre = '{createSongModel.Genre}' LIMIT 1))";
 
                     MySqlCommand cmd = new MySqlCommand(command, con);
                     cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = songData;

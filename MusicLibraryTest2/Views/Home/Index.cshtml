@@ -12,8 +12,7 @@
     <div class="login-box">
         @using (Html.BeginForm("SubmitCredentials", "Home", FormMethod.Post))
         {
-            <div>User Name</div>
-            <br>
+            <div>Username</div>
             @Html.TextBoxFor(model => model.UserName)
             <br>
             <br>
