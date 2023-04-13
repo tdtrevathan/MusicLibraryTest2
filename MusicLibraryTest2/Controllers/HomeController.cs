@@ -78,7 +78,7 @@ namespace MusicLibraryTest2.Controllers
 
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                MySqlCommand cmd = new MySqlCommand($"SELECT * FROM user WHERE user.username = '{loginModel.UserName}' and user.password = '{loginModel.Password}' LIMIT 1", con);
+                MySqlCommand cmd = new MySqlCommand($"SELECT * FROM user WHERE user.username = '{loginModel.UserName}' AND user.password = '{loginModel.Password}' AND user.is_archived = false LIMIT 1", con);
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
 
