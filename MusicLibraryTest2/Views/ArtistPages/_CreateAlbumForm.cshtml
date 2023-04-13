@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Create Album";
 }
-<div class="infoBox">
+<div class="entry-box">
     @using (Html.BeginForm("CreateAlbum", "ArtistPages", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.LabelFor(model => model.Title)

@@ -115,6 +115,19 @@ dd {
     align-content: center;
 }
 
+.entry-box {
+    background-color: var(--color-tertiary-superlight);
+    display: block;
+    align-content: center;
+    text-align: center;
+    margin: 1%;
+    border-radius: 1rem;
+    max-width: 35%;
+    padding: 2rem 2rem;
+    font-family: Arial !important;
+    font-weight: 700 !important;
+}
+
 .mainBox {
     display: block;
     align-content: center;
