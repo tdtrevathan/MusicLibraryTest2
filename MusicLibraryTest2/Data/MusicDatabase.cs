@@ -55,10 +55,8 @@ namespace MusicLibraryTest2.Data
                                                     $"LEFT JOIN album ON album.ID = album_songs.albumId " +
                                                     $"LEFT JOIN user_songs ON user_songs.songid = song.id " +
                                                     $"LEFT JOIN user ON user_songs.userid = user.id " +
-                                                    $"{(fromDate != null || toDate != null ? "WHERE " : "")}" +
-                                                    $"{(fromDate != null ? $"created_at >= '{fromDate.Value.ToString("yyyy-MM-dd")}'" : "")}" +
-                                                    $"{(fromDate != null && toDate != null ? " AND " : "")}" +
-                                                    $"{(toDate != null ? $"created_at <= '{toDate.Value.ToString("yyyy-MM-dd 23:59:59")}'" : "")}", con);
+                                                    $"{(fromDate != null ? $"WHERE song.created_at >= '{fromDate.Value.ToString("yyyy-MM-dd")}' " : "")}" +
+                                                    $"{(toDate != null ? $"{(fromDate != null ? "AND" : "WHERE")} song.created_at <= '{toDate.Value.ToString("yyyy-MM-dd 23:59:59")}'" : "")}", con);
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
 

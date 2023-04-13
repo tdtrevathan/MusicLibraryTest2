@@ -16,6 +16,7 @@
     {
         <li>Date Range: @ViewBag.fromDate.ToShortDateString() - @ViewBag.toDate.ToShortDateString()</li>
     }
+    <li>Hide Archived: @ViewBag.noArchived</li>
 </ul>
 <!DOCTYPE html>
 
@@ -29,35 +30,55 @@
         <p>
             @Html.ActionLink("Back", "AdminPage")
             <br /><br />
-            @Html.ActionLink("Sort By Title", "SongList", new { sortBy = "title", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+            @Html.ActionLink("Sort By Title", "SongList", new { sortBy = "title", isAscending = ViewBag.isAscending, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, genre = ViewBag.genre, noArchived = ViewBag.noArchived })
             <span style="margin: 0 10px;">|</span>
-            @Html.ActionLink("Sort By Genre", "SongList", new { sortBy = "genre", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+            @Html.ActionLink("Sort By Genre", "SongList", new { sortBy = "genre", isAscending = ViewBag.isAscending, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, genre = ViewBag.genre, noArchived = ViewBag.noArchived })
             <span style="margin: 0 10px;">|</span>
-            @Html.ActionLink("Sort By View", "SongList", new { sortBy = "view", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+            @Html.ActionLink("Sort By View", "SongList", new { sortBy = "view", isAscending = ViewBag.isAscending, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, genre = ViewBag.genre, noArchived = ViewBag.noArchived })
             <span style="margin: 0 10px;">|</span>
-            @Html.ActionLink("Sort By Like", "SongList", new { sortBy = "like", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+            @Html.ActionLink("Sort By Like", "SongList", new { sortBy = "like", isAscending = ViewBag.isAscending, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, genre = ViewBag.genre, noArchived = ViewBag.noArchived })
             <span style="margin: 0 10px;">|</span>
-            @Html.ActionLink("Sort By Artist", "SongList", new { sortBy = "artist", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+            @Html.ActionLink("Sort By Artist", "SongList", new { sortBy = "artist", isAscending = ViewBag.isAscending, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, genre = ViewBag.genre, noArchived = ViewBag.noArchived })
             <span style="margin: 0 10px;">|</span>
-            @Html.ActionLink("Sort By Album", "SongList", new { sortBy = "album", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+            @Html.ActionLink("Sort By Album", "SongList", new { sortBy = "album", isAscending = ViewBag.isAscending, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, genre = ViewBag.genre, noArchived = ViewBag.noArchived })
             <span style="margin: 0 10px;">|</span>
-            @Html.ActionLink("Sort By Created Date", "SongList", new { sortBy = "created", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+            @Html.ActionLink("Sort By Created Date", "SongList", new { sortBy = "created", isAscending = ViewBag.isAscending, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, genre = ViewBag.genre, noArchived = ViewBag.noArchived })
+            <span style="margin: 0 10px;">|</span>
+            @Html.ActionLink("Sort By Archived", "SongList", new { sortBy = "archived", isAscending = ViewBag.isAscending, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, genre = ViewBag.genre, noArchived = ViewBag.noArchived })
             <span style="margin: 0 10px;">|</span>
             <br /><br />
-            @Html.ActionLink("Ascending", "SongList", new { ViewBag.sortBy, isAscending = true, ViewBag.fromDate, ViewBag.toDate })
+            @Html.ActionLink("Ascending", "SongList", new { ViewBag.sortBy, isAscending = true, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, genre = ViewBag.genre, noArchived = ViewBag.noArchived })
             <span style="margin: 0 10px;">|</span>
-            @Html.ActionLink("Descending", "SongList", new { ViewBag.sortBy, isAscending = false, ViewBag.fromDate, ViewBag.toDate })
+            @Html.ActionLink("Descending", "SongList", new { ViewBag.sortBy, isAscending = false, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, genre = ViewBag.genre, noArchived = ViewBag.noArchived })
             <span style="margin: 0 10px;">|</span>
         </p>
-        <p>Search for new songs that were created in a date range:</p>
-        <form method="get" action="@Url.Action("SongList", "AdminPages", new { ViewBag.sortBy, ViewBag.isAscending })">
-            <label for="fromDate">From Date:</label>
-            <input type="date" id="fromDate" name="fromDate">
+        <p></p>
+        <form method="get" action="@Url.Action("SongList", "AdminPages", new { sortBy = ViewBag.sortBy, isAscending = ViewBag.isAscending, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, genre = ViewBag.genre, noArchived = ViewBag.noArchived  })">
+            <label for="genreFilter">Genre:</label>
+            <select id="genreFilter" name="genre">
+                <option value="">All</option>
+                <option value="pop">Pop</option>
+                <option value="rock">Rock</option>
+                <option value="metal">Metal</option>
+                <option value="blues">Blues</option>
+                <option value="folk">Folk</option>
+                <option value="classical">Classical</option>
+                <option value="electronic">Electronic</option>
+                <option value="hip hop">Hip Hop</option>
+                <option value="jazz">Jazz</option>
+                <option value="rap">Rap</option>
+                <option value="techno">Techno</option>
+            </select>
+            <input type="checkbox" id="noArchived" name="noArchived" value="true">
+            <label for="noArchived">Hide Archived</label>
+            <div>
+                <label for="fromDate">From Date:</label>
+                <input type="date" id="fromDate" name="fromDate">
 
-            <label for="toDate">To Date:</label>
-            <input type="date" id="toDate" name="toDate">
-
-            <input type="submit" value="Submit">
+                <label for="toDate">To Date:</label>
+                <input type="date" id="toDate" name="toDate">
+            </div>
+            <input type="submit" value="Search">
         </form>
         <style>
             table {

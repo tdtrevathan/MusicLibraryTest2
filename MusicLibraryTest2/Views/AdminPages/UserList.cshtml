@@ -2,10 +2,10 @@
 
 @{
     Layout = null;
-    string sortBy = "id";
-    bool isAscending = true;
-    DateTime fromDate;
-    DateTime toDate;
+    //string sortBy = "id";
+    //bool isAscending = true;
+    //DateTime fromDate;
+    //DateTime toDate;
 }
 
 <h1>User Count: @ViewBag.userCount</h1>
@@ -17,6 +17,8 @@
     {
         <li>Date Range: @ViewBag.fromDate.ToShortDateString() - @ViewBag.toDate.ToShortDateString()</li>
     }
+    <li>Role: @ViewBag.role</li>
+    <li>Hide Archived: @ViewBag.noArchived</li>
 </ul>
 
 
@@ -33,27 +35,43 @@
         <p>
             @Html.ActionLink("Back", "AdminPage")
             <br /><br />
-            @Html.ActionLink("Sort By ID", "UserList", new { sortBy = "id", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+            @Html.ActionLink("Sort By ID", "UserList", new { sortBy = "id", isAscending = ViewBag.isAscending, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, role = ViewBag.role, noArchived = ViewBag.noArchived })
             <span style="margin: 0 10px;">|</span>
-            @Html.ActionLink("Sort By Name", "UserList", new { sortBy = "name", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+            @Html.ActionLink("Sort By Name", "UserList", new { sortBy = "name", isAscending = ViewBag.isAscending, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, role = ViewBag.role, noArchived = ViewBag.noArchived })
             <span style="margin: 0 10px;">|</span>
-            @Html.ActionLink("Sort By Created Date", "UserList", new { sortBy = "created", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+            @Html.ActionLink("Sort By Created Date", "UserList", new { sortBy = "created", isAscending = ViewBag.isAscending, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, role = ViewBag.role, noArchived = ViewBag.noArchived })
+            <span style="margin: 0 10px;">|</span>
+            @Html.ActionLink("Sort By Login Time", "UserList", new { sortBy = "login", isAscending = ViewBag.isAscending, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, role = ViewBag.role, noArchived = ViewBag.noArchived })
+            <span style="margin: 0 10px;">|</span>
+            @Html.ActionLink("Sort By Archived", "UserList", new { sortBy = "archived", isAscending = ViewBag.isAscending, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, role = ViewBag.role, noArchived = ViewBag.noArchived })
             <span style="margin: 0 10px;">|</span>
             <br /><br />
-            @Html.ActionLink("Ascending", "UserList", new { ViewBag.sortBy, isAscending = true, ViewBag.fromDate, ViewBag.toDate })
+            @Html.ActionLink("Ascending", "UserList", new { ViewBag.sortBy, isAscending = true, ViewBag.fromDate, ViewBag.toDate, role = ViewBag.role, noArchived = ViewBag.noArchived })
             <span style="margin: 0 10px;">|</span>
-            @Html.ActionLink("Descending", "UserList", new { ViewBag.sortBy, isAscending = false, ViewBag.fromDate, ViewBag.toDate })
+            @Html.ActionLink("Descending", "UserList", new { ViewBag.sortBy, isAscending = false, ViewBag.fromDate, ViewBag.toDate, role = ViewBag.role, noArchived = ViewBag.noArchived })
             <span style="margin: 0 10px;">|</span>
         </p>
-        <p>Search for new users that were created in a date range:</p>
-        <form method="get" action="@Url.Action("UserList", "AdminPages", new { ViewBag.sortBy, ViewBag.isAscending })">
-            <label for="fromDate">From Date:</label>
-            <input type="date" id="fromDate" name="fromDate">
+        <p></p>
+        <form method="get" action="@Url.Action("UserList", "AdminPages", new { sortBy = ViewBag.sortBy, isAscending = ViewBag.isAscending, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, role = ViewBag.role, noArchived = ViewBag.noArchived })">
 
-            <label for="toDate">To Date:</label>
-            <input type="date" id="toDate" name="toDate">
+                <label for="roleFilter">Role:</label>
+                <select id="roleFilter" name="role">
+                    <option value="">All</option>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                    <option value="artist">Artist</option>
+                </select>
+                <input type="checkbox" id="noArchived" name="noArchived" value="true">
+                <label for="noArchived">Hide Archived</label>
+            <div>
+                <label for="fromDate">From Date:</label>
+                <input type="date" id="fromDate" name="fromDate">
 
-            <input type="submit" value="Submit">
+                <label for="toDate">To Date:</label>
+                <input type="date" id="toDate" name="toDate">
+            </div>
+
+            <input type="submit" value="Search">
         </form>
 
 

@@ -11,6 +11,7 @@ using NAudio.Wave;
 using System.Web.Profile;
 using MusicLibraryTest2.Data;
 using Microsoft.Ajax.Utilities;
+using NAudio.CoreAudioApi;
 
 namespace MusicLibraryTest2.Controllers
 {
@@ -28,20 +29,24 @@ namespace MusicLibraryTest2.Controllers
         public ActionResult UserList()
         {
             List<User> users = new List<User>();
-            string sortBy = "id";
-            bool isAscending = true;
-            DateTime? fromDate = null;
-            DateTime? toDate = null;
+            string sortBy;
+            bool isAscending;
+            DateTime? fromDate;
+            DateTime? toDate;
+            string role;
+            bool noArchived;
 
             if (!string.IsNullOrEmpty(Request.QueryString["fromDate"]))
             {
                 fromDate = DateTime.Parse(Request.QueryString["fromDate"]);
             }
+            else fromDate = null;
 
             if (!string.IsNullOrEmpty(Request.QueryString["toDate"]))
             {
                 toDate = DateTime.Parse(Request.QueryString["toDate"]);
             }
+            else toDate = null;
 
             if (fromDate != null && toDate != null)
             {
@@ -51,14 +56,34 @@ namespace MusicLibraryTest2.Controllers
             {
                 users = db.GetUsersData();
             }
+
+            if (!string.IsNullOrEmpty(Request.QueryString["role"]))
+            {
+                role = Request.QueryString["role"];
+                users = users.Where(u => u.Role == role).ToList();
+            }
+            else role = "";
+            
+            if (!string.IsNullOrEmpty(Request.QueryString["noArchived"]))
+            {
+                noArchived = bool.Parse(Request.QueryString["noArchived"]);
+                if (noArchived)
+                users = users.Where(u => u.IsArchived != noArchived).ToList();
+            }
+            else noArchived = false;
+
             if (!string.IsNullOrEmpty(Request.QueryString["sortBy"]))
             {
                 sortBy = Request.QueryString["sortBy"];
             }
+            else sortBy = "id";
+
             if (!string.IsNullOrEmpty(Request.QueryString["isAscending"]))
             {
                 isAscending = bool.Parse(Request.QueryString["isAscending"]);
             }
+            else isAscending = true;
+
             switch (sortBy)
             {
                 case "id":
@@ -79,6 +104,18 @@ namespace MusicLibraryTest2.Controllers
                     else
                         users = users.OrderByDescending(u => u.CreatedAt).ToList();
                     break;
+                case "login":
+                    if (isAscending)
+                        users = users.OrderBy(u => u.LastLoginAt).ToList();
+                    else
+                        users = users.OrderByDescending(u => u.LastLoginAt).ToList();
+                    break;
+                case "archived":
+                    if (isAscending)
+                        users = users.OrderBy(u => u.IsArchived).ToList();
+                    else
+                        users = users.OrderByDescending(u => u.IsArchived).ToList();
+                    break;
                 default:
                     users = users.OrderBy(u => u.Id).ToList();
                     break;
@@ -88,6 +125,8 @@ namespace MusicLibraryTest2.Controllers
             ViewBag.isAscending = isAscending;
             ViewBag.fromDate = fromDate;
             ViewBag.toDate = toDate;
+            ViewBag.role = role;
+            ViewBag.noArchived = noArchived;
 
             return PartialView(users);
         }
@@ -95,20 +134,24 @@ namespace MusicLibraryTest2.Controllers
         public ActionResult SongList()
         {
             List<Song> songs = new List<Song>();
-            string sortBy = "created";
-            bool isAscending = true;
-            DateTime? fromDate = null;
-            DateTime? toDate = null;
+            string sortBy;
+            bool isAscending;
+            DateTime? fromDate;
+            DateTime? toDate;
+            string genre;
+            bool noArchived;
 
             if (!string.IsNullOrEmpty(Request.QueryString["fromDate"]))
             {
                 fromDate = DateTime.Parse(Request.QueryString["fromDate"]);
             }
+            else fromDate = null;
 
             if (!string.IsNullOrEmpty(Request.QueryString["toDate"]))
             {
                 toDate = DateTime.Parse(Request.QueryString["toDate"]);
             }
+            else toDate = null;
 
             if (fromDate != null && toDate != null)
             {
@@ -118,14 +161,34 @@ namespace MusicLibraryTest2.Controllers
             {
                 songs = db.GetSongData();
             }
+
+            if (!string.IsNullOrEmpty(Request.QueryString["genre"]))
+            {
+                genre = Request.QueryString["genre"];
+                songs = songs.Where(s => s.Genre.ToLower() == genre).ToList();
+            }
+            else genre = "";
+
+            if (!string.IsNullOrEmpty(Request.QueryString["noArchived"]))
+            {
+                noArchived = bool.Parse(Request.QueryString["noArchived"]);
+                if (noArchived)
+                    songs = songs.Where(s => s.IsArchived != noArchived).ToList();
+            }
+            else noArchived = false;
+
             if (!string.IsNullOrEmpty(Request.QueryString["sortBy"]))
             {
                 sortBy = Request.QueryString["sortBy"];
             }
+            else sortBy = "created";
+
             if (!string.IsNullOrEmpty(Request.QueryString["isAscending"]))
             {
                 isAscending = bool.Parse(Request.QueryString["isAscending"]);
             }
+            else isAscending = true;
+
             switch (sortBy)
             {
                 case "title":
@@ -170,6 +233,12 @@ namespace MusicLibraryTest2.Controllers
                     else
                         songs = songs.OrderByDescending(s => s.CreatedAt).ToList();
                     break;
+                case "archived":
+                    if (isAscending)
+                        songs = songs.OrderBy(s => s.IsArchived).ToList();
+                    else
+                        songs = songs.OrderByDescending(s => s.IsArchived).ToList();
+                    break;
                 default:
                     songs = songs.OrderBy(s => s.CreatedAt).ToList();
                     break;
@@ -179,6 +248,8 @@ namespace MusicLibraryTest2.Controllers
             ViewBag.isAscending = isAscending;
             ViewBag.fromDate = fromDate;
             ViewBag.toDate = toDate;
+            ViewBag.genre = genre;
+            ViewBag.noArchived = noArchived;
 
             return PartialView(songs);
         }
