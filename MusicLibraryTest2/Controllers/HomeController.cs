@@ -98,6 +98,11 @@ namespace MusicLibraryTest2.Controllers
                             Roles = roles
                         };
                     }
+                    reader.Close();
+                    // Update the last_login_at column
+                    MySqlCommand updateCmd = new MySqlCommand($"UPDATE user SET last_login_at = CURRENT_TIMESTAMP WHERE Id = {profileModel.Id}", con);
+                    updateCmd.ExecuteNonQuery();
+
                     Session["ProfileInfo"] = profileModel;
 
                     return View("HomePage", profileModel);
