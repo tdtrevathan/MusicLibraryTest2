@@ -12,7 +12,7 @@
     <div class="login-box">
         @using (Html.BeginForm("SubmitCredentials", "Home", FormMethod.Post))
         {
-            @Html.LabelFor(m => m.UserName)
+            <div>User Name</div>
             <br>
             @Html.TextBoxFor(model => model.UserName)
             <br>

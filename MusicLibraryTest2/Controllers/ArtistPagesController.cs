@@ -186,7 +186,7 @@ namespace MusicLibraryTest2.Controllers
                 using (MySqlConnection con = new MySqlConnection(connection))
                 {
                     string command = $"INSERT INTO user_songs (userId,songId) values" +
-                        $" ({profile.Id}, (SELECT * FROM song WHERE title = '{createSongModel.Title}' AND genre = {createSongModel.Genre}))";
+                        $" ({profile.Id}, (SELECT * FROM song WHERE title = '{createSongModel.Title}' AND genre = '{createSongModel.Genre}'))";
 
                     MySqlCommand cmd = new MySqlCommand(command, con);
                     cmd.Parameters.Add("@data", MySqlDbType.Blob).Value = songData;
