@@ -75,7 +75,7 @@ namespace MusicLibraryTest2.Data
                     song.AlbumName = reader["albumTitle"].ToString();
                     song.CreatedAt = (reader["created_at"] as DateTime?).GetValueOrDefault();
                     song.ModifiedAt = (reader["modified_at"] as DateTime?).GetValueOrDefault();
-                    song.IsArchived = (reader["isarchived"] as bool?).GetValueOrDefault(false);
+                    song.IsArchived = Convert.ToBoolean(reader["isarchived"]);
                     songs.Add(song);
                 }
                 return songs;
