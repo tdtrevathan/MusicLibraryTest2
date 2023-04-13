@@ -28,103 +28,105 @@
     <meta name="viewport" content="width=device-width" />
     <title>UserList</title>
 </head>
-<body>
-    <p>
-        @Html.ActionLink("Back", "AdminPage")
-        <br /><br />
-        @Html.ActionLink("Sort By ID", "UserList", new { sortBy = "id", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
-        <span style="margin: 0 10px;">|</span>
-        @Html.ActionLink("Sort By Name", "UserList", new { sortBy = "name", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
-        <span style="margin: 0 10px;">|</span>
-        @Html.ActionLink("Sort By Created Date", "UserList", new { sortBy = "created", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
-        <span style="margin: 0 10px;">|</span>
-        <br /><br />
-        @Html.ActionLink("Ascending", "UserList", new { ViewBag.sortBy, isAscending = true, ViewBag.fromDate, ViewBag.toDate })
-        <span style="margin: 0 10px;">|</span>
-        @Html.ActionLink("Descending", "UserList", new { ViewBag.sortBy, isAscending = false, ViewBag.fromDate, ViewBag.toDate })
-        <span style="margin: 0 10px;">|</span>
-    </p>
-    <p>Search for new users that were created in a date range:</p>
-    <form method="get" action="@Url.Action("UserList", "AdminPages", new { ViewBag.sortBy, ViewBag.isAscending })">
-        <label for="fromDate">From Date:</label>
-        <input type="date" id="fromDate" name="fromDate">
+<body style="background-color: #7d2935">
+    <div style="background-color: #CCCCCC; width: 80%; display: block; align-content: center; border-radius: 1rem; margin: 2rem; padding: 2rem">
+        <p>
+            @Html.ActionLink("Back", "AdminPage")
+            <br /><br />
+            @Html.ActionLink("Sort By ID", "UserList", new { sortBy = "id", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+            <span style="margin: 0 10px;">|</span>
+            @Html.ActionLink("Sort By Name", "UserList", new { sortBy = "name", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+            <span style="margin: 0 10px;">|</span>
+            @Html.ActionLink("Sort By Created Date", "UserList", new { sortBy = "created", ViewBag.isAscending, ViewBag.fromDate, ViewBag.toDate })
+            <span style="margin: 0 10px;">|</span>
+            <br /><br />
+            @Html.ActionLink("Ascending", "UserList", new { ViewBag.sortBy, isAscending = true, ViewBag.fromDate, ViewBag.toDate })
+            <span style="margin: 0 10px;">|</span>
+            @Html.ActionLink("Descending", "UserList", new { ViewBag.sortBy, isAscending = false, ViewBag.fromDate, ViewBag.toDate })
+            <span style="margin: 0 10px;">|</span>
+        </p>
+        <p>Search for new users that were created in a date range:</p>
+        <form method="get" action="@Url.Action("UserList", "AdminPages", new { ViewBag.sortBy, ViewBag.isAscending })">
+            <label for="fromDate">From Date:</label>
+            <input type="date" id="fromDate" name="fromDate">
 
-        <label for="toDate">To Date:</label>
-        <input type="date" id="toDate" name="toDate">
+            <label for="toDate">To Date:</label>
+            <input type="date" id="toDate" name="toDate">
 
-        <input type="submit" value="Submit">
-    </form>
+            <input type="submit" value="Submit">
+        </form>
 
 
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
+        <style>
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
 
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+            th, td {
+                padding: 8px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
 
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Username)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Role)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastLoginAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsArchived)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
+            th {
+                background-color: #f2f2f2;
+            }
+        </style>
+        <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Username)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Role)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ModifiedAt)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastLoginAt)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsArchived)
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Username)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Role)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifiedAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastLoginAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsArchived)
+                </th>
+                <th></th>
             </tr>
-        }
 
-    </table>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Role)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModifiedAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastLoginAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsArchived)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
 </body>
 </html>
