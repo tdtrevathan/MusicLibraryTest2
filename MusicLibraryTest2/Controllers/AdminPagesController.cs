@@ -320,6 +320,133 @@ namespace MusicLibraryTest2.Controllers
             }
         }
 
+        public ActionResult GetUsers()
+        {
+            List<UserModel> userList = new List<UserModel>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"SELECT user.id, user.username" +
+
+                    $" FROM user" +
+                    $" WHERE user.is_archived = 0";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var userModel = new UserModel
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            Username = reader["username"].ToString(),
+                            isAdmin = GetUserRoles(Convert.ToInt32(reader["id"])).Contains("Admin"),
+                            isArtist = GetUserRoles(Convert.ToInt32(reader["id"])).Contains("Artist")
+                        };
+
+                        userList.Add(userModel);
+                    }
+                    reader.NextResult();
+                }
+            }
+
+            UserModels userModels = new UserModels()
+            {
+                UserList = userList
+            };
+
+            return PartialView("_UserDeleteList", userModels);
+        }
+
+        List<string> GetUserRoles(int id)
+        {
+            List<string> roles = new List<string>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand($"SELECT role.type FROM user,user_roles,role WHERE user.id = user_roles.userId AND user_roles.roleId = role.id AND user.id = {id}", con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        roles.Add(reader["type"].ToString());
+                    }
+                }
+            }
+
+            return roles;
+        }
+
+        public ActionResult ArchiveUser(int userId)
+        {
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                string command = $"UPDATE user SET user.isArchived = 1 WHERE user.id = {userId}";
+
+                MySqlCommand cmd = new MySqlCommand(command, con);
+                cmd = new MySqlCommand(command, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+
+                }
+            }
+            return null;
+        }
+
+        public ActionResult MakeUserArtist(int userId)
+        {
+            ProfileModel profileModel = (ProfileModel)Session["ProfileInfo"];
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand($"INSERT INTO user_roles (userId,roleId)" +
+                    $" values ('{userId}',(SELECT id FROM role WHERE type = 'artist'))", con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+
+                }
+            }
+
+            return View("AdminPage", profileModel);
+        }
+
+
+        public ActionResult MakeUserAdmin(int userId)
+        {
+            ProfileModel profileModel = (ProfileModel)Session["ProfileInfo"];
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand($"INSERT INTO user_roles (userId,roleId)" +
+                    $" values ('{userId}',(SELECT id FROM role WHERE type = 'admin'))", con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+
+                }
+            }
+
+            return View("AdminPage", profileModel);
+        }
+
         public bool CheckIfUserFollowingArtist(int songId)
         {
             ProfileModel profile = (ProfileModel)Session["ProfileInfo"];

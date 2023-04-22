@@ -2,41 +2,47 @@
 
 @foreach (var user in Model.UserList)
  {
-<div class="songBox" id="songBox-@user.Id">
+<div class="songBox" id="userBox-@user.Id">
 
     <span class="report-head">Title: </span>
     <span class="report-body">@user.Username</span>
     <br />
     <br />
-    @foreach (var role in user.Roles)
+    @if (user.isArtist)
     {
         <span class="report-head">Role: </span>
-        <span class="report-body"> @role</span>
+        <span class="report-body"> Artist</span>
     }
-
-    @if ((song.UserIsAdmin != null && (bool)song.UserIsAdmin) || (song.UserIsArtist != null && (bool)song.UserIsArtist))
+    else
     {
-        <button class="edit-song-button" data-edit-song-id="@song.Id">
-            <i class="fa-solid fa-wrench unclicked-icon"></i>
-        </button>
-
-        <button class="archive-button" data-archive-song-id="@song.Id">
-            <i class="fa-solid fa-square-xmark unclicked-icon"></i>
+        <span class="report-head">Add Artist Role </span>
+        <button class="add-artist-button" data-artist-song-id="@user.Id">
+            <i class="fa-regular fa-square-plus"></i>
         </button>
     }
 
-    <div class="edit-container" id="edit-box-@song.Id" data-edit-album-id="@song.Id">
-        @Html.Action("EditSongForm", "ArtistPages", song)
-    </div>
+    @if (user.isAdmin)
+    {
+        <span class="report-head">Role: </span>
+        <span class="report-body"> Admin</span>
+    }
+    else
+    {
+        <span class="report-head">Add Admin Role </span>
+        <button class="add-admin-button" data-admin-song-id="@user.Id">
+            <i class="fa-regular fa-square-plus"></i>
+        </button>
+    }
 
-    <div class="archive-button-box toggle-container sub-container" id="archive-@song.Id"></div>
-
+    <button class="archive-button" data-archive-user-id="@user.Id">
+        <i class="fa-solid fa-square-xmark unclicked-icon"></i>
+    </button>
 </div>
  }
 
-@if (Model.SongList.Count == 0)
+@if (Model.UserList.Count == 0)
  {
-    <div class="has-error">No Songs to Display</div>
+    <div class="has-error">No User to Display</div>
  }
 
 <script src="https://kit.fontawesome.com/0baa800b55.js" crossorigin="anonymous"></script>
@@ -44,129 +50,51 @@
 <script>
     $(document).ready(function () {
 
-        $('.like-button').click(function () {
-            
-            var songLikesId = $(this).data('song-id');
+        $('.add-admin-button').click(function () {
             var button = $(this);
-            if (button.find('.fa-regular').length > 0) {
-                 $.ajax({
-                    url: '/Home/AddLike',
-                    type: 'GET',
-                     data: { songId: songLikesId },
-                     success: function (data) {
-                         button.find('.fa-thumbs-up').removeClass('fa-regular');
-                         button.find('.fa-thumbs-up').addClass('fa-solid');
-                         $('.likes-count[data-song-likes-id="' + songLikesId + '"]').text(data);
-                         button.find('.unclicked-icon').removeClass('unclicked-icon');
-                     }
-                 });
-            }
-        });
-        $('.follow-button').click(function () {
+            var userArchiveId = $(this).data('archive-user-id');
 
-            var artistName = $(this).data('artist-name');
-            var followButton = $(this);
-            if (followButton.find('.unclicked-icon').length > 0) {
                 $.ajax({
-                    url: '/Home/FollowArtist',
-                    type: 'GET',
-                    data: { artistName: artistName },
+                    url: '/Home/MakeUserAdmin',
+                    type: 'POST',
+                    data: { userId: userArchiveId },
                     success: function (data) {
-                        followButton.find('.unclicked-icon').removeClass('unclicked-icon');
                     }
                 });
-            }
         });
 
-        $('.load-song').click(function () {
-
-            var songLoaded = false;
-            var songId = $(this).data('song-likes-id');
-            var loadButton = $(this);
-            var $songsContainer = $('#song-' + songId);
-
-            if (loadButton.find('.song-unloaded').length > 0) {
-                $.ajax({
-                    url: '/Home/LoadSong',
-                    type: 'GET',
-                    data: { songId: songId },
-                    success: function (data) {
-                        $songsContainer.html(data);
-                    }
-                });
-                $.ajax({
-                    url: '/Home/AddView',
-                    type: 'GET',
-                    data: { songId: songId },
-                    success: function (data) {
-                        loadButton.find('.song-unloaded').removeClass('song-unloaded');
-                        $('.views-count[data-song-views-id="' + songId + '"]').text(data);
-                    }
-                });
-            }
-
-            $(this).find('.triangle').toggleClass('rotate');
-            $songsContainer.toggle();
-        });
-
-        $('.add-button').click(function () {
-            var playlistListLoaded = false;
-            var playlistSongId = $(this).data('playlist-song-id');
-            var $playlistListContainer = $('#playlist-' + playlistSongId);
+        $('.add-artist-button').click(function () {
             var button = $(this);
+            var userArchiveId = $(this).data('archive-user-id');
 
-            if (!playlistListLoaded) {
                 $.ajax({
-                    url: '/Home/AddToPlaylistForm',
-                    type: 'GET',
-                    data: { songId: playlistSongId },
+                    url: '/Home/MakeUserArtist',
+                    type: 'POST',
+                    data: { userId: userArchiveId },
                     success: function (data) {
-                        $playlistListContainer.html(data);
-                        playlistListLoaded = true;
-                        button.addClass('add-button-glow');
-
-                        setTimeout(function () {
-                            button.addClass('add-button-glow');
-                        }, 500);
-
-                        button.addClass('add-button-fade');
-
-                        setTimeout(function () {
-                            button.addClass('add-button-fade');
-                        }, 500);
                     }
                 });
-            }
-
-            $playlistListContainer.toggle();
         });
 
         $('.archive-button').click(function () {
 
             var button = $(this);
-            var songArchiveId = $(this).data('archive-song-id');
-            var $songBox = $('#songBox-' + songArchiveId);
+            var userArchiveId = $(this).data('archive-user-id');
+            var $userBox = $('#userBox-' + userArchiveId);
                  $.ajax({
-                     url: '/ArtistPages/ArchiveSong',
-                    type: 'GET',
-                     data: { songId: songArchiveId },
+                     url: '/AdminPages/ArchiveUser',
+                     type: 'GET',
+                     data: { userId: userArchiveId },
                      success: function (data) {
 
                          button.find('.unclicked-icon').removeClass('unclicked-icon');
                          setTimeout(function () {
                              button.find('.unclicked-icon').removeClass('unclicked-icon');
                          }, 1000);
-                         $songBox.toggle();
+                         $userBox.toggle();
                      }
                  });
         });
 
-        $('.edit-song-button').click(function () {
-            var button = $(this);
-            var songEditId = $(this).data('edit-song-id');
-            var $editSongBox = $('#edit-box-' + songEditId);
-
-            $editSongBox.toggle();
-        });
     });
 </script>

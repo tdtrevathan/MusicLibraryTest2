@@ -14,25 +14,17 @@
 <body>
     <div class="mainBox">
 
-        <span class="get-all-songs toggle-button">
-            <span class="triangle"></span>
-            Delete Songs
-        </span>
-
-        <span class="get-albums toggle-button">
-            <span class="triangle"></span>
-            Delete Albums
-        </span>
-
         <span class="get-users toggle-button">
             <span class="triangle"></span>
-            Delete Users
+            Manage Users
         </span>
 
         @Html.ActionLink("User List", "UserList", new { sortBy = "id", isAscending = true })
         <span style="margin: 0 10px;">|</span>
         @Html.ActionLink("Song List", "SongList", new { sortBy = "created", isAscending = false })
         <span style="margin: 0 10px;">|</span>
+
+        <div class="songs toggle-container sub-container" id="manage-container"></div>
 
         <img style="width: 100%; height: 100%;" src="~/Content/guitar-756326_1920.jpg" />
 
@@ -43,41 +35,23 @@
 <script>
     $(document).ready(function () {
 
-        $('.get-add-music').click(function () {
+        $('.get-users').click(function () {
 
             var loaded = false;
-            var $addMusicContainer = $('#add-music-container')
+            var $manageContainer = $('#manage-container')
 
             if (!loaded) {
                 $.ajax({
                 data: null,
-                url: '/ArtistPages/AddMusic',
+                url: '/AdminPages/GetUsers',
                     success: function(data) {
-                        $addMusicContainer.html(data);
+                        $manageContainer.html(data);
                         loaded = true;
                     }
                 });
             }
             $(this).find('.triangle').toggleClass('rotate');
-            $addMusicContainer.toggle();
-        });
-        $('.get-albums').click(function () {
-
-            var loaded = false;
-            var $albumsContainer = $('#albums-container')
-
-            if (!loaded) {
-                $.ajax({
-                url: '/ArtistPages/GetUserAlbums',
-                data: { userId: '@(Model?.Id ?? 0)' },
-                    success: function(data) {
-                        $albumsContainer.html(data);
-                        loaded = true;
-                    }
-                });
-            }
-            $(this).find('.triangle').toggleClass('rotate');
-            $albumsContainer.toggle();
+            $manageContainer.toggle();
         });
     });
 </script>
