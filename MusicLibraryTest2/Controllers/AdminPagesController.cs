@@ -345,8 +345,8 @@ namespace MusicLibraryTest2.Controllers
                         {
                             Id = Convert.ToInt32(reader["id"]),
                             Username = reader["username"].ToString(),
-                            isAdmin = GetUserRoles(Convert.ToInt32(reader["id"])).Contains("Admin"),
-                            isArtist = GetUserRoles(Convert.ToInt32(reader["id"])).Contains("Artist")
+                            isAdmin = GetUserRoles(Convert.ToInt32(reader["id"])).Contains("admin"),
+                            isArtist = GetUserRoles(Convert.ToInt32(reader["id"])).Contains("artist")
                         };
 
                         userList.Add(userModel);
@@ -390,7 +390,7 @@ namespace MusicLibraryTest2.Controllers
         {
             using (MySqlConnection con = new MySqlConnection(connection))
             {
-                string command = $"UPDATE user SET user.isArchived = 1 WHERE user.id = {userId}";
+                string command = $"UPDATE user SET user.is_archived = 1 WHERE user.id = {userId}";
 
                 MySqlCommand cmd = new MySqlCommand(command, con);
                 cmd = new MySqlCommand(command, con);

@@ -16,10 +16,12 @@
     else
     {
         <span class="report-head">Add Artist Role </span>
-        <button class="add-artist-button" data-artist-song-id="@user.Id">
+        <button class="add-artist-button" data-archive-user-id="@user.Id">
             <i class="fa-regular fa-square-plus"></i>
         </button>
     }
+    <br />
+    <br />
 
     @if (user.isAdmin)
     {
@@ -29,10 +31,12 @@
     else
     {
         <span class="report-head">Add Admin Role </span>
-        <button class="add-admin-button" data-admin-song-id="@user.Id">
+        <button class="add-admin-button" data-archive-user-id="@user.Id">
             <i class="fa-regular fa-square-plus"></i>
         </button>
     }
+    <br />
+    <br />
 
     <button class="archive-button" data-archive-user-id="@user.Id">
         <i class="fa-solid fa-square-xmark unclicked-icon"></i>
@@ -55,10 +59,23 @@
             var userArchiveId = $(this).data('archive-user-id');
 
                 $.ajax({
-                    url: '/Home/MakeUserAdmin',
+                    url: '/AdminPages/MakeUserAdmin',
                     type: 'POST',
                     data: { userId: userArchiveId },
                     success: function (data) {
+                        button.addClass('add-button-glow');
+
+                        setTimeout(function () {
+                            button.addClass('add-button-glow');
+                        }, 500);
+
+                        button.addClass('add-button-fade');
+
+                        setTimeout(function () {
+                            button.addClass('add-button-fade');
+                        }, 500);
+
+                        button.toggle();
                     }
                 });
         });
@@ -68,10 +85,23 @@
             var userArchiveId = $(this).data('archive-user-id');
 
                 $.ajax({
-                    url: '/Home/MakeUserArtist',
+                    url: '/AdminPages/MakeUserArtist',
                     type: 'POST',
                     data: { userId: userArchiveId },
                     success: function (data) {
+                        button.addClass('add-button-glow');
+
+                        setTimeout(function () {
+                            button.addClass('add-button-glow');
+                        }, 500);
+
+                        button.addClass('add-button-fade');
+
+                        setTimeout(function () {
+                            button.addClass('add-button-fade');
+                        }, 500);
+
+                        button.toggle();
                     }
                 });
         });
