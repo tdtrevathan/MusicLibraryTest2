@@ -254,5 +254,144 @@ namespace MusicLibraryTest2.Controllers
             return PartialView(songs);
         }
 
+        public ActionResult BrowseAllSongs()
+        {
+            List<SongModel> songList = new List<SongModel>();
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand($"SELECT song.Id, song.title, song.genre, song.likes, song.views" +
+                    $" FROM song WHERE song.isArchived = 0 ORDER BY views DESC LIMIT 50", con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var songModel = new SongModel
+                    {
+                        Id = Convert.ToInt32(reader["id"]),
+                        Title = reader["title"].ToString(),
+                        Genre = reader["genre"].ToString(),
+                        Likes = Convert.ToInt32(reader["likes"]),
+                        Views = Convert.ToInt32(reader["views"]),
+                        LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"])),
+                        UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"]))),
+                        UserIsAdmin = true
+                    };
+
+                    GetArtistInfo(songModel);
+
+                    songList.Add(songModel);
+                }
+            }
+
+            SongModels songModels = new SongModels()
+            {
+                SongList = songList
+            };
+
+            return PartialView("_SongsList", songModels);
+        }
+
+        public bool CheckIfLikedByUser(int songId)
+        {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand(
+                    $"SELECT * FROM user_likes WHERE" +
+                    $" userId = {profile.Id} AND songId = {songId}", con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public bool CheckIfUserFollowingArtist(int songId)
+        {
+            ProfileModel profile = (ProfileModel)Session["ProfileInfo"];
+
+            SongModel songModel = new SongModel()
+            {
+                Id = songId
+            };
+
+            GetArtistInfo(songModel);
+
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand(
+                    $" SELECT followingId FROM user_follows,user_songs" +
+                    $" WHERE user_follows.followerId = {profile.Id}" +
+                    " AND user_follows.followingId = user_songs.userId" +
+                    $" AND user_songs.songId = {songModel.Id}; ", con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public void GetArtistInfo(SongModel songModel)
+        {
+            using (MySqlConnection con = new MySqlConnection(connection))
+            {
+                MySqlCommand cmd = new MySqlCommand(
+                    $"SELECT album.title, album.artist_name FROM album,album_songs,song WHERE" +
+                    $" album.Id = album_songs.albumId " +
+                    $" AND album_songs.songId = {songModel.Id}", con);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        songModel.Artist = reader["artist_name"].ToString();
+                        songModel.AlbumName = reader["title"].ToString();
+                    }
+                }
+                else
+                {
+                    con.Close();
+                    con.Open();
+                    string command = $"SELECT username FROM user,user_songs,song" +
+                    $" WHERE song.Id = user_songs.songId " +
+                    $" AND user.Id = user_songs.userId " +
+                    $" AND song.Id = {songModel.Id}";
+
+                    cmd = new MySqlCommand(command, con);
+
+                    reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        songModel.Artist = reader["username"].ToString();
+                    }
+                }
+            }
+        }
     }
 }

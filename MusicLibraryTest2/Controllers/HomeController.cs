@@ -599,7 +599,7 @@ namespace MusicLibraryTest2.Controllers
                         Likes = Convert.ToInt32(reader["likes"]),
                         Views = Convert.ToInt32(reader["views"]),
                         LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"])),
-                        UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"])))
+                        UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"]))),
                     };
 
                     GetArtistInfo(songModel);
@@ -640,7 +640,7 @@ namespace MusicLibraryTest2.Controllers
                         Likes = Convert.ToInt32(reader["likes"]),
                         Views = Convert.ToInt32(reader["views"]),
                         LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"])),
-                        UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"])))
+                        UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"]))),
                     };
 
                     GetArtistInfo(songModel);
@@ -685,7 +685,7 @@ namespace MusicLibraryTest2.Controllers
                         Likes = Convert.ToInt32(reader["likes"]),
                         Views = Convert.ToInt32(reader["views"]),
                         LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"])),
-                        UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"])))
+                        UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"]))),
                     };
 
                     GetArtistInfo(songModel);
@@ -732,7 +732,7 @@ namespace MusicLibraryTest2.Controllers
                         Likes = Convert.ToInt32(reader["likes"]),
                         Views = Convert.ToInt32(reader["views"]),
                         LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"])),
-                        UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"])))
+                        UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"]))),
                     };
 
                     GetArtistInfo(songModel);
@@ -919,7 +919,7 @@ namespace MusicLibraryTest2.Controllers
                             Views = Convert.ToInt32(reader["views"]),
                             Artist = reader["username"].ToString(),
                             LikedByUser = CheckIfLikedByUser(Convert.ToInt32(reader["id"])),
-                            UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"])))
+                            UserFollowingArtist = Convert.ToBoolean(CheckIfUserFollowingArtist(Convert.ToInt32(reader["id"]))),
                         };
 
                         songList.Add(songModel);
@@ -1073,6 +1073,7 @@ namespace MusicLibraryTest2.Controllers
                 }
             }
         }
+
         public bool CheckIfUserFollowingArtist(int songId)
         {
             ProfileModel profile = (ProfileModel)Session["ProfileInfo"];

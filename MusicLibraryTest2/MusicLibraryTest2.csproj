@@ -434,6 +434,8 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ArtistModel.cs" />
     <Compile Include="Models\CreateSongModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\UserModels.cs" />
     <Compile Include="Models\SongModels.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\ArtistReportModel.cs" />
@@ -512,6 +514,8 @@
     <Content Include="Views\Home\_EditPlaylistForm.cshtml" />
     <Content Include="Views\ArtistPages\_EditAlbumForm.cshtml" />
     <Content Include="Views\ArtistPages\_EditSongForm.cshtml" />
+    <Content Include="Views\AdminPages\_UserDeleteList.cshtml" />
+    <Content Include="Views\AdminPages\_CreateUserForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,85 +1,18 @@
-﻿@model MusicLibraryTest2.Models.SongModels
+﻿@model MusicLibraryTest2.Models.UserModels
 
-@foreach (var song in Model.SongList)
+@foreach (var user in Model.UserList)
  {
-<div class="songBox" id="songBox-@song.Id">
+<div class="songBox" id="songBox-@user.Id">
 
     <span class="report-head">Title: </span>
-    <span class="report-body">@song.Title</span>
+    <span class="report-body">@user.Username</span>
     <br />
     <br />
-    <span class="report-head">Genre: </span>
-    <span class="report-body"> @song.Genre</span>
-    <br />
-    <br />
-    <span class="report-head">Artist: </span>
-    <span class="report-body">@song.Artist</span>
-    <br />
-    <br />
-
-    @if (song.AlbumName != null)
+    @foreach (var role in user.Roles)
     {
-        <span class="report-head">Album: </span>
-        <span class="report-body">@song.AlbumName</span>
-        <br />
-        <br />
+        <span class="report-head">Role: </span>
+        <span class="report-body"> @role</span>
     }
-
-    <span class="report-head"> Likes: </span>
-    <span class="likes-count report-body" data-song-likes-id="@song.Id">
-        @song.Likes
-    </span>
-    <br />
-    <br />
-
-    <span class="report-head"> Views: </span>
-    <span class="views-count report-body" data-song-views-id="@song.Id">
-        @song.Views
-    </span>
-    <br />
-    <br />
-
-    <span class="load-song toggle-button sub-toggle" data-song-likes-id="@song.Id">
-        <span class="triangle song-unloaded"></span>
-        Load Player
-    </span>
-
-    <br />
-    <br />
-
-    <div class="songs toggle-container sub-container" id="song-@song.Id"></div>
-
-    @if (song.LikedByUser != null && !(bool)song.LikedByUser)
-    {
-        <button class="like-button" data-song-id="@song.Id">
-            <i class="unclicked-icon fa-regular fa-thumbs-up"></i>
-        </button>
-    }
-    else if (song.LikedByUser != null)
-    {
-        <button class="already-liked">
-            <i class="fa-solid fa-thumbs-up"></i>
-        </button>
-    }
-
-    @if (song.UserFollowingArtist != null && !(bool)song.UserFollowingArtist)
-    {
-        <button class="follow-button" data-artist-name="@song.Artist">
-            <i class="unclicked-icon fa-solid fa-user-group"></i>
-        </button>
-    }
-    else if (song.UserFollowingArtist != null)
-    {
-        <button class="not-following">
-            <i class="fa-solid fa-user-group"></i>
-        </button>
-    }
-
-    <button class="add-button" data-playlist-song-id="@song.Id">
-        <i class="fa-regular fa-square-plus"></i>
-    </button>
-
-    <div class="playlistList toggle-container sub-container" id="playlist-@song.Id"></div>
 
     @if ((song.UserIsAdmin != null && (bool)song.UserIsAdmin) || (song.UserIsArtist != null && (bool)song.UserIsArtist))
     {

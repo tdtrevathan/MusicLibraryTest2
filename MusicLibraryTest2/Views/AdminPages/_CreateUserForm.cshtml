@@ -1,0 +1,20 @@
+﻿@model MusicLibraryTest2.Models.UserModel
+
+<div class="entry-box">
+    @using (Html.BeginForm("CreateUser", "AdminPages", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.LabelFor(model => model.Username)
+        <br>
+        @Html.TextBoxFor(model => model.Username)
+        <br>
+        @Html.CheckBoxFor(model => model.isArtist)
+        <br>
+        @Html.CheckBoxFor(model => model.isAdmin)
+        <br>
+
+        <input id="Submit" type="submit" value="Create" />
+    }
+</div>
+
+
+

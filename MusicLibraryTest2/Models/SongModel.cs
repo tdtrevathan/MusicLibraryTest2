@@ -24,6 +24,7 @@ namespace MusicLibraryTest2.Models
         public bool? LikedByUser { get; set; }
         public bool? UserFollowingArtist { get; set; }
         public bool? UserIsArtist { get; set; }
+        public bool? UserIsAdmin { get; set; }
     }
 }
 
